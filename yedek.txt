@@ -5,14 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PUSULA | Meslek Keşif & Kariyer Platformu</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700;800&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="nofollow" href="https://justpaste.it/redirect/nn35p/https%3A%2F%2Fcdnjs.cloudflare.com%2Fajax%2Flibs%2Ffont-awesome%2F6.4.0%2Fcss%2Fall.min.css">
+    <link rel="nofollow" href="https://justpaste.it/redirect/nn35p/https%3A%2F%2Ffonts.googleapis.com">
+    <link rel="nofollow" href="https://justpaste.it/redirect/nn35p/https%3A%2F%2Ffonts.gstatic.com" crossorigin>
+    <link href="https://justpaste.it/redirect/nn35p/https%3A%2F%2Ffonts.googleapis.com%2Fcss2%3Ffamily%3DSora%3Awght%40400%3B500%3B600%3B700%3B800%26amp%3Bfamily%3DDM%2BSans%3Awght%40400%3B500%3B600%26amp%3Bdisplay%3Dswap" rel="nofollow">
     <style>
-        * { font-family: 'DM Sans', sans-serif; }
-        h1, h2, h3, h4, .brand { font-family: 'Sora', sans-serif; }
+        * { 'DM Sans', sans-serif; }
+        h1, h2, h3, h4, .brand { 'Sora', sans-serif; }
         .page { display: none; }
         .page.active { display: block; }
 
+        /* PUSULA marka renkleri */
         :root {
             --compass-navy: #0f172a;
             --compass-gold: #f59e0b;
@@ -21,12 +24,14 @@
             --compass-indigo: #6366f1;
         }
 
+        /* Navbar compass logo animasyonu */
         @keyframes compass-spin {
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
         .compass-needle:hover { animation: compass-spin 1.2s ease-in-out; }
 
+        /* Mentor kart hover */
         .mentor-card {
             transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
             border: 1.5px solid #e2e8f0;
@@ -37,7 +42,10 @@
             border-color: #a5b4fc;
         }
 
-        .slot-btn { transition: all 0.15s ease; }
+        /* Takvim hücre hover */
+        .slot-btn {
+            transition: all 0.15s ease;
+        }
         .slot-btn:not(:disabled):hover {
             background: #6366f1;
             color: white;
@@ -50,6 +58,7 @@
             text-decoration: line-through;
         }
 
+        /* Video izleme butonu */
         .watch-btn {
             background: linear-gradient(135deg, #6366f1, #8b5cf6);
             transition: all 0.2s ease;
@@ -60,29 +69,34 @@
             box-shadow: 0 8px 20px -4px rgba(99,102,241,0.5);
         }
 
+        /* Modal overlay */
         .modal-overlay {
             display: none;
             position: fixed;
             inset: 0;
             background: rgba(15,23,42,0.65);
+            backdrop-filter: blur(4px);
             z-index: 9999;
             align-items: center;
             justify-content: center;
         }
         .modal-overlay.open { display: flex; }
 
+        /* Akış animasyonu */
         @keyframes fadeSlideIn {
             from { opacity: 0; transform: translateY(12px); }
             to { opacity: 1; transform: translateY(0); }
         }
         .feed-item { animation: fadeSlideIn 0.35s ease forwards; }
 
+        /* Rozet etiket */
         .badge-available {
             background: linear-gradient(90deg, #d1fae5, #a7f3d0);
             color: #065f46;
         }
         .badge-full { background: #fee2e2; color: #991b1b; }
 
+        /* Pusula hero banner arka plan deseni */
         .mentor-hero {
             background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #134e4a 100%);
             position: relative;
@@ -97,6 +111,20 @@
                               radial-gradient(circle at 60% 80%, rgba(245,158,11,0.08) 0%, transparent 35%);
         }
 
+        /* Profil halka rengi mentor uzmanlık alanına göre */
+        .ring-tech { ring-color: #6366f1; }
+        .ring-medical { ring-color: #f43f5e; }
+        .ring-science { ring-color: #0d9488; }
+        .ring-art { ring-color: #f59e0b; }
+
+        /* Takvim grid */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+        }
+
+        /* Video modal içeriği */
         .video-player-mock {
             background: #0f172a;
             border-radius: 12px;
@@ -113,352 +141,15 @@
             inset: 0;
             background: linear-gradient(135deg, rgba(99,102,241,0.3), rgba(13,148,136,0.2));
         }
-
-        /* ===== AUTH EKRANI — Açık Tema ===== */
-        #auth-screen {
-            position: fixed;
-            inset: 0;
-            z-index: 10000;
-            background: #e8eaf0;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        /* Hafif dekoratif arka plan — performans dostu, blur yok */
-        #auth-screen::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image:
-                radial-gradient(ellipse 600px 400px at 10% 20%, rgba(99,102,241,0.14) 0%, transparent 70%),
-                radial-gradient(ellipse 500px 350px at 90% 80%, rgba(13,148,136,0.12) 0%, transparent 70%);
-            pointer-events: none;
-        }
-
-        /* Izgara deseni — hafif */
-        #auth-screen::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image:
-                linear-gradient(rgba(99,102,241,0.07) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(99,102,241,0.07) 1px, transparent 1px);
-            background-size: 48px 48px;
-            pointer-events: none;
-        }
-
-        .auth-card {
-            position: relative;
-            z-index: 1;
-            width: 100%;
-            max-width: 420px;
-            margin: 0 16px;
-            background: #f0f2f8;
-            border: 1px solid #d0d4e0;
-            border-radius: 24px;
-            padding: 36px 32px;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05), 0 20px 60px -10px rgba(99,102,241,0.12);
-            animation: authFadeIn 0.4s ease forwards;
-        }
-
-        @keyframes authFadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .auth-tab {
-            flex: 1;
-            padding: 8px 0;
-            font-size: 13px;
-            font-weight: 700;
-            font-family: 'Sora', sans-serif;
-            border-radius: 10px;
-            transition: all 0.2s ease;
-            color: #94a3b8;
-            background: transparent;
-            border: none;
-            cursor: pointer;
-        }
-        .auth-tab.active {
-            background: #eef2ff;
-            color: #4f46e5;
-            box-shadow: inset 0 0 0 1px #c7d2fe;
-        }
-
-        .auth-input {
-            width: 100%;
-            background: #e8eaf2;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 11px 14px 11px 42px;
-            font-size: 13px;
-            color: #0f172a;
-            outline: none;
-            transition: border-color 0.15s, box-shadow 0.15s;
-        }
-        .auth-input::placeholder { color: #94a3b8; }
-        .auth-input:focus {
-            border-color: #6366f1;
-            background: #f4f5fb;
-            box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
-        }
-        .auth-input.error {
-            border-color: #f43f5e;
-            background: #fff1f2;
-        }
-
-        .auth-label {
-            font-size: 11px;
-            font-weight: 600;
-            color: #64748b;
-            text-transform: uppercase;
-            letter-spacing: 0.06em;
-            margin-bottom: 6px;
-            display: block;
-        }
-
-        .auth-btn {
-            width: 100%;
-            padding: 13px;
-            background: linear-gradient(135deg, #6366f1, #8b5cf6);
-            border: none;
-            border-radius: 12px;
-            color: white;
-            font-size: 14px;
-            font-weight: 700;
-            font-family: 'Sora', sans-serif;
-            cursor: pointer;
-            transition: all 0.2s;
-            box-shadow: 0 4px 14px -2px rgba(99,102,241,0.35);
-        }
-        .auth-btn:hover {
-            background: linear-gradient(135deg, #4f46e5, #7c3aed);
-            transform: translateY(-1px);
-            box-shadow: 0 8px 20px -4px rgba(99,102,241,0.45);
-        }
-        .auth-btn:active { transform: translateY(0); }
-        .auth-btn:disabled {
-            opacity: 0.6;
-            cursor: not-allowed;
-            transform: none;
-        }
-
-        .auth-error {
-            background: #fff1f2;
-            border: 1px solid #fecdd3;
-            border-radius: 10px;
-            padding: 10px 14px;
-            font-size: 12px;
-            color: #e11d48;
-            display: none;
-            margin-bottom: 14px;
-        }
-        .auth-error.show { display: block; }
-
-        /* Input ikon rengi — açık temada koyu */
-        .auth-icon {
-            position: absolute;
-            left: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #94a3b8;
-            font-size: 12px;
-        }
-
-        /* Parola toggle */
-        .pass-toggle {
-            position: absolute;
-            right: 14px;
-            top: 50%;
-            transform: translateY(-50%);
-            color: #94a3b8;
-            cursor: pointer;
-            font-size: 13px;
-            transition: color 0.15s;
-        }
-        .pass-toggle:hover { color: #475569; }
-
-        /* Sınıf seçici */
-        .auth-select {
-            width: 100%;
-            background: #e8eaf2;
-            border: 1px solid #e2e8f0;
-            border-radius: 12px;
-            padding: 11px 14px 11px 42px;
-            font-size: 13px;
-            color: #0f172a;
-            outline: none;
-            transition: all 0.2s;
-            appearance: none;
-            cursor: pointer;
-        }
-        .auth-select:focus {
-            border-color: #6366f1;
-            background: #f4f5fb;
-            box-shadow: 0 0 0 3px rgba(99,102,241,0.1);
-        }
-
-        /* Çıkış animasyonu — blur'suz */
-        @keyframes authExit {
-            from { opacity: 1; }
-            to { opacity: 0; pointer-events: none; }
-        }
-        #auth-screen.exiting {
-            animation: authExit 0.35s ease forwards;
-        }
-
-        /* Profil isim güncellemesi */
-        #profile-name-display { transition: opacity 0.3s; }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col relative">
-
-    <!-- ====================== AUTH EKRANI ====================== -->
-    <div id="auth-screen">
-        <div class="auth-card">
-            <!-- Logo -->
-            <div class="text-center mb-6">
-                <div class="inline-flex w-14 h-14 bg-gradient-to-br from-indigo-600 to-teal-600 rounded-2xl items-center justify-center shadow-lg shadow-indigo-200 mb-3">
-                    <i class="fa-solid fa-compass text-white text-2xl"></i>
-                </div>
-                <h1 class="brand font-extrabold text-2xl tracking-tight bg-gradient-to-r from-indigo-600 via-teal-600 to-amber-500 bg-clip-text text-transparent">PUSULA</h1>
-                <p class="text-xs text-slate-400 mt-1 font-medium">Meslek Keşif & Kariyer Platformu</p>
-            </div>
-
-            <!-- Tab Geçişi -->
-            <div class="flex gap-1 bg-slate-100 rounded-xl p-1 mb-6">
-                <button class="auth-tab active" id="tab-login" onclick="switchAuthTab('login')">Giriş Yap</button>
-                <button class="auth-tab" id="tab-register" onclick="switchAuthTab('register')">Kayıt Ol</button>
-            </div>
-
-            <!-- Hata mesajı -->
-            <div class="auth-error" id="auth-error-msg"></div>
-
-            <!-- ===== GİRİŞ FORMU ===== -->
-            <div id="login-form">
-                <div class="space-y-4">
-                    <div>
-                        <label class="auth-label">E-posta</label>
-                        <div class="relative">
-                            <i class="fa-solid fa-envelope auth-icon"></i>
-                            <input type="email" id="login-email" class="auth-input" placeholder="ornek@okul.edu.tr" autocomplete="email">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="auth-label">Parola</label>
-                        <div class="relative">
-                            <i class="fa-solid fa-lock auth-icon"></i>
-                            <input type="password" id="login-password" class="auth-input" placeholder="••••••••" autocomplete="current-password">
-                            <span class="pass-toggle" onclick="togglePass('login-password',this)"><i class="fa-solid fa-eye"></i></span>
-                        </div>
-                    </div>
-                    <div class="flex items-center justify-between text-xs">
-                        <label class="flex items-center gap-2 cursor-pointer">
-                            <input type="checkbox" id="remember-me" class="w-3.5 h-3.5 accent-indigo-500">
-                            <span class="text-slate-500">Beni hatırla</span>
-                        </label>
-                        <button class="text-indigo-600 hover:text-indigo-700 font-semibold" onclick="showForgotPassword()">Parolamı unuttum</button>
-                    </div>
-                </div>
-
-                <button class="auth-btn mt-6" id="login-btn" onclick="handleLogin()">
-                    <i class="fa-solid fa-compass mr-2"></i>Platforma Giriş Yap
-                </button>
-
-                <p class="text-center text-xs text-slate-400 mt-4">
-                    Hesabın yok mu?
-                    <button class="text-indigo-600 font-semibold hover:text-indigo-700" onclick="switchAuthTab('register')">Kayıt ol</button>
-                </p>
-            </div>
-
-            <!-- ===== KAYIT FORMU ===== -->
-            <div id="register-form" class="hidden">
-                <div class="space-y-3.5">
-                    <div class="grid grid-cols-2 gap-3">
-                        <div>
-                            <label class="auth-label">Ad</label>
-                            <div class="relative">
-                                <i class="fa-solid fa-user auth-icon"></i>
-                                <input type="text" id="reg-firstname" class="auth-input" placeholder="Adın">
-                            </div>
-                        </div>
-                        <div>
-                            <label class="auth-label">Soyad</label>
-                            <div class="relative">
-                                <i class="fa-solid fa-user auth-icon"></i>
-                                <input type="text" id="reg-lastname" class="auth-input" placeholder="Soyadın">
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <label class="auth-label">E-posta</label>
-                        <div class="relative">
-                            <i class="fa-solid fa-envelope auth-icon"></i>
-                            <input type="email" id="reg-email" class="auth-input" placeholder="ornek@okul.edu.tr">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="auth-label">Okul</label>
-                        <div class="relative">
-                            <i class="fa-solid fa-school auth-icon"></i>
-                            <input type="text" id="reg-school" class="auth-input" placeholder="Okulunun adı">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="auth-label">Sınıf</label>
-                        <div class="relative">
-                            <i class="fa-solid fa-graduation-cap auth-icon"></i>
-                            <select id="reg-grade" class="auth-select">
-                                <option value="">Sınıfını seç</option>
-                                <option value="9">9. Sınıf</option>
-                                <option value="10">10. Sınıf</option>
-                                <option value="11">11. Sınıf</option>
-                                <option value="12">12. Sınıf</option>
-                                <option value="mezun">Mezun</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div>
-                        <label class="auth-label">Parola</label>
-                        <div class="relative">
-                            <i class="fa-solid fa-lock auth-icon"></i>
-                            <input type="password" id="reg-password" class="auth-input" placeholder="En az 6 karakter">
-                            <span class="pass-toggle" onclick="togglePass('reg-password',this)"><i class="fa-solid fa-eye"></i></span>
-                        </div>
-                    </div>
-                    <div>
-                        <label class="auth-label">Parola Tekrar</label>
-                        <div class="relative">
-                            <i class="fa-solid fa-lock auth-icon"></i>
-                            <input type="password" id="reg-password2" class="auth-input" placeholder="Parolanı tekrar gir">
-                            <span class="pass-toggle" onclick="togglePass('reg-password2',this)"><i class="fa-solid fa-eye"></i></span>
-                        </div>
-                    </div>
-                    <label class="flex items-start gap-2.5 cursor-pointer mt-1">
-                        <input type="checkbox" id="reg-terms" class="w-3.5 h-3.5 mt-0.5 accent-indigo-500 flex-shrink-0">
-                        <span class="text-[11px] text-slate-500 leading-relaxed">
-                            <span class="text-indigo-600 font-semibold cursor-pointer">Kullanım Koşulları</span>'nı ve
-                            <span class="text-indigo-600 font-semibold cursor-pointer">Gizlilik Politikası</span>'nı okudum, kabul ediyorum.
-                        </span>
-                    </label>
-                </div>
-                <button class="auth-btn mt-5" id="register-btn" onclick="handleRegister()">
-                    <i class="fa-solid fa-user-plus mr-2"></i>Hesap Oluştur
-                </button>
-                <p class="text-center text-xs text-slate-400 mt-4">
-                    Zaten hesabın var mı?
-                    <button class="text-indigo-600 font-semibold hover:text-indigo-700" onclick="switchAuthTab('login')">Giriş yap</button>
-                </p>
-            </div>
-        </div>
-    </div>
 
     <!-- ====================== NAVBAR ====================== -->
     <nav class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex items-center justify-between h-16">
+                <!-- Logo: PUSULA -->
                 <div onclick="switchPage('home')" class="flex items-center gap-2.5 cursor-pointer select-none">
                     <div class="compass-needle w-9 h-9 bg-gradient-to-br from-indigo-600 to-teal-600 rounded-xl flex items-center justify-center text-white shadow-md shadow-indigo-200">
                         <i class="fa-solid fa-compass text-lg"></i>
@@ -466,6 +157,7 @@
                     <span class="brand font-extrabold text-xl tracking-tight bg-gradient-to-r from-indigo-600 via-teal-600 to-amber-500 bg-clip-text text-transparent">PUSULA</span>
                 </div>
 
+                <!-- Nav Linkleri -->
                 <div class="hidden lg:flex items-center gap-1" id="nav-links">
                     <button onclick="switchPage('home')" id="nav-home" class="nav-btn px-3 py-2 rounded-xl text-xs font-semibold bg-indigo-50 text-indigo-600 transition-all">
                         <i class="fa-solid fa-house mr-1"></i>Ana Akış
@@ -487,25 +179,15 @@
                     </button>
                 </div>
 
+                <!-- Sağ Profil -->
                 <div class="flex items-center gap-4">
                     <button onclick="toggleNotifications()" class="relative p-2 text-slate-400 hover:text-slate-600 transition-all">
                         <i class="fa-solid fa-bell text-xl"></i>
                         <span id="notif-badge" class="absolute top-1 right-1 w-2 h-2 bg-rose-500 rounded-full"></span>
                     </button>
-                    <div class="flex items-center gap-2 pl-2 border-l border-slate-200 cursor-pointer group relative" onclick="toggleUserMenu()">
-                        <img id="nav-avatar" class="w-9 h-9 rounded-full object-cover ring-2 ring-indigo-100" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=100" alt="Profil">
-                        <span class="hidden sm:block text-sm font-semibold text-slate-700" id="profile-name-display">Zeynep Aslan</span>
-                        <i class="fa-solid fa-chevron-down text-xs text-slate-400 hidden sm:block"></i>
-                        <!-- Dropdown -->
-                        <div id="user-menu" class="hidden absolute top-full right-0 mt-2 w-44 bg-white rounded-xl border border-slate-200 shadow-xl z-50 py-1 text-xs font-semibold overflow-hidden">
-                            <div class="px-3 py-2 border-b border-slate-100">
-                                <p class="font-bold text-slate-800" id="menu-display-name">Zeynep Aslan</p>
-                                <p class="text-slate-400 text-[11px]" id="menu-display-email">zeynep@pusula.app</p>
-                            </div>
-                            <button onclick="handleLogout()" class="w-full text-left px-3 py-2.5 text-rose-600 hover:bg-rose-50 transition-all flex items-center gap-2">
-                                <i class="fa-solid fa-right-from-bracket"></i> Çıkış Yap
-                            </button>
-                        </div>
+                    <div class="flex items-center gap-2 pl-2 border-l border-slate-200">
+                        <img class="w-9 h-9 rounded-full object-cover ring-2 ring-indigo-100" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=100" alt="Profil">
+                        <span class="hidden sm:block text-sm font-semibold text-slate-700">Zeynep Aslan</span>
                     </div>
                 </div>
             </div>
@@ -531,9 +213,9 @@
                 <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
                     <div class="h-20 bg-gradient-to-r from-indigo-500 via-teal-500 to-amber-400"></div>
                     <div class="px-5 pb-5 -mt-10 text-center">
-                        <img id="sidebar-avatar" class="w-20 h-20 rounded-2xl object-cover mx-auto ring-4 ring-white shadow-md" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=200" alt="Profil">
-                        <h2 class="mt-3 font-bold text-lg text-slate-900" id="sidebar-name">Zeynep Aslan</h2>
-                        <p class="text-xs text-slate-500 font-medium" id="sidebar-grade">10. Sınıf Öğrencisi</p>
+                        <img class="w-20 h-20 rounded-2xl object-cover mx-auto ring-4 ring-white shadow-md" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=200" alt="Profil">
+                        <h2 class="mt-3 font-bold text-lg text-slate-900">Zeynep Aslan</h2>
+                        <p class="text-xs text-slate-500 font-medium">10. Sınıf Öğrencisi</p>
                         <p class="mt-2 text-xs text-indigo-600 bg-indigo-50 py-1 px-3 rounded-full inline-block font-semibold">#KariyerArayışı #GelecekUfku</p>
                     </div>
                     <div class="border-t border-slate-100 p-4 text-xs font-medium text-slate-500 space-y-2">
@@ -558,6 +240,7 @@
                     </div>
                 </div>
 
+                <!-- Yaklaşan mentor görüşmesi özet -->
                 <div class="bg-gradient-to-br from-indigo-600 to-teal-600 rounded-2xl p-4 shadow-sm text-white">
                     <div class="flex items-center gap-2 mb-2">
                         <i class="fa-solid fa-mug-hot text-amber-300"></i>
@@ -576,7 +259,7 @@
                 <div id="page-home" class="page active space-y-6">
                     <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
                         <div class="flex gap-3">
-                            <img id="post-avatar" class="w-10 h-10 rounded-xl object-cover" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=100" alt="">
+                            <img class="w-10 h-10 rounded-xl object-cover" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=100" alt="">
                             <input type="text" id="post-input" placeholder="Aklındaki mesleklerin artılarını eksilerini akranlarına sor veya fikir paylaş..." class="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 text-sm focus:outline-none focus:border-indigo-500 transition-all">
                         </div>
                         <div class="flex justify-between items-center mt-4 pt-3 border-t border-slate-100">
@@ -776,7 +459,7 @@
                     </div>
                 </div>
 
-                <!-- ===== 3. SEMİNER VİDEOLARI ===== -->
+                <!-- ===== 3. SEMİNER VİDEOLARI (canlı yayın → kayıt izle) ===== -->
                 <div id="page-seminars" class="page space-y-6">
                     <div class="bg-gradient-to-r from-indigo-600 to-violet-600 rounded-2xl p-6 text-white shadow-md">
                         <h3 class="font-bold text-xl mb-1">Mesleklerin Gerçek Yüzü — Seminer Arşivi 🎬</h3>
@@ -784,6 +467,7 @@
                     </div>
 
                     <div class="space-y-4">
+                        <!-- 1. BİYOTEKNOLOJİ -->
                         <div class="bg-white rounded-2xl border-l-4 border-l-emerald-500 border border-slate-200 p-5 shadow-sm space-y-3">
                             <div class="flex justify-between items-start flex-wrap gap-2">
                                 <span class="bg-emerald-50 text-emerald-700 text-[10px] font-bold px-2 py-1 rounded">Biyoteknoloji & Genetik</span>
@@ -802,6 +486,7 @@
                             </div>
                         </div>
 
+                        <!-- 2. NANOBİLİM -->
                         <div class="bg-white rounded-2xl border-l-4 border-l-sky-500 border border-slate-200 p-5 shadow-sm space-y-3">
                             <div class="flex justify-between items-start flex-wrap gap-2">
                                 <span class="bg-sky-50 text-sky-700 text-[10px] font-bold px-2 py-1 rounded">Nanobilim & Malzeme Teknolojileri</span>
@@ -820,6 +505,7 @@
                             </div>
                         </div>
 
+                        <!-- 3. ASTROFİZİK -->
                         <div class="bg-white rounded-2xl border-l-4 border-l-cyan-500 border border-slate-200 p-5 shadow-sm space-y-3">
                             <div class="flex justify-between items-start flex-wrap gap-2">
                                 <span class="bg-cyan-50 text-cyan-700 text-[10px] font-bold px-2 py-1 rounded">Astrofizik (Temel Fizik)</span>
@@ -838,6 +524,7 @@
                             </div>
                         </div>
 
+                        <!-- 4. MATEMATİK -->
                         <div class="bg-white rounded-2xl border-l-4 border-l-amber-500 border border-slate-200 p-5 shadow-sm space-y-3">
                             <div class="flex justify-between items-start flex-wrap gap-2">
                                 <span class="bg-amber-50 text-amber-700 text-[10px] font-bold px-2 py-1 rounded">Matematik (Veri & Finans)</span>
@@ -856,6 +543,7 @@
                             </div>
                         </div>
 
+                        <!-- 5. YAZILIM -->
                         <div class="bg-white rounded-2xl border-l-4 border-l-violet-500 border border-slate-200 p-5 shadow-sm space-y-3">
                             <div class="flex justify-between items-start flex-wrap gap-2">
                                 <span class="bg-violet-50 text-violet-700 text-[10px] font-bold px-2 py-1 rounded">Yazılım Mühendisliği</span>
@@ -874,6 +562,7 @@
                             </div>
                         </div>
 
+                        <!-- 6. TIP -->
                         <div class="bg-white rounded-2xl border-l-4 border-l-rose-500 border border-slate-200 p-5 shadow-sm space-y-3">
                             <div class="flex justify-between items-start flex-wrap gap-2">
                                 <span class="bg-rose-50 text-rose-700 text-[10px] font-bold px-2 py-1 rounded">Tıp Dünyası & Cerrahlık</span>
@@ -893,6 +582,7 @@
                         </div>
                     </div>
 
+                    <!-- Canlı Soru Gönderme Kürsüsü (KORUNDU) -->
                     <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
                         <div class="flex items-center gap-2 border-b border-slate-100 pb-2">
                             <i class="fa-solid fa-comments text-indigo-600"></i>
@@ -919,7 +609,7 @@
                                     </select>
                                 </div>
                             </div>
-                            <textarea id="seminar-text" rows="2" placeholder="Seçtiğin mesleğin uzmanına ne sormak istersin?" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none resize-none"></textarea>
+                            <textarea id="seminar-text" rows="2" placeholder="Seçtiğin mesleğin uzmanına ne sormak istersin? Sonraki seminer kaydına dahil edilecektir..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none resize-none"></textarea>
                             <button onclick="sendQuestionToSeminar()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs py-2 rounded-xl shadow-sm transition-all">Soruyu Gönder</button>
                         </div>
                         <div id="live-chat-box" class="pt-3 border-t border-slate-100 hidden">
@@ -929,8 +619,10 @@
                     </div>
                 </div>
 
-                <!-- ===== 4. MENTOR BULUŞMALARI ===== -->
+                <!-- ===== 4. MENTOR BULUŞMALARI (YENİ SAYFA) ===== -->
                 <div id="page-mentors" class="page space-y-6">
+
+                    <!-- Hero Banner -->
                     <div class="mentor-hero rounded-2xl p-6 text-white shadow-lg relative">
                         <div class="relative z-10">
                             <div class="flex items-center gap-2 mb-3">
@@ -938,11 +630,14 @@
                                 <span class="bg-teal-400/20 border border-teal-400/30 text-teal-300 text-[10px] font-bold px-2.5 py-1 rounded-full">30 Dakika • Ücretsiz</span>
                             </div>
                             <h3 class="font-extrabold text-2xl mb-2 leading-tight">Uzmanlarla Birebir<br>Sohbet Et</h3>
-                            <p class="text-sm text-slate-300 leading-relaxed">Her hafta sektör profesyonelleri 30 dakikalarını sana ayırıyor.</p>
+                            <p class="text-sm text-slate-300 leading-relaxed">Her hafta sektör profesyonelleri 30 dakikalarını sana ayırıyor. Seminer videolarından kalan sorularını, kariyer şüphelerini ve merak ettiklerini doğrudan sor.</p>
                         </div>
                     </div>
 
+                    <!-- Mentor Kartları -->
                     <div class="space-y-4" id="mentor-list">
+
+                        <!-- MENTOR 1: Dr. Aslı Demir -->
                         <div class="mentor-card bg-white rounded-2xl p-5 shadow-sm space-y-4">
                             <div class="flex gap-4 items-start">
                                 <div class="relative flex-shrink-0">
@@ -960,10 +655,13 @@
                                     <div class="flex flex-wrap gap-1.5 mt-2">
                                         <span class="bg-emerald-50 text-emerald-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">#Biyoteknoloji</span>
                                         <span class="bg-emerald-50 text-emerald-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">#GenMühendisliği</span>
+                                        <span class="bg-emerald-50 text-emerald-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">#AkademikKariyer</span>
                                     </div>
                                 </div>
                             </div>
-                            <p class="text-xs text-slate-600 leading-relaxed bg-slate-50 p-3 rounded-xl border border-slate-100">"Lise yıllarımda biyoloji ve kimyayı severdim ama biyoteknolojinin ne olduğunu bilmiyordum. Seninle tam bu soruyu konuşabiliriz."</p>
+                            <p class="text-xs text-slate-600 leading-relaxed bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                "Lise yıllarımda biyoloji ve kimyayı severdim ama biyoteknolojinin ne olduğunu bilmiyordum. Seninle tam bu soruyu konuşabiliriz — hangi derslere odaklanmalısın, yurt dışı fırsatları nasıl değerlendirirsin."
+                            </p>
                             <div class="border-t border-slate-100 pt-3">
                                 <p class="text-[11px] font-bold text-slate-500 mb-2 flex items-center gap-1.5"><i class="fa-regular fa-calendar text-indigo-400"></i> Bu Haftaki Müsait Slotlar</p>
                                 <div class="grid grid-cols-3 sm:grid-cols-4 gap-2 mb-3">
@@ -972,9 +670,14 @@
                                     <button disabled class="slot-btn text-[11px] font-semibold py-1.5 px-2 rounded-lg border border-slate-100">Çar 11:00</button>
                                     <button onclick="bookSlot(this, 'Dr. Aslı Demir', 'Cuma 16:00')" class="slot-btn bg-indigo-50 text-indigo-700 text-[11px] font-semibold py-1.5 px-2 rounded-lg border border-indigo-100">Cum 16:00</button>
                                 </div>
+                                <div class="flex items-center gap-2 text-[10px] text-slate-400">
+                                    <span class="w-3 h-3 bg-indigo-50 border border-indigo-100 rounded inline-block"></span>Müsait
+                                    <span class="w-3 h-3 bg-slate-100 rounded inline-block ml-2"></span>Dolu
+                                </div>
                             </div>
                         </div>
 
+                        <!-- MENTOR 2: Doç. Dr. Murat Aksoy -->
                         <div class="mentor-card bg-white rounded-2xl p-5 shadow-sm space-y-4">
                             <div class="flex gap-4 items-start">
                                 <div class="relative flex-shrink-0">
@@ -991,21 +694,30 @@
                                     </div>
                                     <div class="flex flex-wrap gap-1.5 mt-2">
                                         <span class="bg-sky-50 text-sky-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">#Nanobilim</span>
+                                        <span class="bg-sky-50 text-sky-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">#MalzemeMühendisliği</span>
                                         <span class="bg-sky-50 text-sky-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">#TÜBİTAK</span>
                                     </div>
                                 </div>
                             </div>
-                            <p class="text-xs text-slate-600 leading-relaxed bg-slate-50 p-3 rounded-xl border border-slate-100">"Nanobilim için hangi liselerin hangi dersleri iyi görmesi gerekir? Türkiye'de hangi üniversiteler gerçekten iyi laboratuvar imkanı sunuyor?"</p>
+                            <p class="text-xs text-slate-600 leading-relaxed bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                "Nanobilim için hangi liselerin hangi dersleri iyi görmesi gerekir? Türkiye'de hangi üniversiteler gerçekten iyi laboratuvar imkanı sunuyor? Bu soruların yanıtını 30 dakikada verebilirim."
+                            </p>
                             <div class="border-t border-slate-100 pt-3">
+                                <p class="text-[11px] font-bold text-slate-500 mb-2 flex items-center gap-1.5"><i class="fa-regular fa-calendar text-indigo-400"></i> Bu Haftaki Müsait Slotlar</p>
                                 <div class="grid grid-cols-3 sm:grid-cols-4 gap-2 mb-3">
                                     <button disabled class="slot-btn text-[11px] font-semibold py-1.5 px-2 rounded-lg border border-slate-100">Sal 09:00</button>
                                     <button onclick="bookSlot(this, 'Doç. Dr. Murat Aksoy', 'Perşembe 13:00')" class="slot-btn bg-indigo-50 text-indigo-700 text-[11px] font-semibold py-1.5 px-2 rounded-lg border border-indigo-100">Per 13:00</button>
                                     <button onclick="bookSlot(this, 'Doç. Dr. Murat Aksoy', 'Perşembe 15:00')" class="slot-btn bg-indigo-50 text-indigo-700 text-[11px] font-semibold py-1.5 px-2 rounded-lg border border-indigo-100">Per 15:00</button>
                                     <button disabled class="slot-btn text-[11px] font-semibold py-1.5 px-2 rounded-lg border border-slate-100">Cum 10:00</button>
                                 </div>
+                                <div class="flex items-center gap-2 text-[10px] text-slate-400">
+                                    <span class="w-3 h-3 bg-indigo-50 border border-indigo-100 rounded inline-block"></span>Müsait
+                                    <span class="w-3 h-3 bg-slate-100 rounded inline-block ml-2"></span>Dolu
+                                </div>
                             </div>
                         </div>
 
+                        <!-- MENTOR 3: Selin Aktaş -->
                         <div class="mentor-card bg-white rounded-2xl p-5 shadow-sm space-y-4">
                             <div class="flex gap-4 items-start">
                                 <div class="relative flex-shrink-0">
@@ -1022,21 +734,30 @@
                                     </div>
                                     <div class="flex flex-wrap gap-1.5 mt-2">
                                         <span class="bg-violet-50 text-violet-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">#YazılımMühendisliği</span>
+                                        <span class="bg-violet-50 text-violet-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">#RemoteÇalışma</span>
                                         <span class="bg-violet-50 text-violet-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">#YurtdışıKariyer</span>
                                     </div>
                                 </div>
                             </div>
-                            <p class="text-xs text-slate-600 leading-relaxed bg-slate-50 p-3 rounded-xl border border-slate-100">"Yazılımın gerçekten ne olduğunu okul hiç öğretmedi. Lise yıllarında neler yapabilirsin, hangi projelere başlamalısın anlatırım."</p>
+                            <p class="text-xs text-slate-600 leading-relaxed bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                "Yazılımın gerçekten ne olduğunu okul hiç öğretmedi. Ben sana lise yıllarında neler yapabilirsin, hangi projelere başlamalısın ve Avrupa'da remote çalışmak nasıl bir şey — bunu anlatırım."
+                            </p>
                             <div class="border-t border-slate-100 pt-3">
+                                <p class="text-[11px] font-bold text-slate-500 mb-2 flex items-center gap-1.5"><i class="fa-regular fa-calendar text-indigo-400"></i> Bu Haftaki Müsait Slotlar</p>
                                 <div class="grid grid-cols-3 sm:grid-cols-4 gap-2 mb-3">
                                     <button disabled class="slot-btn text-[11px] font-semibold py-1.5 px-2 rounded-lg border border-slate-100">Pzt 17:00</button>
                                     <button disabled class="slot-btn text-[11px] font-semibold py-1.5 px-2 rounded-lg border border-slate-100">Sal 17:00</button>
                                     <button onclick="bookSlot(this, 'Selin Aktaş', 'Çarşamba 19:00')" class="slot-btn bg-indigo-50 text-indigo-700 text-[11px] font-semibold py-1.5 px-2 rounded-lg border border-indigo-100">Çar 19:00</button>
                                     <button onclick="bookSlot(this, 'Selin Aktaş', 'Cuma 20:00')" class="slot-btn bg-indigo-50 text-indigo-700 text-[11px] font-semibold py-1.5 px-2 rounded-lg border border-indigo-100">Cum 20:00</button>
                                 </div>
+                                <div class="flex items-center gap-2 text-[10px] text-slate-400">
+                                    <span class="w-3 h-3 bg-indigo-50 border border-indigo-100 rounded inline-block"></span>Müsait
+                                    <span class="w-3 h-3 bg-slate-100 rounded inline-block ml-2"></span>Dolu
+                                </div>
                             </div>
                         </div>
 
+                        <!-- MENTOR 4: Dr. Esra Yücel -->
                         <div class="mentor-card bg-white rounded-2xl p-5 shadow-sm space-y-4">
                             <div class="flex gap-4 items-start">
                                 <div class="relative flex-shrink-0">
@@ -1053,20 +774,29 @@
                                     </div>
                                     <div class="flex flex-wrap gap-1.5 mt-2">
                                         <span class="bg-rose-50 text-rose-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">#Tıp</span>
+                                        <span class="bg-rose-50 text-rose-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">#Nöroloji</span>
                                         <span class="bg-rose-50 text-rose-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">#TUS</span>
                                     </div>
                                 </div>
                             </div>
-                            <p class="text-xs text-slate-600 leading-relaxed bg-slate-50 p-3 rounded-xl border border-slate-100">"Tıp okumanın gerçek bedeli nedir, nöbetlerde nasıl hissediyorsun, TUS'a nasıl hazırlanılır — kimsenin sana söylemediği şeyleri konuşabiliriz."</p>
+                            <p class="text-xs text-slate-600 leading-relaxed bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                "Tıp okumanın gerçek bedeli nedir, nöbetlerde nasıl hissediyorsun, TUS'a nasıl hazırlanılır — kimsenin sana söylemediği şeyleri 30 dakikada konuşabiliriz."
+                            </p>
                             <div class="border-t border-slate-100 pt-3">
+                                <p class="text-[11px] font-bold text-slate-500 mb-2 flex items-center gap-1.5"><i class="fa-regular fa-calendar text-indigo-400"></i> Bu Haftaki Müsait Slotlar</p>
                                 <div class="grid grid-cols-3 sm:grid-cols-4 gap-2 mb-3">
                                     <button onclick="bookSlot(this, 'Dr. Esra Yücel', 'Pazartesi 18:00')" class="slot-btn bg-indigo-50 text-indigo-700 text-[11px] font-semibold py-1.5 px-2 rounded-lg border border-indigo-100">Pzt 18:00</button>
                                     <button disabled class="slot-btn text-[11px] font-semibold py-1.5 px-2 rounded-lg border border-slate-100">Sal 18:00</button>
                                     <button onclick="bookSlot(this, 'Dr. Esra Yücel', 'Çarşamba 18:00')" class="slot-btn bg-indigo-50 text-indigo-700 text-[11px] font-semibold py-1.5 px-2 rounded-lg border border-indigo-100">Çar 18:00</button>
                                     <button onclick="bookSlot(this, 'Dr. Esra Yücel', 'Cuma 18:00')" class="slot-btn bg-indigo-50 text-indigo-700 text-[11px] font-semibold py-1.5 px-2 rounded-lg border border-indigo-100">Cum 18:00</button>
                                 </div>
+                                <div class="flex items-center gap-2 text-[10px] text-slate-400">
+                                    <span class="w-3 h-3 bg-indigo-50 border border-indigo-100 rounded inline-block"></span>Müsait
+                                    <span class="w-3 h-3 bg-slate-100 rounded inline-block ml-2"></span>Dolu
+                                </div>
                             </div>
                         </div>
+
                     </div>
                 </div>
 
@@ -1074,9 +804,10 @@
                 <div id="page-hobbies" class="page space-y-6">
                     <div class="bg-gradient-to-r from-fuchsia-600 to-pink-600 rounded-2xl p-6 text-white shadow-md">
                         <h3 class="font-bold text-xl mb-1">Hobilerden Profesyonelliğe 🎨🎻</h3>
-                        <p class="text-xs text-fuchsia-100">Severek yaptığın sanatsal veya teknik hobilerin, gelecekte hangi sürpriz meslek alanlarının kapısını açabileceğini keşfet.</p>
+                        <p class="text-xs text-fuchsia-100">Severek yaptığın sanatsal veya teknik hobilerin, gelecekte hangi sürpriz meslek alanlarının kapısını açabileceğini keşfet. Hobini seç, kariyer yollarını gör.</p>
                     </div>
 
+                    <!-- HOBİ FİLTRE SEKMELERİ -->
                     <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
                         <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-3">Kategoriye Göre Filtrele</p>
                         <div class="flex flex-wrap gap-2 text-xs font-semibold">
@@ -1090,93 +821,307 @@
                         </div>
                     </div>
 
+                    <!-- HOBİ KARTLARI IZGARASI -->
                     <div class="grid grid-cols-1 gap-4" id="hobby-cards-grid">
+
+                        <!-- KART 1: Görsel Sanatlar & Çizim -->
                         <div class="hobby-card bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-3 transition-all hover:shadow-md" data-cat="sanat">
                             <div class="flex items-center justify-between flex-wrap gap-2">
-                                <div class="flex items-center gap-2"><span class="text-2xl">🎨</span><span class="bg-fuchsia-50 text-fuchsia-700 text-xs font-bold px-2.5 py-1 rounded-lg">Görsel Sanatlar & Çizim</span></div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-2xl">🎨</span>
+                                    <span class="bg-fuchsia-50 text-fuchsia-700 text-xs font-bold px-2.5 py-1 rounded-lg">Görsel Sanatlar & Çizim</span>
+                                </div>
                                 <span class="text-[10px] bg-fuchsia-600 text-white font-bold px-2 py-0.5 rounded-full">SANAT</span>
                             </div>
-                            <p class="text-sm text-slate-700 leading-relaxed">Geleneksel karakalem veya dijital tablet çizim hobisi; Oyun Tasarımı, UX/UI, Mimari Görselleştirme ve Medikal İllüstratörlük gibi alanlara evrilebilir.</p>
+                            <p class="text-sm text-slate-700 leading-relaxed">Geleneksel karakalem veya dijital tablet çizim hobisi; Oyun Tasarımı (Concept Art), Kullanıcı Deneyimi Tasarımı (UX/UI), Mimari Görselleştirme ve Medikal İllüstratörlük gibi çok kazandıran alanlara evrilebilir.</p>
                             <div class="pt-2 border-t border-slate-100">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-2">Açılan Kariyer Kapıları</p>
                                 <div class="flex flex-wrap gap-1.5">
                                     <span class="bg-fuchsia-50 text-fuchsia-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🎮 Oyun Concept Art</span>
                                     <span class="bg-fuchsia-50 text-fuchsia-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">📱 UX/UI Tasarımı</span>
+                                    <span class="bg-fuchsia-50 text-fuchsia-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🏛️ Mimari Görselleştirme</span>
                                     <span class="bg-fuchsia-50 text-fuchsia-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🫀 Medikal İllüstrasyon</span>
                                 </div>
                             </div>
+                            <div class="bg-fuchsia-50 rounded-xl p-3 text-xs text-fuchsia-800 border border-fuchsia-100 flex items-start gap-2">
+                                <i class="fa-solid fa-lightbulb text-fuchsia-500 mt-0.5"></i>
+                                <span>Başlangıç için: Procreate (iPad) veya GIMP (ücretsiz) ile dijital çizim pratiği yap. DeviantArt'ta portfolyo oluştur.</span>
+                            </div>
                         </div>
 
+                        <!-- KART 2: Enstrüman & Müzik -->
+                        <div class="hobby-card bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-3 transition-all hover:shadow-md" data-cat="sanat">
+                            <div class="flex items-center justify-between flex-wrap gap-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-2xl">🎸</span>
+                                    <span class="bg-purple-50 text-purple-700 text-xs font-bold px-2.5 py-1 rounded-lg">Enstrüman Çalmak & Müzik</span>
+                                </div>
+                                <span class="text-[10px] bg-purple-600 text-white font-bold px-2 py-0.5 rounded-full">SANAT</span>
+                            </div>
+                            <p class="text-sm text-slate-700 leading-relaxed">Müzik kulak algısı ve melodi üretimi; Akustik Mimarlık (Konser salonu yalıtımları), Yapay Zeka Ses Mühendisliği ve oyun stüdyolarının foley (efekt sesleri) departmanlarında doğrudan karşılık buluyor.</p>
+                            <div class="pt-2 border-t border-slate-100">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-2">Açılan Kariyer Kapıları</p>
+                                <div class="flex flex-wrap gap-1.5">
+                                    <span class="bg-purple-50 text-purple-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🏟️ Akustik Mimarlık</span>
+                                    <span class="bg-purple-50 text-purple-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🤖 YZ Ses Mühendisliği</span>
+                                    <span class="bg-purple-50 text-purple-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🎬 Film Skoru Besteciliği</span>
+                                    <span class="bg-purple-50 text-purple-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🎙️ Podcast Prodüksiyonu</span>
+                                </div>
+                            </div>
+                            <div class="bg-purple-50 rounded-xl p-3 text-xs text-purple-800 border border-purple-100 flex items-start gap-2">
+                                <i class="fa-solid fa-lightbulb text-purple-500 mt-0.5"></i>
+                                <span>Başlangıç için: GarageBand (Mac/iOS) veya LMMS (ücretsiz) ile kendi müziğini üretmeye başla. SoundCloud'da paylaş.</span>
+                            </div>
+                        </div>
+
+                        <!-- KART 3: Kodlama & Yazılım -->
                         <div class="hobby-card bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-3 transition-all hover:shadow-md" data-cat="teknoloji">
                             <div class="flex items-center justify-between flex-wrap gap-2">
-                                <div class="flex items-center gap-2"><span class="text-2xl">💻</span><span class="bg-violet-50 text-violet-700 text-xs font-bold px-2.5 py-1 rounded-lg">Kodlama & Yazılım</span></div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-2xl">💻</span>
+                                    <span class="bg-violet-50 text-violet-700 text-xs font-bold px-2.5 py-1 rounded-lg">Kodlama & Yazılım</span>
+                                </div>
                                 <span class="text-[10px] bg-violet-600 text-white font-bold px-2 py-0.5 rounded-full">TEKNOLOJİ</span>
                             </div>
-                            <p class="text-sm text-slate-700 leading-relaxed">Boş zamanlarında küçük oyunlar veya uygulamalar yazmak; Siber Güvenlik, Yapay Zeka, Fintech ve indie oyun geliştirme gibi alanlara zemin hazırlıyor.</p>
+                            <p class="text-sm text-slate-700 leading-relaxed">Boş zamanlarında küçük oyunlar veya uygulamalar yazmak; Siber Güvenlik, Yapay Zeka Araştırmaları, Fintech ve bağımsız (indie) oyun geliştirme gibi 21. yüzyılın en çok aranan mesleklerine doğrudan zemin hazırlıyor.</p>
                             <div class="pt-2 border-t border-slate-100">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-2">Açılan Kariyer Kapıları</p>
                                 <div class="flex flex-wrap gap-1.5">
                                     <span class="bg-violet-50 text-violet-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🔐 Siber Güvenlik</span>
                                     <span class="bg-violet-50 text-violet-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🤖 YZ Mühendisliği</span>
+                                    <span class="bg-violet-50 text-violet-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">💰 Fintech Geliştirme</span>
                                     <span class="bg-violet-50 text-violet-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🎮 Indie Oyun Stüdyosu</span>
                                 </div>
                             </div>
+                            <div class="bg-violet-50 rounded-xl p-3 text-xs text-violet-800 border border-violet-100 flex items-start gap-2">
+                                <i class="fa-solid fa-lightbulb text-violet-500 mt-0.5"></i>
+                                <span>Başlangıç için: CS50 (Harvard'ın ücretsiz kursu), Scratch ile görsel programlama, ya da Python ile basit projeler.</span>
+                            </div>
                         </div>
 
-                        <div class="hobby-card bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-3 transition-all hover:shadow-md" data-cat="bilim">
+                        <!-- KART 4: Fotoğrafçılık & Video -->
+                        <div class="hobby-card bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-3 transition-all hover:shadow-md" data-cat="sanat">
                             <div class="flex items-center justify-between flex-wrap gap-2">
-                                <div class="flex items-center gap-2"><span class="text-2xl">♟️</span><span class="bg-slate-100 text-slate-700 text-xs font-bold px-2.5 py-1 rounded-lg">Satranç & Strateji Oyunları</span></div>
-                                <span class="text-[10px] bg-slate-700 text-white font-bold px-2 py-0.5 rounded-full">BİLİM</span>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-2xl">📷</span>
+                                    <span class="bg-amber-50 text-amber-700 text-xs font-bold px-2.5 py-1 rounded-lg">Fotoğrafçılık & Video</span>
+                                </div>
+                                <span class="text-[10px] bg-amber-500 text-white font-bold px-2 py-0.5 rounded-full">SANAT</span>
                             </div>
-                            <p class="text-sm text-slate-700 leading-relaxed">Derin analiz ve öngörü yeteneği; Oyun Teorisi, Kuantum Hesaplama ve Finans Riski Yönetimi gibi alanlarda doğrudan avantaj sağlıyor.</p>
+                            <p class="text-sm text-slate-700 leading-relaxed">Akıllı telefonunla hikaye anlatmayı seviyorsan; belgesel yönetmenliği, haber fotoğrafçılığı, sosyal medya içerik üretimi (brand content) ve moda/reklam fotoğrafçılığı gibi geniş bir yelpazede iş bulabilirsin.</p>
                             <div class="pt-2 border-t border-slate-100">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-2">Açılan Kariyer Kapıları</p>
                                 <div class="flex flex-wrap gap-1.5">
-                                    <span class="bg-slate-100 text-slate-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">📊 Oyun Teorisi Analisti</span>
-                                    <span class="bg-slate-100 text-slate-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">💹 Finans Risk Yönetimi</span>
+                                    <span class="bg-amber-50 text-amber-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🎥 Belgesel Yönetmenliği</span>
+                                    <span class="bg-amber-50 text-amber-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">📰 Haber Fotoğrafçılığı</span>
+                                    <span class="bg-amber-50 text-amber-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">📣 Marka İçerik Üretimi</span>
+                                    <span class="bg-amber-50 text-amber-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">👗 Moda Fotoğrafçılığı</span>
                                 </div>
                             </div>
+                            <div class="bg-amber-50 rounded-xl p-3 text-xs text-amber-800 border border-amber-100 flex items-start gap-2">
+                                <i class="fa-solid fa-lightbulb text-amber-500 mt-0.5"></i>
+                                <span>Başlangıç için: CapCut veya DaVinci Resolve (ücretsiz) ile video düzenlemeyi öğren. Instagram'da bir tematik fotoğraf hesabı aç.</span>
+                            </div>
                         </div>
 
+                        <!-- KART 5: Satranç & Strateji Oyunları -->
+                        <div class="hobby-card bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-3 transition-all hover:shadow-md" data-cat="bilim">
+                            <div class="flex items-center justify-between flex-wrap gap-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-2xl">♟️</span>
+                                    <span class="bg-slate-100 text-slate-700 text-xs font-bold px-2.5 py-1 rounded-lg">Satranç & Strateji Oyunları</span>
+                                </div>
+                                <span class="text-[10px] bg-slate-700 text-white font-bold px-2 py-0.5 rounded-full">BİLİM</span>
+                            </div>
+                            <p class="text-sm text-slate-700 leading-relaxed">Satranç, Go veya strateji oyunlarındaki derin analiz ve öngörü yeteneği; Operasyon Araştırması, Oyun Teorisi, Kuantum Hesaplama ve Finans Riski Yönetimi gibi alanlarda doğrudan avantaj sağlıyor.</p>
+                            <div class="pt-2 border-t border-slate-100">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-2">Açılan Kariyer Kapıları</p>
+                                <div class="flex flex-wrap gap-1.5">
+                                    <span class="bg-slate-100 text-slate-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">📊 Oyun Teorisi Analisti</span>
+                                    <span class="bg-slate-100 text-slate-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">⚛️ Kuantum Hesaplama</span>
+                                    <span class="bg-slate-100 text-slate-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">💹 Finans Risk Yönetimi</span>
+                                    <span class="bg-slate-100 text-slate-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🧩 Algoritma Tasarımı</span>
+                                </div>
+                            </div>
+                            <div class="bg-slate-50 rounded-xl p-3 text-xs text-slate-700 border border-slate-200 flex items-start gap-2">
+                                <i class="fa-solid fa-lightbulb text-slate-500 mt-0.5"></i>
+                                <span>Başlangıç için: Chess.com veya Lichess'te günlük problem çöz. Matematik olimpiyat sorularıyla analitik düşünce kasını güçlendir.</span>
+                            </div>
+                        </div>
+
+                        <!-- KART 6: Doğa & Botanik Gözlemi -->
                         <div class="hobby-card bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-3 transition-all hover:shadow-md" data-cat="doga">
                             <div class="flex items-center justify-between flex-wrap gap-2">
-                                <div class="flex items-center gap-2"><span class="text-2xl">🌿</span><span class="bg-emerald-50 text-emerald-700 text-xs font-bold px-2.5 py-1 rounded-lg">Doğa & Botanik Gözlemi</span></div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-2xl">🌿</span>
+                                    <span class="bg-emerald-50 text-emerald-700 text-xs font-bold px-2.5 py-1 rounded-lg">Doğa & Botanik Gözlemi</span>
+                                </div>
                                 <span class="text-[10px] bg-emerald-600 text-white font-bold px-2 py-0.5 rounded-full">DOĞA</span>
                             </div>
-                            <p class="text-sm text-slate-700 leading-relaxed">Bitkileri, böcekleri veya kuşları gözlemlemek; Ekoloji, Çevre Mühendisliği ve Karbon Yakalama Teknolojileri gibi alanlarda kariyer imkânı açıyor.</p>
+                            <p class="text-sm text-slate-700 leading-relaxed">Bitkileri, böcekleri veya kuşları gözlemlemek; Ekoloji, Çevre Mühendisliği, Biyoçeşitlilik Koruma ve iklim kriziyle mücadelede kritik rol oynayan Karbon Yakalama Teknolojileri gibi alanlarda kariyer imkânı açıyor.</p>
                             <div class="pt-2 border-t border-slate-100">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-2">Açılan Kariyer Kapıları</p>
                                 <div class="flex flex-wrap gap-1.5">
                                     <span class="bg-emerald-50 text-emerald-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🌱 Ekoloji Araştırmacısı</span>
+                                    <span class="bg-emerald-50 text-emerald-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">♻️ Çevre Mühendisliği</span>
+                                    <span class="bg-emerald-50 text-emerald-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🦋 Biyoçeşitlilik Uzmanı</span>
                                     <span class="bg-emerald-50 text-emerald-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🌍 İklim Politikası</span>
                                 </div>
                             </div>
+                            <div class="bg-emerald-50 rounded-xl p-3 text-xs text-emerald-800 border border-emerald-100 flex items-start gap-2">
+                                <i class="fa-solid fa-lightbulb text-emerald-500 mt-0.5"></i>
+                                <span>Başlangıç için: iNaturalist uygulamasıyla çevrendeki bitki ve hayvanları tanımla ve bilim insanlarına veri sağla.</span>
+                            </div>
                         </div>
 
+                        <!-- KART 7: Yabancı Dil & Hikaye Yazımı -->
+                        <div class="hobby-card bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-3 transition-all hover:shadow-md" data-cat="dil">
+                            <div class="flex items-center justify-between flex-wrap gap-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-2xl">✍️</span>
+                                    <span class="bg-sky-50 text-sky-700 text-xs font-bold px-2.5 py-1 rounded-lg">Yabancı Dil & Hikaye Yazımı</span>
+                                </div>
+                                <span class="text-[10px] bg-sky-600 text-white font-bold px-2 py-0.5 rounded-full">DİL</span>
+                            </div>
+                            <p class="text-sm text-slate-700 leading-relaxed">Yazmak veya yabancı dil öğrenmek; Uluslararası Hukuk, Diplomatik İlişkiler, Yapay Zeka için Dil Modeli Eğitimi (NLP) ve büyük şirketlerin küresel pazarlama departmanlarına kapı açıyor.</p>
+                            <div class="pt-2 border-t border-slate-100">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-2">Açılan Kariyer Kapıları</p>
+                                <div class="flex flex-wrap gap-1.5">
+                                    <span class="bg-sky-50 text-sky-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🌐 Uluslararası Hukuk</span>
+                                    <span class="bg-sky-50 text-sky-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🗣️ Diplomasi & Tercümanlık</span>
+                                    <span class="bg-sky-50 text-sky-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🧠 NLP Mühendisliği</span>
+                                    <span class="bg-sky-50 text-sky-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">📝 Küresel İçerik Stratejisi</span>
+                                </div>
+                            </div>
+                            <div class="bg-sky-50 rounded-xl p-3 text-xs text-sky-800 border border-sky-100 flex items-start gap-2">
+                                <i class="fa-solid fa-lightbulb text-sky-500 mt-0.5"></i>
+                                <span>Başlangıç için: Duolingo veya Anki ile kelime ezber, Medium'da kısa hikayeler yaz ve yorum al.</span>
+                            </div>
+                        </div>
+
+                        <!-- KART 8: Spor & Hareket -->
                         <div class="hobby-card bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-3 transition-all hover:shadow-md" data-cat="spor">
                             <div class="flex items-center justify-between flex-wrap gap-2">
-                                <div class="flex items-center gap-2"><span class="text-2xl">⚽</span><span class="bg-orange-50 text-orange-700 text-xs font-bold px-2.5 py-1 rounded-lg">Spor & Fiziksel Aktivite</span></div>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-2xl">⚽</span>
+                                    <span class="bg-orange-50 text-orange-700 text-xs font-bold px-2.5 py-1 rounded-lg">Spor & Fiziksel Aktivite</span>
+                                </div>
                                 <span class="text-[10px] bg-orange-600 text-white font-bold px-2 py-0.5 rounded-full">SPOR</span>
                             </div>
-                            <p class="text-sm text-slate-700 leading-relaxed">Spor Analisti, Fizyoterapi, Spor Psikolojisi, Spor Hukuku ve giderek büyüyen E-Spor Koçluğu gibi alanlarda uzman olma fırsatı sunuyor.</p>
+                            <p class="text-sm text-slate-700 leading-relaxed">Spor yapmak salt sağlıktan öte; Spor Analisti (veri odaklı takım taktikleri), Fizyoterapi, Spor Psikolojisi, Spor Hukuku ve giderek büyüyen E-Spor Koçluğu gibi alanlarda uzman olma fırsatı sunuyor.</p>
                             <div class="pt-2 border-t border-slate-100">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-2">Açılan Kariyer Kapıları</p>
                                 <div class="flex flex-wrap gap-1.5">
                                     <span class="bg-orange-50 text-orange-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">📊 Spor Analitiği</span>
+                                    <span class="bg-orange-50 text-orange-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🦴 Fizyoterapi</span>
+                                    <span class="bg-orange-50 text-orange-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🧠 Spor Psikolojisi</span>
                                     <span class="bg-orange-50 text-orange-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🎮 E-Spor Koçluğu</span>
                                 </div>
                             </div>
+                            <div class="bg-orange-50 rounded-xl p-3 text-xs text-orange-800 border border-orange-100 flex items-start gap-2">
+                                <i class="fa-solid fa-lightbulb text-orange-500 mt-0.5"></i>
+                                <span>Başlangıç için: Oynadığın sporun istatistiklerini takip etmeye başla. Wyscout veya Sofascore gibi platformlarda veri analizi pratiği yap.</span>
+                            </div>
                         </div>
 
-                        <div class="hobby-card bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-3 transition-all hover:shadow-md" data-cat="dil">
+                        <!-- KART 9: Yemek & Gastronomi -->
+                        <div class="hobby-card bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-3 transition-all hover:shadow-md" data-cat="doga">
                             <div class="flex items-center justify-between flex-wrap gap-2">
-                                <div class="flex items-center gap-2"><span class="text-2xl">✍️</span><span class="bg-sky-50 text-sky-700 text-xs font-bold px-2.5 py-1 rounded-lg">Yabancı Dil & Hikaye Yazımı</span></div>
-                                <span class="text-[10px] bg-sky-600 text-white font-bold px-2 py-0.5 rounded-full">DİL</span>
-                            </div>
-                            <p class="text-sm text-slate-700 leading-relaxed">Uluslararası Hukuk, Diplomatik İlişkiler, NLP Mühendisliği ve küresel pazarlama departmanlarına kapı açıyor.</p>
-                            <div class="pt-2 border-t border-slate-100">
-                                <div class="flex flex-wrap gap-1.5">
-                                    <span class="bg-sky-50 text-sky-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🌐 Uluslararası Hukuk</span>
-                                    <span class="bg-sky-50 text-sky-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🧠 NLP Mühendisliği</span>
+                                <div class="flex items-center gap-2">
+                                    <span class="text-2xl">🍳</span>
+                                    <span class="bg-rose-50 text-rose-700 text-xs font-bold px-2.5 py-1 rounded-lg">Yemek Pişirme & Gastronomi</span>
                                 </div>
+                                <span class="text-[10px] bg-rose-600 text-white font-bold px-2 py-0.5 rounded-full">DOĞA</span>
+                            </div>
+                            <p class="text-sm text-slate-700 leading-relaxed">Mutfakta deney yapmayı sevenler için; Gıda Bilimi, Beslenme Danışmanlığı, Restorasyon Yönetimi ve büyük gıda şirketlerinde yeni ürün geliştirme (Ar-Ge mutfağı) kariyerleri kapıda bekliyor.</p>
+                            <div class="pt-2 border-t border-slate-100">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-2">Açılan Kariyer Kapıları</p>
+                                <div class="flex flex-wrap gap-1.5">
+                                    <span class="bg-rose-50 text-rose-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🧪 Gıda Bilimi Ar-Ge</span>
+                                    <span class="bg-rose-50 text-rose-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🥗 Beslenme Danışmanlığı</span>
+                                    <span class="bg-rose-50 text-rose-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🏨 Otel & Restoran Yönetimi</span>
+                                    <span class="bg-rose-50 text-rose-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">📱 Gastronomi İçerik Üretimi</span>
+                                </div>
+                            </div>
+                            <div class="bg-rose-50 rounded-xl p-3 text-xs text-rose-800 border border-rose-100 flex items-start gap-2">
+                                <i class="fa-solid fa-lightbulb text-rose-500 mt-0.5"></i>
+                                <span>Başlangıç için: Yaptığın tarifleri kaydet ve fotoğrafla. Gıda kimyası (neden hamur kabarır?) sorularını araştır.</span>
+                            </div>
+                        </div>
+
+                        <!-- KART 10: Robot & Elektronik -->
+                        <div class="hobby-card bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-3 transition-all hover:shadow-md" data-cat="teknoloji">
+                            <div class="flex items-center justify-between flex-wrap gap-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-2xl">🤖</span>
+                                    <span class="bg-cyan-50 text-cyan-700 text-xs font-bold px-2.5 py-1 rounded-lg">Robot & Elektronik Hobisi</span>
+                                </div>
+                                <span class="text-[10px] bg-cyan-600 text-white font-bold px-2 py-0.5 rounded-full">TEKNOLOJİ</span>
+                            </div>
+                            <p class="text-sm text-slate-700 leading-relaxed">Arduino veya Raspberry Pi ile küçük projeler yapmak; Otomasyon Mühendisliği, Gömülü Sistemler, Medikal Cihaz Tasarımı ve Uzay Teknolojileri gibi alanlarda çok değerli bir ön deneyim sağlıyor.</p>
+                            <div class="pt-2 border-t border-slate-100">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-2">Açılan Kariyer Kapıları</p>
+                                <div class="flex flex-wrap gap-1.5">
+                                    <span class="bg-cyan-50 text-cyan-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">⚙️ Otomasyon Mühendisliği</span>
+                                    <span class="bg-cyan-50 text-cyan-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">💊 Medikal Cihaz Tasarımı</span>
+                                    <span class="bg-cyan-50 text-cyan-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🚀 Uzay Teknolojileri</span>
+                                    <span class="bg-cyan-50 text-cyan-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🏭 Endüstri 4.0</span>
+                                </div>
+                            </div>
+                            <div class="bg-cyan-50 rounded-xl p-3 text-xs text-cyan-800 border border-cyan-100 flex items-start gap-2">
+                                <i class="fa-solid fa-lightbulb text-cyan-500 mt-0.5"></i>
+                                <span>Başlangıç için: Arduino Starter Kit (uygun fiyatlı) al, YouTube'da "Arduino başlangıç" videolarını izle ve küçük bir LED projesiyle başla.</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- HOBİ QUIZ -->
+                    <div class="bg-gradient-to-br from-indigo-50 to-fuchsia-50 rounded-2xl border border-indigo-100 p-5 shadow-sm space-y-4">
+                        <div class="flex items-center gap-2">
+                            <span class="text-2xl">🧭</span>
+                            <div>
+                                <h4 class="font-bold text-sm text-slate-900">Hobin Hangisi? Hızlı Kariyer Pusula Testi</h4>
+                                <p class="text-xs text-slate-500">3 soruyu yanıtla, sana en uygun kariyer yolunu gösterelim.</p>
+                            </div>
+                        </div>
+                        <div id="quiz-container">
+                            <div id="quiz-q1">
+                                <p class="text-xs font-bold text-slate-700 mb-2">1. Boş zaman buldunsa ne yaparsın?</p>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <button onclick="quizAnswer(1,'sanat')" class="quiz-btn bg-white border border-slate-200 rounded-xl p-3 text-xs text-left hover:border-fuchsia-400 hover:bg-fuchsia-50 transition-all">🎨 Bir şeyler çizerim veya müzik çalarım</button>
+                                    <button onclick="quizAnswer(1,'teknoloji')" class="quiz-btn bg-white border border-slate-200 rounded-xl p-3 text-xs text-left hover:border-violet-400 hover:bg-violet-50 transition-all">💻 Oyun oynarım veya kod yazarım</button>
+                                    <button onclick="quizAnswer(1,'bilim')" class="quiz-btn bg-white border border-slate-200 rounded-xl p-3 text-xs text-left hover:border-sky-400 hover:bg-sky-50 transition-all">🔬 Nasıl çalışır diye araştırırım</button>
+                                    <button onclick="quizAnswer(1,'doga')" class="quiz-btn bg-white border border-slate-200 rounded-xl p-3 text-xs text-left hover:border-emerald-400 hover:bg-emerald-50 transition-all">🌿 Dışarıya çıkar, doğada gezerim</button>
+                                </div>
+                            </div>
+                            <div id="quiz-q2" class="hidden">
+                                <p class="text-xs font-bold text-slate-700 mb-2">2. Hangi ders seni en az sıkar?</p>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <button onclick="quizAnswer(2,'sanat')" class="quiz-btn bg-white border border-slate-200 rounded-xl p-3 text-xs text-left hover:border-fuchsia-400 hover:bg-fuchsia-50 transition-all">📖 Edebiyat veya Tarih</button>
+                                    <button onclick="quizAnswer(2,'teknoloji')" class="quiz-btn bg-white border border-slate-200 rounded-xl p-3 text-xs text-left hover:border-violet-400 hover:bg-violet-50 transition-all">📐 Matematik veya Bilgisayar</button>
+                                    <button onclick="quizAnswer(2,'bilim')" class="quiz-btn bg-white border border-slate-200 rounded-xl p-3 text-xs text-left hover:border-sky-400 hover:bg-sky-50 transition-all">🧪 Kimya veya Fizik</button>
+                                    <button onclick="quizAnswer(2,'doga')" class="quiz-btn bg-white border border-slate-200 rounded-xl p-3 text-xs text-left hover:border-emerald-400 hover:bg-emerald-50 transition-all">🌱 Biyoloji veya Coğrafya</button>
+                                </div>
+                            </div>
+                            <div id="quiz-q3" class="hidden">
+                                <p class="text-xs font-bold text-slate-700 mb-2">3. Hayalindeki iş ortamı?</p>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <button onclick="quizAnswer(3,'sanat')" class="quiz-btn bg-white border border-slate-200 rounded-xl p-3 text-xs text-left hover:border-fuchsia-400 hover:bg-fuchsia-50 transition-all">🎭 Stüdyo veya sahne</button>
+                                    <button onclick="quizAnswer(3,'teknoloji')" class="quiz-btn bg-white border border-slate-200 rounded-xl p-3 text-xs text-left hover:border-violet-400 hover:bg-violet-50 transition-all">🖥️ Bilgisayar başı, her yerden</button>
+                                    <button onclick="quizAnswer(3,'bilim')" class="quiz-btn bg-white border border-slate-200 rounded-xl p-3 text-xs text-left hover:border-sky-400 hover:bg-sky-50 transition-all">🔬 Laboratuvar veya araştırma merkezi</button>
+                                    <button onclick="quizAnswer(3,'doga')" class="quiz-btn bg-white border border-slate-200 rounded-xl p-3 text-xs text-left hover:border-emerald-400 hover:bg-emerald-50 transition-all">🏕️ Açık hava veya saha</button>
+                                </div>
+                            </div>
+                            <div id="quiz-result" class="hidden bg-white rounded-xl border p-4 text-sm text-center space-y-2">
+                                <div id="quiz-result-emoji" class="text-4xl"></div>
+                                <h4 id="quiz-result-title" class="font-bold text-slate-900"></h4>
+                                <p id="quiz-result-desc" class="text-xs text-slate-600 leading-relaxed"></p>
+                                <button onclick="resetQuiz()" class="text-xs text-indigo-600 font-semibold underline mt-2">Testi Tekrar Yap</button>
                             </div>
                         </div>
                     </div>
+
                 </div>
 
                 <!-- ===== 6. KULÜPLER ===== -->
@@ -1198,11 +1143,11 @@
                         <div id="club-chat-messages" class="p-4 flex-grow overflow-y-auto space-y-3 text-xs bg-slate-50">
                             <div class="bg-white p-2.5 rounded-xl border max-w-[85%]">
                                 <span class="font-bold text-indigo-600 block text-[10px]">Melis Aydın:</span>
-                                Blender mı yoksa Maya mı öğrenmek oyun tasarımı için daha avantajlı arkadaşlar?
+                                Blender mı yoksa Maya mı öğrenmek oyun tasarımı için daha avantajlı arkadaşlar? Çizim hobimi 3D tarafına taşımak istiyorum.
                             </div>
                             <div class="bg-white p-2.5 rounded-xl border max-w-[85%]">
                                 <span class="font-bold text-teal-600 block text-[10px]">Canan Kaya:</span>
-                                Melis kesinlikle Blender ile başla. Hem açık kaynak kodlu hem de komünitesi çok büyük!
+                                Melis kesinlikle Blender ile başla. Hem açık kaynak kodlu hem de komünitesi çok büyük, tonlarca ücretsiz döküman var!
                             </div>
                         </div>
                         <div class="p-3 bg-white border-t flex gap-2">
@@ -1238,6 +1183,7 @@
                     </div>
                 </div>
 
+                <!-- Mentor istatistik paneli -->
                 <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
                     <h3 class="font-bold text-xs text-slate-900 mb-3 uppercase tracking-wider flex items-center gap-1.5"><i class="fa-solid fa-chart-simple text-indigo-400"></i> Mentor Arşivi</h3>
                     <div class="space-y-3">
@@ -1276,14 +1222,16 @@
                     <i class="fa-solid fa-xmark text-lg"></i>
                 </button>
             </div>
+            <!-- Mock Video Player -->
             <div class="video-player-mock m-4">
                 <div class="relative z-10 text-center">
-                    <button onclick="togglePlay(this)" class="w-16 h-16 bg-white/20 hover:bg-white/30 rounded-full flex items-center justify-center mx-auto mb-3 transition-all hover:scale-110" id="play-btn">
+                    <button onclick="togglePlay(this)" class="w-16 h-16 bg-white/20 hover:bg-white/30 backdrop-blur rounded-full flex items-center justify-center mx-auto mb-3 transition-all hover:scale-110" id="play-btn">
                         <i class="fa-solid fa-play text-white text-2xl ml-1"></i>
                     </button>
                     <p class="text-white/80 text-xs" id="modal-video-speaker">—</p>
                     <p class="text-white/50 text-[10px]" id="modal-video-duration">—</p>
                 </div>
+                <!-- Simulated progress bar -->
                 <div class="absolute bottom-0 left-0 right-0 p-3">
                     <div class="h-1 bg-white/20 rounded-full">
                         <div id="video-progress" class="h-1 bg-indigo-400 rounded-full transition-all duration-300" style="width:0%"></div>
@@ -1296,7 +1244,7 @@
             </div>
             <div class="px-4 pb-4">
                 <p class="text-xs text-slate-500 leading-relaxed bg-slate-50 rounded-xl p-3 border border-slate-100">
-                    Bu seminer kaydında mesleki gerçekler avantajlar ve dezavantajlarıyla aktarılmaktadır.
+                    Bu seminer kaydında mesleki gerçekler avantajlar ve dezavantajlarıyla aktarılmaktadır. İzledikten sonra mentoruyla 30 dakikalık kahve buluşması ayarlayabilirsin.
                 </p>
                 <button onclick="switchPage('mentors'); closeVideoModal();" class="w-full mt-3 bg-gradient-to-r from-teal-600 to-emerald-600 text-white font-semibold text-xs py-2.5 rounded-xl hover:opacity-90 transition-all flex items-center justify-center gap-2">
                     <i class="fa-solid fa-mug-hot"></i> Bu Mentorla Buluşma Ayarla
@@ -1319,7 +1267,7 @@
                     <div class="flex justify-between"><span class="text-slate-500">Süre</span><span class="font-bold text-slate-800">30 Dakika</span></div>
                     <div class="flex justify-between"><span class="text-slate-500">Format</span><span class="font-bold text-slate-800">Video Görüşme ☕</span></div>
                 </div>
-                <textarea id="booking-note" rows="3" placeholder="Mentora iletmek istediğin ön not (isteğe bağlı)..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none resize-none"></textarea>
+                <textarea id="booking-note" rows="3" placeholder="Mentora iletmek istediğin ön not (isteğe bağlı): Hangi konuyu konuşmak istiyorsun?" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none resize-none"></textarea>
                 <button onclick="confirmBooking()" class="w-full bg-gradient-to-r from-indigo-600 to-teal-600 text-white font-bold text-sm py-3 rounded-xl hover:opacity-90 transition-all flex items-center justify-center gap-2">
                     <i class="fa-solid fa-calendar-check"></i> Buluşmayı Onayla
                 </button>
@@ -1352,155 +1300,6 @@
 
     <!-- ====================== SCRIPT ====================== -->
     <script>
-        // ========== AUTH SİSTEMİ ==========
-        const userDB = {
-            'zeynep@pusula.app': {
-                password: 'demo123',
-                name: 'Zeynep Aslan',
-                grade: '10',
-                school: 'İstanbul Fen Lisesi',
-                avatar: 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=100'
-            },
-            'arda@pusula.app': {
-                password: 'demo123',
-                name: 'Arda Yılmaz',
-                grade: '11',
-                school: 'İzmir Fen Lisesi',
-                avatar: 'https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=100'
-            }
-        };
-
-        let currentUser = null;
-
-        function switchAuthTab(tab) {
-            document.getElementById('tab-login').classList.toggle('active', tab === 'login');
-            document.getElementById('tab-register').classList.toggle('active', tab === 'register');
-            document.getElementById('login-form').classList.toggle('hidden', tab !== 'login');
-            document.getElementById('register-form').classList.toggle('hidden', tab !== 'register');
-            clearAuthError();
-        }
-
-        function showAuthError(msg) {
-            const el = document.getElementById('auth-error-msg');
-            el.textContent = msg;
-            el.classList.add('show');
-        }
-        function clearAuthError() {
-            document.getElementById('auth-error-msg').classList.remove('show');
-        }
-
-        function togglePass(inputId, btn) {
-            const inp = document.getElementById(inputId);
-            const isText = inp.type === 'text';
-            inp.type = isText ? 'password' : 'text';
-            btn.innerHTML = isText ? '<i class="fa-solid fa-eye"></i>' : '<i class="fa-solid fa-eye-slash"></i>';
-        }
-
-        function showForgotPassword() {
-            showAuthError('💡 Bu demo platformunda parola sıfırlama aktif değil. zeynep@pusula.app / demo123 ile giriş yapabilirsin.');
-        }
-
-        function handleLogin() {
-            clearAuthError();
-            const email = document.getElementById('login-email').value.trim().toLowerCase();
-            const pass = document.getElementById('login-password').value;
-
-            if (!email || !pass) { showAuthError('E-posta ve parola alanları boş bırakılamaz.'); return; }
-
-            const user = userDB[email];
-            if (!user || user.password !== pass) {
-                showAuthError('E-posta veya parola hatalı.');
-                document.getElementById('login-email').classList.add('error');
-                document.getElementById('login-password').classList.add('error');
-                setTimeout(() => {
-                    document.getElementById('login-email').classList.remove('error');
-                    document.getElementById('login-password').classList.remove('error');
-                }, 2000);
-                return;
-            }
-
-            currentUser = { email, ...user };
-            enterPlatform();
-        }
-
-        function handleRegister() {
-            clearAuthError();
-            const firstName = document.getElementById('reg-firstname').value.trim();
-            const lastName = document.getElementById('reg-lastname').value.trim();
-            const email = document.getElementById('reg-email').value.trim().toLowerCase();
-            const school = document.getElementById('reg-school').value.trim();
-            const grade = document.getElementById('reg-grade').value;
-            const pass = document.getElementById('reg-password').value;
-            const pass2 = document.getElementById('reg-password2').value;
-            const terms = document.getElementById('reg-terms').checked;
-
-            if (!firstName || !lastName) { showAuthError('Ad ve soyad alanları zorunludur.'); return; }
-            if (!email || !email.includes('@')) { showAuthError('Geçerli bir e-posta adresi gir.'); return; }
-            if (!school) { showAuthError('Okul adı zorunludur.'); return; }
-            if (!grade) { showAuthError('Sınıf seçimi zorunludur.'); return; }
-            if (pass.length < 6) { showAuthError('Parola en az 6 karakter olmalıdır.'); return; }
-            if (pass !== pass2) { showAuthError('Parolalar eşleşmiyor.'); return; }
-            if (!terms) { showAuthError('Devam etmek için kullanım koşullarını kabul etmelisin.'); return; }
-            if (userDB[email]) { showAuthError('Bu e-posta ile zaten bir hesap var.'); return; }
-
-            userDB[email] = {
-                password: pass,
-                name: `${firstName} ${lastName}`,
-                grade, school,
-                avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(firstName+'+'+lastName)}&background=6366f1&color=fff&size=100`
-            };
-
-            currentUser = { email, ...userDB[email] };
-            enterPlatform();
-        }
-
-        function enterPlatform() {
-            updateProfileUI();
-            const screen = document.getElementById('auth-screen');
-            screen.classList.add('exiting');
-            setTimeout(() => { screen.style.display = 'none'; }, 350);
-        }
-
-        function updateProfileUI() {
-            if (!currentUser) return;
-            const gradeLabels = { '9': '9. Sınıf', '10': '10. Sınıf', '11': '11. Sınıf', '12': '12. Sınıf', 'mezun': 'Mezun' };
-            const gradeText = gradeLabels[currentUser.grade] || (currentUser.grade + '. Sınıf');
-
-            document.getElementById('profile-name-display').textContent = currentUser.name;
-            document.getElementById('nav-avatar').src = currentUser.avatar;
-            document.getElementById('menu-display-name').textContent = currentUser.name;
-            document.getElementById('menu-display-email').textContent = currentUser.email;
-            document.getElementById('sidebar-name').textContent = currentUser.name;
-            document.getElementById('sidebar-grade').textContent = gradeText + ' Öğrencisi';
-            document.getElementById('sidebar-avatar').src = currentUser.avatar;
-            document.getElementById('post-avatar').src = currentUser.avatar;
-        }
-
-        function toggleUserMenu() {
-            document.getElementById('user-menu').classList.toggle('hidden');
-        }
-        document.addEventListener('click', function(e) {
-            const menu = document.getElementById('user-menu');
-            if (!menu.contains(e.target) && !e.target.closest('[onclick="toggleUserMenu()"]')) {
-                menu.classList.add('hidden');
-            }
-        });
-
-        function handleLogout() {
-            currentUser = null;
-            document.getElementById('user-menu').classList.add('hidden');
-            const screen = document.getElementById('auth-screen');
-            screen.classList.remove('exiting');
-            screen.style.display = 'flex';
-            screen.style.animation = 'none';
-            requestAnimationFrame(() => { screen.style.animation = ''; });
-            document.getElementById('login-email').value = '';
-            document.getElementById('login-password').value = '';
-            clearAuthError();
-            switchAuthTab('login');
-        }
-
-        // ========== PLATFORM FONKSİYONLARI ==========
         let currentClub = "art";
         let videoInterval = null;
         let videoSeconds = 0;
@@ -1509,6 +1308,7 @@
         let currentBookingSlot = '';
         let currentBookingBtn = null;
 
+        /* --- SAYFA GEÇİŞİ --- */
         function switchPage(pageId) {
             document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
             document.getElementById('page-' + pageId).classList.add('active');
@@ -1520,20 +1320,19 @@
             if(activeBtn) activeBtn.classList.add('bg-indigo-50', 'text-indigo-600');
         }
 
+        /* --- ANA SAYFA: GÖNDERI OLUŞTUR --- */
         function createPost() {
             const input = document.getElementById('post-input');
             if(input.value.trim() === "") return;
             const container = document.getElementById('feed-container');
             const post = document.createElement('div');
             post.className = "feed-item bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4";
-            const userName = currentUser ? currentUser.name : 'Sen';
-            const userAvatar = currentUser ? currentUser.avatar : 'https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=100';
             post.innerHTML = `
                 <div class="flex gap-3">
-                    <img class="w-10 h-10 rounded-xl object-cover" src="${userAvatar}">
+                    <img class="w-10 h-10 rounded-xl object-cover" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=100">
                     <div>
-                        <h4 class="font-bold text-sm text-slate-900">${userName} <span class="text-[10px] text-indigo-600 bg-indigo-50 font-bold px-1.5 rounded ml-1">Sen</span></h4>
-                        <p class="text-[11px] text-slate-400">Az önce</p>
+                        <h4 class="font-bold text-sm text-slate-900">Zeynep Aslan <span class="text-[10px] text-indigo-600 bg-indigo-50 font-bold px-1.5 rounded ml-1">Sen</span></h4>
+                        <p class="text-[11px] text-slate-400">10. Sınıf • Az önce</p>
                     </div>
                 </div>
                 <p class="text-sm text-slate-700">${input.value}</p>
@@ -1543,6 +1342,7 @@
             input.value = "";
         }
 
+        /* --- SEMİNER SEKSİYONU --- */
         function sendQuestionToSeminar() {
             const sem = document.getElementById('seminar-select').value;
             const type = document.getElementById('seminar-type').value;
@@ -1557,6 +1357,7 @@
             document.getElementById('seminar-text').value = "";
         }
 
+        /* --- VİDEO MODALİ --- */
         function openVideoModal(title, speaker, duration) {
             document.getElementById('modal-video-title').innerText = title;
             document.getElementById('modal-video-speaker').innerText = speaker;
@@ -1599,6 +1400,7 @@
             }
         }
 
+        /* --- MENTOR REZERVASYON --- */
         function bookSlot(btn, mentorName, slotTime) {
             currentBookingMentor = mentorName;
             currentBookingSlot = slotTime;
@@ -1621,6 +1423,7 @@
                 currentBookingBtn.className = "slot-btn text-[11px] font-semibold py-1.5 px-2 rounded-lg border border-teal-200 bg-teal-50 text-teal-700";
                 currentBookingBtn.innerHTML = '✓ Ayarlandı';
             }
+            // Sol paneldeki yaklaşan buluşmayı güncelle
             setTimeout(() => {
                 showToast(`☕ ${currentBookingMentor} ile ${currentBookingSlot} buluşması takvime eklendi!`);
             }, 300);
@@ -1638,6 +1441,7 @@
             setTimeout(() => toast.remove(), 4000);
         }
 
+        /* --- AKRAN ARAMA --- */
         function filterNetwork() {
             const val = document.getElementById('search-input').value.toLowerCase();
             document.querySelectorAll('.student-card').forEach(card => {
@@ -1650,6 +1454,7 @@
             btn.innerHTML = `<i class="fa-solid fa-check"></i> İstek Gönderildi`;
         }
 
+        /* --- KULÜP SOHBET --- */
         function selectClub(clubId) {
             currentClub = clubId;
             document.querySelectorAll('.club-tab-btn').forEach(btn => {
@@ -1662,11 +1467,20 @@
             document.getElementById('active-club-title').innerText = titles[clubId];
             const chatBox = document.getElementById('club-chat-messages');
             if(clubId === 'art') {
-                chatBox.innerHTML = `<div class="bg-white p-2.5 rounded-xl border max-w-[85%]"><span class="font-bold text-indigo-600 block text-[10px]">Melis Aydın:</span>Blender mı yoksa Maya mı öğrenmek oyun tasarımı için daha avantajlı?</div><div class="bg-white p-2.5 rounded-xl border max-w-[85%]"><span class="font-bold text-teal-600 block text-[10px]">Canan Kaya:</span>Blender kesinlikle! Topluluğu çok büyük ve ücretsiz.</div>`;
+                chatBox.innerHTML = `
+                    <div class="bg-white p-2.5 rounded-xl border max-w-[85%]"><span class="font-bold text-indigo-600 block text-[10px]">Melis Aydın:</span>Blender mı yoksa Maya mı öğrenmek oyun tasarımı için daha avantajlı arkadaşlar?</div>
+                    <div class="bg-white p-2.5 rounded-xl border max-w-[85%]"><span class="font-bold text-teal-600 block text-[10px]">Canan Kaya:</span>Blender kesinlikle! Topluluğu çok büyük ve ücretsiz.</div>
+                `;
             } else if(clubId === 'music') {
-                chatBox.innerHTML = `<div class="bg-white p-2.5 rounded-xl border max-w-[85%]"><span class="font-bold text-purple-600 block text-[10px]">Kaan Öztürk:</span>FL Studio ile Logic Pro arasında kalan var mı?</div><div class="bg-white p-2.5 rounded-xl border max-w-[85%]"><span class="font-bold text-violet-600 block text-[10px]">Mert Savaş:</span>Logic sadece Mac'te var. Windows'taysan Ableton harika!</div>`;
+                chatBox.innerHTML = `
+                    <div class="bg-white p-2.5 rounded-xl border max-w-[85%]"><span class="font-bold text-purple-600 block text-[10px]">Kaan Öztürk:</span>FL Studio ile Logic Pro arasında kalan var mı?</div>
+                    <div class="bg-white p-2.5 rounded-xl border max-w-[85%]"><span class="font-bold text-violet-600 block text-[10px]">Mert Savaş:</span>Logic sadece Mac'te var. Windows'taysan Ableton harika bir alternatif!</div>
+                `;
             } else if(clubId === 'science') {
-                chatBox.innerHTML = `<div class="bg-white p-2.5 rounded-xl border max-w-[85%]"><span class="font-bold text-amber-600 block text-[10px]">Ece Tan:</span>Astrofizik verilerini işlemek için Python öğrenmeye başladım!</div><div class="bg-white p-2.5 rounded-xl border max-w-[85%]"><span class="font-bold text-sky-600 block text-[10px]">Arda Yılmaz:</span>NumPy ve Pandas çok işine yarayacak.</div>`;
+                chatBox.innerHTML = `
+                    <div class="bg-white p-2.5 rounded-xl border max-w-[85%]"><span class="font-bold text-amber-600 block text-[10px]">Ece Tan:</span>Astrofizik verilerini işlemek için Python kütüphanelerini öğrenmeye başladım!</div>
+                    <div class="bg-white p-2.5 rounded-xl border max-w-[85%]"><span class="font-bold text-sky-600 block text-[10px]">Arda Yılmaz:</span>NumPy ve Pandas çok işine yarayacak.</div>
+                `;
             }
         }
 
@@ -1676,13 +1490,13 @@
             const chatBox = document.getElementById('club-chat-messages');
             const msg = document.createElement('div');
             msg.className = "bg-indigo-600 text-white p-2.5 rounded-xl ml-auto max-w-[85%] text-right";
-            const userName = currentUser ? currentUser.name : 'Sen';
-            msg.innerHTML = `<span class="font-bold block text-[10px] text-indigo-200">${userName}:</span>${input.value}`;
+            msg.innerHTML = `<span class="font-bold block text-[10px] text-indigo-200">Zeynep Aslan (Sen):</span>${input.value}`;
             chatBox.appendChild(msg);
             input.value = "";
             chatBox.scrollTop = chatBox.scrollHeight;
         }
 
+        /* --- DİĞER --- */
         function toggleSupportChat() { document.getElementById('support-chat').classList.toggle('hidden'); }
         function toggleNotifications() { showToast("Şu an yeni bir bildirim bulunmuyor."); }
         function toggleLike(btn, count) { btn.innerHTML = `<i class="fa-solid fa-thumbs-up"></i> Fikir Verici (${count + 1})`; }
@@ -1699,18 +1513,7 @@
             box.scrollTop = box.scrollHeight;
         }
 
-        function filterHobbies(cat) {
-            document.querySelectorAll('.hobby-filter-btn').forEach(btn => {
-                btn.classList.remove('bg-fuchsia-600', 'text-white');
-                btn.classList.add('bg-slate-100', 'text-slate-600');
-            });
-            document.getElementById('hf-' + cat).classList.remove('bg-slate-100', 'text-slate-600');
-            document.getElementById('hf-' + cat).classList.add('bg-fuchsia-600', 'text-white');
-            document.querySelectorAll('.hobby-card').forEach(card => {
-                card.style.display = (cat === 'all' || card.getAttribute('data-cat') === cat) ? 'block' : 'none';
-            });
-        }
-
+        /* --- KAPAT METODLARINı GLOBAL ATAYIN --- */
         window.closeVideoModal = function(event) {
             if(event && event.target !== document.getElementById('video-modal')) return;
             document.getElementById('video-modal').classList.remove('open');
@@ -1721,17 +1524,6 @@
             if(event && event.target !== document.getElementById('booking-modal')) return;
             document.getElementById('booking-modal').classList.remove('open');
         };
-
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                const authScreen = document.getElementById('auth-screen');
-                if (authScreen.style.display !== 'none' && !authScreen.classList.contains('exiting')) {
-                    const loginVisible = !document.getElementById('login-form').classList.contains('hidden');
-                    if (loginVisible) handleLogin();
-                    else handleRegister();
-                }
-            }
-        });
     </script>
 
 </body>
