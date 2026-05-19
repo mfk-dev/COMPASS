@@ -1353,7 +1353,7 @@
     <!-- ====================== SCRIPT ====================== -->
     <script>
         // ========== AUTH SİSTEMİ ==========
-        const userDB = {
+        const DEFAULT_USERS = {
             'zeynep@pusula.app': {
                 password: 'demo123',
                 name: 'Zeynep Aslan',
@@ -1370,6 +1370,25 @@
             }
         };
 
+        function loadUserDB() {
+            try {
+                const saved = localStorage.getItem('pusula_users');
+                return saved ? { ...DEFAULT_USERS, ...JSON.parse(saved) } : { ...DEFAULT_USERS };
+            } catch(e) { return { ...DEFAULT_USERS }; }
+        }
+
+        function saveUserDB() {
+            try {
+                // Sadece default olmayan (gerçek kayıtlı) kullanıcıları kaydet
+                const toSave = {};
+                for (const [email, data] of Object.entries(userDB)) {
+                    if (!DEFAULT_USERS[email]) toSave[email] = data;
+                }
+                localStorage.setItem('pusula_users', JSON.stringify(toSave));
+            } catch(e) {}
+        }
+
+        let userDB = loadUserDB();
         let currentUser = null;
 
         function switchAuthTab(tab) {
@@ -1449,6 +1468,8 @@
                 grade, school,
                 avatar: `https://ui-avatars.com/api/?name=${encodeURIComponent(firstName+'+'+lastName)}&background=6366f1&color=fff&size=100`
             };
+
+            saveUserDB();
 
             currentUser = { email, ...userDB[email] };
             enterPlatform();
