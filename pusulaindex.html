@@ -1,0 +1,1530 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PUSULA | Meslek Keşif & Kariyer Platformu</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="nofollow" href="https://justpaste.it/redirect/nn35p/https%3A%2F%2Fcdnjs.cloudflare.com%2Fajax%2Flibs%2Ffont-awesome%2F6.4.0%2Fcss%2Fall.min.css">
+    <link rel="nofollow" href="https://justpaste.it/redirect/nn35p/https%3A%2F%2Ffonts.googleapis.com">
+    <link rel="nofollow" href="https://justpaste.it/redirect/nn35p/https%3A%2F%2Ffonts.gstatic.com" crossorigin>
+    <link href="https://justpaste.it/redirect/nn35p/https%3A%2F%2Ffonts.googleapis.com%2Fcss2%3Ffamily%3DSora%3Awght%40400%3B500%3B600%3B700%3B800%26amp%3Bfamily%3DDM%2BSans%3Awght%40400%3B500%3B600%26amp%3Bdisplay%3Dswap" rel="nofollow">
+    <style>
+        * { 'DM Sans', sans-serif; }
+        h1, h2, h3, h4, .brand { 'Sora', sans-serif; }
+        .page { display: none; }
+        .page.active { display: block; }
+
+        /* PUSULA marka renkleri */
+        :root {
+            --compass-navy: #0f172a;
+            --compass-gold: #f59e0b;
+            --compass-teal: #0d9488;
+            --compass-rose: #f43f5e;
+            --compass-indigo: #6366f1;
+        }
+
+        /* Navbar compass logo animasyonu */
+        @keyframes compass-spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .compass-needle:hover { animation: compass-spin 1.2s ease-in-out; }
+
+        /* Mentor kart hover */
+        .mentor-card {
+            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1.5px solid #e2e8f0;
+        }
+        .mentor-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px -10px rgba(99,102,241,0.18);
+            border-color: #a5b4fc;
+        }
+
+        /* Takvim hücre hover */
+        .slot-btn {
+            transition: all 0.15s ease;
+        }
+        .slot-btn:not(:disabled):hover {
+            background: #6366f1;
+            color: white;
+            transform: scale(1.05);
+        }
+        .slot-btn:disabled {
+            background: #f1f5f9;
+            color: #94a3b8;
+            cursor: not-allowed;
+            text-decoration: line-through;
+        }
+
+        /* Video izleme butonu */
+        .watch-btn {
+            background: linear-gradient(135deg, #6366f1, #8b5cf6);
+            transition: all 0.2s ease;
+        }
+        .watch-btn:hover {
+            background: linear-gradient(135deg, #4f46e5, #7c3aed);
+            transform: translateY(-1px);
+            box-shadow: 0 8px 20px -4px rgba(99,102,241,0.5);
+        }
+
+        /* Modal overlay */
+        .modal-overlay {
+            display: none;
+            position: fixed;
+            inset: 0;
+            background: rgba(15,23,42,0.65);
+            backdrop-filter: blur(4px);
+            z-index: 9999;
+            align-items: center;
+            justify-content: center;
+        }
+        .modal-overlay.open { display: flex; }
+
+        /* Akış animasyonu */
+        @keyframes fadeSlideIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .feed-item { animation: fadeSlideIn 0.35s ease forwards; }
+
+        /* Rozet etiket */
+        .badge-available {
+            background: linear-gradient(90deg, #d1fae5, #a7f3d0);
+            color: #065f46;
+        }
+        .badge-full { background: #fee2e2; color: #991b1b; }
+
+        /* Pusula hero banner arka plan deseni */
+        .mentor-hero {
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #134e4a 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        .mentor-hero::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: radial-gradient(circle at 20% 50%, rgba(99,102,241,0.15) 0%, transparent 50%),
+                              radial-gradient(circle at 80% 20%, rgba(13,148,136,0.12) 0%, transparent 40%),
+                              radial-gradient(circle at 60% 80%, rgba(245,158,11,0.08) 0%, transparent 35%);
+        }
+
+        /* Profil halka rengi mentor uzmanlık alanına göre */
+        .ring-tech { ring-color: #6366f1; }
+        .ring-medical { ring-color: #f43f5e; }
+        .ring-science { ring-color: #0d9488; }
+        .ring-art { ring-color: #f59e0b; }
+
+        /* Takvim grid */
+        .calendar-grid {
+            display: grid;
+            grid-template-columns: repeat(7, 1fr);
+            gap: 4px;
+        }
+
+        /* Video modal içeriği */
+        .video-player-mock {
+            background: #0f172a;
+            border-radius: 12px;
+            aspect-ratio: 16/9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            overflow: hidden;
+        }
+        .video-player-mock::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(99,102,241,0.3), rgba(13,148,136,0.2));
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased min-h-screen flex flex-col relative">
+
+    <!-- ====================== NAVBAR ====================== -->
+    <nav class="sticky top-0 z-40 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo: PUSULA -->
+                <div onclick="switchPage('home')" class="flex items-center gap-2.5 cursor-pointer select-none">
+                    <div class="compass-needle w-9 h-9 bg-gradient-to-br from-indigo-600 to-teal-600 rounded-xl flex items-center justify-center text-white shadow-md shadow-indigo-200">
+                        <i class="fa-solid fa-compass text-lg"></i>
+                    </div>
+                    <span class="brand font-extrabold text-xl tracking-tight bg-gradient-to-r from-indigo-600 via-teal-600 to-amber-500 bg-clip-text text-transparent">PUSULA</span>
+                </div>
+
+                <!-- Nav Linkleri -->
+                <div class="hidden lg:flex items-center gap-1" id="nav-links">
+                    <button onclick="switchPage('home')" id="nav-home" class="nav-btn px-3 py-2 rounded-xl text-xs font-semibold bg-indigo-50 text-indigo-600 transition-all">
+                        <i class="fa-solid fa-house mr-1"></i>Ana Akış
+                    </button>
+                    <button onclick="switchPage('search')" id="nav-search" class="nav-btn px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all">
+                        <i class="fa-solid fa-magnifying-glass mr-1"></i>Akran Ara
+                    </button>
+                    <button onclick="switchPage('seminars')" id="nav-seminars" class="nav-btn px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all">
+                        <i class="fa-solid fa-play-circle mr-1"></i>Seminer Videoları
+                    </button>
+                    <button onclick="switchPage('mentors')" id="nav-mentors" class="nav-btn px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all">
+                        <i class="fa-solid fa-mug-hot mr-1"></i>Mentor Buluşmaları
+                    </button>
+                    <button onclick="switchPage('hobbies')" id="nav-hobbies" class="nav-btn px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all">
+                        <i class="fa-solid fa-palette mr-1"></i>Hobiler & Kariyer
+                    </button>
+                    <button onclick="switchPage('clubs')" id="nav-clubs" class="nav-btn px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all">
+                        <i class="fa-solid fa-users mr-1"></i>Kulüpler
+                    </button>
+                </div>
+
+                <!-- Sağ Profil -->
+                <div class="flex items-center gap-4">
+                    <button onclick="toggleNotifications()" class="relative p-2 text-slate-400 hover:text-slate-600 transition-all">
+                        <i class="fa-solid fa-bell text-xl"></i>
+                        <span id="notif-badge" class="absolute top-1 right-1 w-2 h-2 bg-rose-500 rounded-full"></span>
+                    </button>
+                    <div class="flex items-center gap-2 pl-2 border-l border-slate-200">
+                        <img class="w-9 h-9 rounded-full object-cover ring-2 ring-indigo-100" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=100" alt="Profil">
+                        <span class="hidden sm:block text-sm font-semibold text-slate-700">Zeynep Aslan</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- MOBİL ALT NAV -->
+    <div class="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 z-40 flex justify-around py-2 shadow-lg text-[9px]">
+        <button onclick="switchPage('home')" class="flex flex-col items-center text-indigo-600 gap-0.5"><i class="fa-solid fa-house text-base"></i>Akış</button>
+        <button onclick="switchPage('search')" class="flex flex-col items-center text-slate-500 gap-0.5"><i class="fa-solid fa-magnifying-glass text-base"></i>Ara</button>
+        <button onclick="switchPage('seminars')" class="flex flex-col items-center text-slate-500 gap-0.5"><i class="fa-solid fa-play-circle text-base"></i>Video</button>
+        <button onclick="switchPage('mentors')" class="flex flex-col items-center text-slate-500 gap-0.5"><i class="fa-solid fa-mug-hot text-base"></i>Mentor</button>
+        <button onclick="switchPage('hobbies')" class="flex flex-col items-center text-slate-500 gap-0.5"><i class="fa-solid fa-palette text-base"></i>Hobi</button>
+        <button onclick="switchPage('clubs')" class="flex flex-col items-center text-slate-500 gap-0.5"><i class="fa-solid fa-users text-base"></i>Kulüp</button>
+    </div>
+
+    <!-- ====================== ANA İÇERİK ====================== -->
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow w-full mb-16 lg:mb-0">
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+
+            <!-- SOL PANEL -->
+            <aside class="lg:col-span-3 space-y-6">
+                <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+                    <div class="h-20 bg-gradient-to-r from-indigo-500 via-teal-500 to-amber-400"></div>
+                    <div class="px-5 pb-5 -mt-10 text-center">
+                        <img class="w-20 h-20 rounded-2xl object-cover mx-auto ring-4 ring-white shadow-md" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=200" alt="Profil">
+                        <h2 class="mt-3 font-bold text-lg text-slate-900">Zeynep Aslan</h2>
+                        <p class="text-xs text-slate-500 font-medium">10. Sınıf Öğrencisi</p>
+                        <p class="mt-2 text-xs text-indigo-600 bg-indigo-50 py-1 px-3 rounded-full inline-block font-semibold">#KariyerArayışı #GelecekUfku</p>
+                    </div>
+                    <div class="border-t border-slate-100 p-4 text-xs font-medium text-slate-500 space-y-2">
+                        <div class="flex justify-between"><span>Ağındaki Aktif Akranlar</span><span class="text-indigo-600 font-bold">312</span></div>
+                        <div class="flex justify-between"><span>Takip Edilen Sektörler</span><span class="text-indigo-600 font-bold">10</span></div>
+                        <div class="flex justify-between"><span>Tamamlanan Mentor Görüşmesi</span><span class="text-teal-600 font-bold">2</span></div>
+                    </div>
+                </div>
+
+                <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+                    <h3 class="font-bold text-sm text-slate-900 mb-3">İncelenen Sektörler</h3>
+                    <div class="space-y-2 text-xs font-semibold">
+                        <div class="px-2 py-1.5 bg-emerald-50 text-emerald-700 rounded-lg">#Biyoteknoloji</div>
+                        <div class="px-2 py-1.5 bg-sky-50 text-sky-700 rounded-lg">#Nanobilim</div>
+                        <div class="px-2 py-1.5 bg-cyan-50 text-cyan-700 rounded-lg">#Astrofizik</div>
+                        <div class="px-2 py-1.5 bg-amber-50 text-amber-700 rounded-lg">#Matematik</div>
+                        <div class="px-2 py-1.5 bg-violet-50 text-violet-700 rounded-lg">#YazılımMühendisliği</div>
+                        <div class="px-2 py-1.5 bg-rose-50 text-rose-700 rounded-lg">#TıpDünyası</div>
+                        <div class="px-2 py-1.5 bg-fuchsia-50 text-fuchsia-700 rounded-lg">#GörselSanatlar & DijitalÇizim</div>
+                        <div class="px-2 py-1.5 bg-purple-50 text-purple-700 rounded-lg">#MüzikProdüksiyonu</div>
+                        <div class="px-2 py-1.5 bg-orange-50 text-orange-700 rounded-lg">#GastronomiMutfak</div>
+                    </div>
+                </div>
+
+                <!-- Yaklaşan mentor görüşmesi özet -->
+                <div class="bg-gradient-to-br from-indigo-600 to-teal-600 rounded-2xl p-4 shadow-sm text-white">
+                    <div class="flex items-center gap-2 mb-2">
+                        <i class="fa-solid fa-mug-hot text-amber-300"></i>
+                        <span class="font-bold text-xs">Yaklaşan Buluşman</span>
+                    </div>
+                    <p class="font-bold text-sm">Dr. Aslı Demir</p>
+                    <p class="text-[11px] text-indigo-100">Biyoteknoloji • Salı, 10:00</p>
+                    <div class="mt-3 bg-white/20 rounded-xl px-3 py-1.5 text-xs font-semibold text-center">30 dk Kahve Buluşması ☕</div>
+                </div>
+            </aside>
+
+            <!-- ORTA PANEL -->
+            <section class="lg:col-span-6 space-y-6">
+
+                <!-- ===== 1. ANA SAYFA ===== -->
+                <div id="page-home" class="page active space-y-6">
+                    <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
+                        <div class="flex gap-3">
+                            <img class="w-10 h-10 rounded-xl object-cover" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=100" alt="">
+                            <input type="text" id="post-input" placeholder="Aklındaki mesleklerin artılarını eksilerini akranlarına sor veya fikir paylaş..." class="w-full bg-slate-50 border border-slate-100 rounded-xl px-4 text-sm focus:outline-none focus:border-indigo-500 transition-all">
+                        </div>
+                        <div class="flex justify-between items-center mt-4 pt-3 border-t border-slate-100">
+                            <span class="text-xs text-slate-400"><i class="fa-solid fa-compass mr-1 text-indigo-400"></i> Meslek seçerken gerçek deneyimler önemlidir.</span>
+                            <button onclick="createPost()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs py-2 px-5 rounded-xl shadow-md transition-all">Paylaş</button>
+                        </div>
+                    </div>
+
+                    <div id="feed-container" class="space-y-6">
+                        <div class="feed-item bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
+                            <div class="flex gap-3">
+                                <img class="w-10 h-10 rounded-xl object-cover" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=100" alt="">
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <h4 class="font-bold text-sm text-slate-900">Arda Yılmaz</h4>
+                                        <span class="text-[10px] text-teal-600 bg-teal-50 font-bold px-2 py-0.5 rounded">11. Sınıf</span>
+                                    </div>
+                                    <p class="text-[11px] text-slate-500">Fen Lisesi • 10 dakika önce</p>
+                                </div>
+                            </div>
+                            <p class="text-sm text-slate-700 leading-relaxed">Tıp okumayı çok istiyordum ama nöbet süreleri ve çalışma yoğunluğu (dezavantajları) gözümü korkutuyor. Biyoteknoloji seminerini izleyince o tarafın araştırma laboratuvarı imkanları daha cazip gelmeye başladı. Kararsızım.</p>
+                            <div class="flex justify-between items-center pt-3 border-t border-slate-100 text-xs font-semibold text-slate-500">
+                                <button onclick="toggleLike(this, 12)" class="flex items-center gap-1 hover:text-indigo-600"><i class="fa-regular fa-thumbs-up"></i> Fikir Verici (12)</button>
+                                <span>3 Yorum</span>
+                            </div>
+                        </div>
+
+                        <div class="feed-item bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
+                            <div class="flex gap-3">
+                                <img class="w-10 h-10 rounded-xl object-cover" src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=100" alt="">
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <h4 class="font-bold text-sm text-slate-900">Mert Savaş</h4>
+                                        <span class="text-[10px] text-blue-600 bg-blue-50 font-bold px-2 py-0.5 rounded">12. Sınıf</span>
+                                    </div>
+                                    <p class="text-[11px] text-slate-500">Anadolu Lisesi • 45 dakika önce</p>
+                                </div>
+                            </div>
+                            <p class="text-sm text-slate-700 leading-relaxed">Nanobilim seminerindeki "temiz oda laboratuvarlarına bağımlılık" maddesi çok gerçekçiydi. Türkiye'de bu imkanı tam anlamıyla sunan kaç tane üniversite veya kurum var? Tercih listeme eklemeden önce bunu iyi araştırmam gerekecek. 🔬</p>
+                            <div class="flex justify-between items-center pt-3 border-t border-slate-100 text-xs font-semibold text-slate-500">
+                                <button onclick="toggleLike(this, 8)" class="flex items-center gap-1 hover:text-indigo-600"><i class="fa-regular fa-thumbs-up"></i> Fikir Verici (8)</button>
+                                <span>1 Yorum</span>
+                            </div>
+                        </div>
+
+                        <div class="feed-item bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
+                            <div class="flex gap-3">
+                                <img class="w-10 h-10 rounded-xl object-cover" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=100" alt="">
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <h4 class="font-bold text-sm text-slate-900">Ece Tan</h4>
+                                        <span class="text-[10px] text-amber-600 bg-amber-50 font-bold px-2 py-0.5 rounded">10. Sınıf</span>
+                                    </div>
+                                    <p class="text-[11px] text-slate-500">Fen Lisesi • 2 saat önce</p>
+                                </div>
+                            </div>
+                            <p class="text-sm text-slate-700 leading-relaxed">Matematik bölümünü sadece öğretmenlik olarak düşünüyordum ama bugünkü veri kriptolojisi detayları ufkumu açtı. Yapay zekanın temelinin saf matematik formülleri olduğunu canlı yayındaki hocadan duymak kararlarımı değiştirebilir. 📊</p>
+                            <div class="flex justify-between items-center pt-3 border-t border-slate-100 text-xs font-semibold text-slate-500">
+                                <button onclick="toggleLike(this, 19)" class="flex items-center gap-1 hover:text-indigo-600"><i class="fa-regular fa-thumbs-up"></i> Fikir Verici (19)</button>
+                                <span>5 Yorum</span>
+                            </div>
+                        </div>
+
+                        <div class="feed-item bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
+                            <div class="flex gap-3">
+                                <img class="w-10 h-10 rounded-xl object-cover" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=100" alt="">
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <h4 class="font-bold text-sm text-slate-900">Melis Aydın</h4>
+                                        <span class="text-[10px] text-fuchsia-600 bg-fuchsia-50 font-bold px-2 py-0.5 rounded">11. Sınıf</span>
+                                    </div>
+                                    <p class="text-[11px] text-slate-500">Güzel Sanatlar Lisesi • 3 saat önce</p>
+                                </div>
+                            </div>
+                            <p class="text-sm text-slate-700 leading-relaxed">Dijital İllüstrasyon ve 3D Animasyon alanının avantajı küresel oyun stüdyolarına evden (freelance) iş yapabilmek. Ancak en büyük dezavantajı yapay zeka araçlarının sektörü çok hızlı dönüştürmesi ve bitmek bilmeyen revizyon süreçleri yüzünden yaşanan uykusuz geceler. Sanat kulübünde bunu tartışıyoruz. 🎨</p>
+                            <div class="flex justify-between items-center pt-3 border-t border-slate-100 text-xs font-semibold text-slate-500">
+                                <button onclick="toggleLike(this, 25)" class="flex items-center gap-1 hover:text-indigo-600"><i class="fa-regular fa-thumbs-up"></i> Fikir Verici (25)</button>
+                                <span>7 Yorum</span>
+                            </div>
+                        </div>
+
+                        <div class="feed-item bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
+                            <div class="flex gap-3">
+                                <img class="w-10 h-10 rounded-xl object-cover" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=100" alt="">
+                                <div>
+                                    <div class="flex items-center gap-2">
+                                        <h4 class="font-bold text-sm text-slate-900">Kaan Öztürk</h4>
+                                        <span class="text-[10px] text-purple-600 bg-purple-50 font-bold px-2 py-0.5 rounded">12. Sınıf</span>
+                                    </div>
+                                    <p class="text-[11px] text-slate-500">Anadolu Lisesi • 5 saat önce</p>
+                                </div>
+                            </div>
+                            <p class="text-sm text-slate-700 leading-relaxed">Müzik Teknolojileri ve Ses Mühendisliği düşünenler için: Reklam, film ve oyun sektöründe inanılmaz bir ses tasarımcısı açığı var (avantaj). Fakat stüdyo donanımlarının döviz kuru yüzünden aşırı pahalı olması ve ilk yıllarda network bulana kadar istikrarlı bir gelir elde edememek çok yıpratıcı (dezavantaj). 🎧</p>
+                            <div class="flex justify-between items-center pt-3 border-t border-slate-100 text-xs font-semibold text-slate-500">
+                                <button onclick="toggleLike(this, 14)" class="flex items-center gap-1 hover:text-indigo-600"><i class="fa-regular fa-thumbs-up"></i> Fikir Verici (14)</button>
+                                <span>2 Yorum</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== 2. AKRAN ARAMA ===== -->
+                <div id="page-search" class="page space-y-6">
+                    <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+                        <h3 class="font-bold text-lg text-slate-900 mb-2">Hedeflediğin Meslektaşlarını Bul</h3>
+                        <p class="text-xs text-slate-500 mb-4">Seninle aynı alanların artı ve eksilerini araştıran akranlarınla iletişim kur.</p>
+                        <div class="relative">
+                            <i class="fa-solid fa-magnifying-glass absolute left-4 top-3.5 text-slate-400"></i>
+                            <input type="text" id="search-input" oninput="filterNetwork()" placeholder="Arama yapın: Yazılım, Tıp, Astrofizik, Sanat, Çizim, Müzik, Gastronomi..." class="w-full bg-slate-50 border border-slate-200 rounded-xl pl-11 pr-4 py-3 text-sm focus:outline-none focus:border-indigo-500 transition-all">
+                        </div>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4" id="student-grid">
+                        <div class="student-card bg-white rounded-2xl border border-slate-200 p-4 shadow-sm flex flex-col justify-between" data-tags="tıp biyoteknoloji arda yılmaz">
+                            <div class="flex gap-3">
+                                <img class="w-12 h-12 rounded-xl object-cover" src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?auto=format&fit=crop&q=80&w=100" alt="">
+                                <div>
+                                    <h4 class="font-bold text-sm text-slate-900">Arda Yılmaz</h4>
+                                    <p class="text-[11px] text-slate-500">İzmir Fen - 11. Sınıf</p>
+                                    <span class="text-[10px] bg-rose-50 text-rose-600 px-2 py-0.5 rounded mt-1 inline-block font-semibold">#Tıp #Biyoteknoloji</span>
+                                </div>
+                            </div>
+                            <button onclick="connectStudent(this)" class="w-full mt-4 border border-indigo-600 text-indigo-600 hover:bg-indigo-600 hover:text-white text-xs py-2 rounded-xl font-semibold transition-all">
+                                <i class="fa-solid fa-user-plus mr-1"></i> Bağlantı Kur
+                            </button>
+                        </div>
+
+                        <div class="student-card bg-white rounded-2xl border border-slate-200 p-4 shadow-sm flex flex-col justify-between" data-tags="nanobilim astrofizik canan kaya">
+                            <div class="flex gap-3">
+                                <img class="w-12 h-12 rounded-xl object-cover" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&q=80&w=100" alt="">
+                                <div>
+                                    <h4 class="font-bold text-sm text-slate-900">Canan Kaya</h4>
+                                    <p class="text-[11px] text-slate-500">Kabataş Erkek - 10. Sınıf</p>
+                                    <span class="text-[10px] bg-sky-50 text-sky-600 px-2 py-0.5 rounded mt-1 inline-block font-semibold">#Nanobilim #Astrofizik</span>
+                                </div>
+                            </div>
+                            <button onclick="connectStudent(this)" class="w-full mt-4 border border-indigo-600 text-indigo-600 hover:bg-indigo-600 hover:text-white text-xs py-2 rounded-xl font-semibold transition-all">
+                                <i class="fa-solid fa-user-plus mr-1"></i> Bağlantı Kur
+                            </button>
+                        </div>
+
+                        <div class="student-card bg-white rounded-2xl border border-slate-200 p-4 shadow-sm flex flex-col justify-between" data-tags="yazılım mühendisliği mert savaş">
+                            <div class="flex gap-3">
+                                <img class="w-12 h-12 rounded-xl object-cover" src="https://images.unsplash.com/photo-1539571696357-5a69c17a67c6?auto=format&fit=crop&q=80&w=100" alt="">
+                                <div>
+                                    <h4 class="font-bold text-sm text-slate-900">Mert Savaş</h4>
+                                    <p class="text-[11px] text-slate-500">Atatürk Anadolu - 12. Sınıf</p>
+                                    <span class="text-[10px] bg-violet-50 text-violet-700 px-2 py-0.5 rounded mt-1 inline-block font-semibold">#Yazılım #RemoteÇalışma</span>
+                                </div>
+                            </div>
+                            <button onclick="connectStudent(this)" class="w-full mt-4 border border-indigo-600 text-indigo-600 hover:bg-indigo-600 hover:text-white text-xs py-2 rounded-xl font-semibold transition-all">
+                                <i class="fa-solid fa-user-plus mr-1"></i> Bağlantı Kur
+                            </button>
+                        </div>
+
+                        <div class="student-card bg-white rounded-2xl border border-slate-200 p-4 shadow-sm flex flex-col justify-between" data-tags="matematik finans veri bilimi ece tan">
+                            <div class="flex gap-3">
+                                <img class="w-12 h-12 rounded-xl object-cover" src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&q=80&w=100" alt="">
+                                <div>
+                                    <h4 class="font-bold text-sm text-slate-900">Ece Tan</h4>
+                                    <p class="text-[11px] text-slate-500">Ankara Fen - 10. Sınıf</p>
+                                    <span class="text-[10px] bg-amber-50 text-amber-700 px-2 py-0.5 rounded mt-1 inline-block font-semibold">#Matematik #VeriBilimi</span>
+                                </div>
+                            </div>
+                            <button onclick="connectStudent(this)" class="w-full mt-4 border border-indigo-600 text-indigo-600 hover:bg-indigo-600 hover:text-white text-xs py-2 rounded-xl font-semibold transition-all">
+                                <i class="fa-solid fa-user-plus mr-1"></i> Bağlantı Kur
+                            </button>
+                        </div>
+
+                        <div class="student-card bg-white rounded-2xl border border-slate-200 p-4 shadow-sm flex flex-col justify-between" data-tags="sanat çizim animasyon illüstrasyon melis aydın">
+                            <div class="flex gap-3">
+                                <img class="w-12 h-12 rounded-xl object-cover" src="https://images.unsplash.com/photo-1438761681033-6461ffad8d80?auto=format&fit=crop&q=80&w=100" alt="">
+                                <div>
+                                    <h4 class="font-bold text-sm text-slate-900">Melis Aydın</h4>
+                                    <p class="text-[11px] text-slate-500">Pera Güzel Sanatlar - 11. Sınıf</p>
+                                    <span class="text-[10px] bg-fuchsia-50 text-fuchsia-700 px-2 py-0.5 rounded mt-1 inline-block font-semibold">#DijitalÇizim #Animasyon</span>
+                                </div>
+                            </div>
+                            <button onclick="connectStudent(this)" class="w-full mt-4 border border-indigo-600 text-indigo-600 hover:bg-indigo-600 hover:text-white text-xs py-2 rounded-xl font-semibold transition-all">
+                                <i class="fa-solid fa-user-plus mr-1"></i> Bağlantı Kur
+                            </button>
+                        </div>
+
+                        <div class="student-card bg-white rounded-2xl border border-slate-200 p-4 shadow-sm flex flex-col justify-between" data-tags="müzik ses mühendisliği prodüksiyon kaan öztürk">
+                            <div class="flex gap-3">
+                                <img class="w-12 h-12 rounded-xl object-cover" src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&q=80&w=100" alt="">
+                                <div>
+                                    <h4 class="font-bold text-sm text-slate-900">Kaan Öztürk</h4>
+                                    <p class="text-[11px] text-slate-500">Kadıköy Anadolu - 12. Sınıf</p>
+                                    <span class="text-[10px] bg-purple-50 text-purple-700 px-2 py-0.5 rounded mt-1 inline-block font-semibold">#MüzikTeknolojileri #SES</span>
+                                </div>
+                            </div>
+                            <button onclick="connectStudent(this)" class="w-full mt-4 border border-indigo-600 text-indigo-600 hover:bg-indigo-600 hover:text-white text-xs py-2 rounded-xl font-semibold transition-all">
+                                <i class="fa-solid fa-user-plus mr-1"></i> Bağlantı Kur
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== 3. SEMİNER VİDEOLARI (canlı yayın → kayıt izle) ===== -->
+                <div id="page-seminars" class="page space-y-6">
+                    <div class="bg-gradient-to-r from-indigo-600 to-violet-600 rounded-2xl p-6 text-white shadow-md">
+                        <h3 class="font-bold text-xl mb-1">Mesleklerin Gerçek Yüzü — Seminer Arşivi 🎬</h3>
+                        <p class="text-xs text-indigo-100">Sahadaki uzmanlar tarafından hazırlanan seminer kayıtlarını dilediğin zaman izle. Her video mesleklerin parlak avantajlarını ve gizlenen dezavantajlarını tarafsızca aktarıyor.</p>
+                    </div>
+
+                    <div class="space-y-4">
+                        <!-- 1. BİYOTEKNOLOJİ -->
+                        <div class="bg-white rounded-2xl border-l-4 border-l-emerald-500 border border-slate-200 p-5 shadow-sm space-y-3">
+                            <div class="flex justify-between items-start flex-wrap gap-2">
+                                <span class="bg-emerald-50 text-emerald-700 text-[10px] font-bold px-2 py-1 rounded">Biyoteknoloji & Genetik</span>
+                                <span class="text-[11px] text-slate-500 font-semibold flex items-center gap-1"><i class="fa-solid fa-film text-indigo-400"></i> 42 dk • 1.8K izlenme</span>
+                            </div>
+                            <h4 class="font-bold text-base text-slate-900">Biyoteknoloji Sektöründe Mühendis Olmak</h4>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                <div class="text-emerald-700"><strong class="block">➕ Avantajları:</strong> Küresel iş imkanı, kanser ve gen tedavilerinde öncü rol, küresel fon destekleri.</div>
+                                <div class="text-rose-700"><strong class="block">➖ Dezavantajları:</strong> Yıllar süren başarısız laboratuvar süreçleri, yüksek sabır eşiği ve yoğun evrak bürokrasisi.</div>
+                            </div>
+                            <div class="flex items-center justify-between pt-2 flex-wrap gap-2">
+                                <span class="text-[11px] text-slate-400">Yayıncı: Dr. Aslı Demir (Ar-Ge Müdürü)</span>
+                                <button onclick="openVideoModal('Biyoteknoloji Sektöründe Mühendis Olmak', 'Dr. Aslı Demir', '42 dk')" class="watch-btn text-white font-semibold text-xs py-1.5 px-4 rounded-xl flex items-center gap-1.5">
+                                    <i class="fa-solid fa-circle-play"></i> Kaydı İzle
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 2. NANOBİLİM -->
+                        <div class="bg-white rounded-2xl border-l-4 border-l-sky-500 border border-slate-200 p-5 shadow-sm space-y-3">
+                            <div class="flex justify-between items-start flex-wrap gap-2">
+                                <span class="bg-sky-50 text-sky-700 text-[10px] font-bold px-2 py-1 rounded">Nanobilim & Malzeme Teknolojileri</span>
+                                <span class="text-[11px] text-slate-500 font-semibold flex items-center gap-1"><i class="fa-solid fa-film text-indigo-400"></i> 55 dk • 940 izlenme</span>
+                            </div>
+                            <h4 class="font-bold text-base text-slate-900">Nanoteknoloji ve Akıllı Malzemeler: Laboratuvardan Sanayiye</h4>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                <div class="text-emerald-700"><strong class="block">➕ Avantajları:</strong> Savunma ve uzay sanayiinde devasa bütçeli projeler, geleceğin en inovatif multidisipliner mesleği olması.</div>
+                                <div class="text-rose-700"><strong class="block">➖ Dezavantajları:</strong> Çok pahalı temiz oda laboratuvarlarına bağımlılık, yerli sanayideki fabrika uygulama sahalarının henüz kısıtlı olması.</div>
+                            </div>
+                            <div class="flex items-center justify-between pt-2 flex-wrap gap-2">
+                                <span class="text-[11px] text-slate-400">Yayıncı: Doç. Dr. Murat Aksoy</span>
+                                <button onclick="openVideoModal('Nanoteknoloji ve Akıllı Malzemeler', 'Doç. Dr. Murat Aksoy', '55 dk')" class="watch-btn text-white font-semibold text-xs py-1.5 px-4 rounded-xl flex items-center gap-1.5">
+                                    <i class="fa-solid fa-circle-play"></i> Kaydı İzle
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 3. ASTROFİZİK -->
+                        <div class="bg-white rounded-2xl border-l-4 border-l-cyan-500 border border-slate-200 p-5 shadow-sm space-y-3">
+                            <div class="flex justify-between items-start flex-wrap gap-2">
+                                <span class="bg-cyan-50 text-cyan-700 text-[10px] font-bold px-2 py-1 rounded">Astrofizik (Temel Fizik)</span>
+                                <span class="text-[11px] text-slate-500 font-semibold flex items-center gap-1"><i class="fa-solid fa-film text-indigo-400"></i> 38 dk • 2.1K izlenme</span>
+                            </div>
+                            <h4 class="font-bold text-base text-slate-900">Akademide Temel Bilimci Olmak: Astrofizik Yolculuğu</h4>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                <div class="text-emerald-700"><strong class="block">➕ Avantajları:</strong> Evrenin sırlarını çözme hazzı, uluslararası teleskop gözlem projeleri.</div>
+                                <div class="text-rose-700"><strong class="block">➖ Dezavantajları:</strong> Üniversitelerde kadro bulma zorluğu, ömür boyu bilgisayar başında veri temizleme.</div>
+                            </div>
+                            <div class="flex items-center justify-between pt-2 flex-wrap gap-2">
+                                <span class="text-[11px] text-slate-400">Yayıncı: Can Berkcan (Fizik Araştırmacısı)</span>
+                                <button onclick="openVideoModal('Astrofizik Yolculuğu', 'Can Berkcan', '38 dk')" class="watch-btn text-white font-semibold text-xs py-1.5 px-4 rounded-xl flex items-center gap-1.5">
+                                    <i class="fa-solid fa-circle-play"></i> Kaydı İzle
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 4. MATEMATİK -->
+                        <div class="bg-white rounded-2xl border-l-4 border-l-amber-500 border border-slate-200 p-5 shadow-sm space-y-3">
+                            <div class="flex justify-between items-start flex-wrap gap-2">
+                                <span class="bg-amber-50 text-amber-700 text-[10px] font-bold px-2 py-1 rounded">Matematik (Veri & Finans)</span>
+                                <span class="text-[11px] text-slate-500 font-semibold flex items-center gap-1"><i class="fa-solid fa-film text-indigo-400"></i> 47 dk • 3.4K izlenme</span>
+                            </div>
+                            <h4 class="font-bold text-base text-slate-900">Sadece Öğretmenlik Değil: Kriptoloji ve Veri Matematiği</h4>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                <div class="text-emerald-700"><strong class="block">➕ Avantajları:</strong> Yapay zeka, veri bilimi ve siber güvenlikte aranan analitik zihin olmak.</div>
+                                <div class="text-rose-700"><strong class="block">➖ Dezavantajları:</strong> Aşırı soyut düşünme yükü, zihinsel tükenmişlik oranının yüksekliği.</div>
+                            </div>
+                            <div class="flex items-center justify-between pt-2 flex-wrap gap-2">
+                                <span class="text-[11px] text-slate-400">Yayıncı: Prof. Dr. Tarık Şahin</span>
+                                <button onclick="openVideoModal('Kriptoloji ve Veri Matematiği', 'Prof. Dr. Tarık Şahin', '47 dk')" class="watch-btn text-white font-semibold text-xs py-1.5 px-4 rounded-xl flex items-center gap-1.5">
+                                    <i class="fa-solid fa-circle-play"></i> Kaydı İzle
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 5. YAZILIM -->
+                        <div class="bg-white rounded-2xl border-l-4 border-l-violet-500 border border-slate-200 p-5 shadow-sm space-y-3">
+                            <div class="flex justify-between items-start flex-wrap gap-2">
+                                <span class="bg-violet-50 text-violet-700 text-[10px] font-bold px-2 py-1 rounded">Yazılım Mühendisliği</span>
+                                <span class="text-[11px] text-slate-500 font-semibold flex items-center gap-1"><i class="fa-solid fa-film text-indigo-400"></i> 61 dk • 5.7K izlenme</span>
+                            </div>
+                            <h4 class="font-bold text-base text-slate-900">Yazılım Sektörünün Görünmeyen Yüzü: Ekran Arkası Hayat</h4>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                <div class="text-emerald-700"><strong class="block">➕ Avantajları:</strong> Uzaktan (Remote) çalışma özgürlüğü, küresel gelir potansiyeli.</div>
+                                <div class="text-rose-700"><strong class="block">➖ Dezavantajları:</strong> Durmaksızın değişen teknolojileri her gün öğrenme stresi.</div>
+                            </div>
+                            <div class="flex items-center justify-between pt-2 flex-wrap gap-2">
+                                <span class="text-[11px] text-slate-400">Yayıncı: Selin Aktaş (Senior Developer)</span>
+                                <button onclick="openVideoModal('Ekran Arkası Hayat: Yazılım', 'Selin Aktaş', '61 dk')" class="watch-btn text-white font-semibold text-xs py-1.5 px-4 rounded-xl flex items-center gap-1.5">
+                                    <i class="fa-solid fa-circle-play"></i> Kaydı İzle
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- 6. TIP -->
+                        <div class="bg-white rounded-2xl border-l-4 border-l-rose-500 border border-slate-200 p-5 shadow-sm space-y-3">
+                            <div class="flex justify-between items-start flex-wrap gap-2">
+                                <span class="bg-rose-50 text-rose-700 text-[10px] font-bold px-2 py-1 rounded">Tıp Dünyası & Cerrahlık</span>
+                                <span class="text-[11px] text-slate-500 font-semibold flex items-center gap-1"><i class="fa-solid fa-film text-indigo-400"></i> 53 dk • 4.2K izlenme</span>
+                            </div>
+                            <h4 class="font-bold text-base text-slate-900">Kutsal Mesleğin Ağır Bedelleri: Tıp ve Hastane Gerçekleri</h4>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2 text-xs bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                <div class="text-emerald-700"><strong class="block">➕ Avantajları:</strong> Doğrudan insan hayatı kurtarma hazzı, yüksek toplumsal saygınlık.</div>
+                                <div class="text-rose-700"><strong class="block">➖ Dezavantajları:</strong> 36 saati bulabilen uykusuz nöbetler, TUS sınavı baskısı.</div>
+                            </div>
+                            <div class="flex items-center justify-between pt-2 flex-wrap gap-2">
+                                <span class="text-[11px] text-slate-400">Yayıncı: Dr. Esra Yücel (Beyin Cerrahı)</span>
+                                <button onclick="openVideoModal('Tıp ve Hastane Gerçekleri', 'Dr. Esra Yücel', '53 dk')" class="watch-btn text-white font-semibold text-xs py-1.5 px-4 rounded-xl flex items-center gap-1.5">
+                                    <i class="fa-solid fa-circle-play"></i> Kaydı İzle
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Canlı Soru Gönderme Kürsüsü (KORUNDU) -->
+                    <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
+                        <div class="flex items-center gap-2 border-b border-slate-100 pb-2">
+                            <i class="fa-solid fa-comments text-indigo-600"></i>
+                            <h3 class="font-bold text-sm text-slate-900">Soru Gönder (Sonraki Seminere Dahil Edilecek)</h3>
+                        </div>
+                        <div class="space-y-3">
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Hangi Sektörün Uzmanına?</label>
+                                    <select id="seminar-select" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none">
+                                        <option value="Biyoteknoloji">🧬 Biyoteknoloji (Dr. Aslı)</option>
+                                        <option value="Nanobilim">🔬 Nanobilim (Doç. Murat)</option>
+                                        <option value="Astrofizik">🌌 Astrofizik (Can Bey)</option>
+                                        <option value="Matematik">📐 Matematik (Prof. Tarık)</option>
+                                        <option value="Yazılım">💻 Yazılım Mühendisliği (Selin Hanım)</option>
+                                        <option value="Tıp">🩺 Tıp ve Cerrahlık (Dr. Esra)</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1">Merak Ettiğin Taraf</label>
+                                    <select id="seminar-type" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none">
+                                        <option value="Dezavantaj">Bu mesleğin en zor, çekilmez yanı nedir?</option>
+                                        <option value="Avantaj">Bu mesleği seçmek için en büyük motivasyon ne olmalı?</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <textarea id="seminar-text" rows="2" placeholder="Seçtiğin mesleğin uzmanına ne sormak istersin? Sonraki seminer kaydına dahil edilecektir..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none resize-none"></textarea>
+                            <button onclick="sendQuestionToSeminar()" class="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs py-2 rounded-xl shadow-sm transition-all">Soruyu Gönder</button>
+                        </div>
+                        <div id="live-chat-box" class="pt-3 border-t border-slate-100 hidden">
+                            <p class="text-[11px] font-semibold text-slate-400 mb-2">Gönderilen Sorularım</p>
+                            <div id="seminar-my-questions" class="space-y-2 text-xs"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ===== 4. MENTOR BULUŞMALARI (YENİ SAYFA) ===== -->
+                <div id="page-mentors" class="page space-y-6">
+
+                    <!-- Hero Banner -->
+                    <div class="mentor-hero rounded-2xl p-6 text-white shadow-lg relative">
+                        <div class="relative z-10">
+                            <div class="flex items-center gap-2 mb-3">
+                                <span class="bg-amber-400/20 border border-amber-400/30 text-amber-300 text-[10px] font-bold px-2.5 py-1 rounded-full">☕ Kahve Buluşmaları</span>
+                                <span class="bg-teal-400/20 border border-teal-400/30 text-teal-300 text-[10px] font-bold px-2.5 py-1 rounded-full">30 Dakika • Ücretsiz</span>
+                            </div>
+                            <h3 class="font-extrabold text-2xl mb-2 leading-tight">Uzmanlarla Birebir<br>Sohbet Et</h3>
+                            <p class="text-sm text-slate-300 leading-relaxed">Her hafta sektör profesyonelleri 30 dakikalarını sana ayırıyor. Seminer videolarından kalan sorularını, kariyer şüphelerini ve merak ettiklerini doğrudan sor.</p>
+                        </div>
+                    </div>
+
+                    <!-- Mentor Kartları -->
+                    <div class="space-y-4" id="mentor-list">
+
+                        <!-- MENTOR 1: Dr. Aslı Demir -->
+                        <div class="mentor-card bg-white rounded-2xl p-5 shadow-sm space-y-4">
+                            <div class="flex gap-4 items-start">
+                                <div class="relative flex-shrink-0">
+                                    <img class="w-16 h-16 rounded-2xl object-cover ring-2 ring-emerald-200" src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?auto=format&fit=crop&q=80&w=150" alt="Dr. Aslı Demir">
+                                    <span class="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full border-2 border-white"></span>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-start justify-between gap-2 flex-wrap">
+                                        <div>
+                                            <h4 class="font-bold text-base text-slate-900">Dr. Aslı Demir</h4>
+                                            <p class="text-xs text-slate-500">Ar-Ge Müdürü · BioGenTech A.Ş.</p>
+                                        </div>
+                                        <span class="badge-available text-[10px] font-bold px-2.5 py-1 rounded-full whitespace-nowrap">✦ Müsait</span>
+                                    </div>
+                                    <div class="flex flex-wrap gap-1.5 mt-2">
+                                        <span class="bg-emerald-50 text-emerald-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">#Biyoteknoloji</span>
+                                        <span class="bg-emerald-50 text-emerald-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">#GenMühendisliği</span>
+                                        <span class="bg-emerald-50 text-emerald-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">#AkademikKariyer</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-xs text-slate-600 leading-relaxed bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                "Lise yıllarımda biyoloji ve kimyayı severdim ama biyoteknolojinin ne olduğunu bilmiyordum. Seninle tam bu soruyu konuşabiliriz — hangi derslere odaklanmalısın, yurt dışı fırsatları nasıl değerlendirirsin."
+                            </p>
+                            <div class="border-t border-slate-100 pt-3">
+                                <p class="text-[11px] font-bold text-slate-500 mb-2 flex items-center gap-1.5"><i class="fa-regular fa-calendar text-indigo-400"></i> Bu Haftaki Müsait Slotlar</p>
+                                <div class="grid grid-cols-3 sm:grid-cols-4 gap-2 mb-3">
+                                    <button onclick="bookSlot(this, 'Dr. Aslı Demir', 'Salı 10:00')" class="slot-btn bg-indigo-50 text-indigo-700 text-[11px] font-semibold py-1.5 px-2 rounded-lg border border-indigo-100">Sal 10:00</button>
+                                    <button onclick="bookSlot(this, 'Dr. Aslı Demir', 'Salı 14:30')" class="slot-btn bg-indigo-50 text-indigo-700 text-[11px] font-semibold py-1.5 px-2 rounded-lg border border-indigo-100">Sal 14:30</button>
+                                    <button disabled class="slot-btn text-[11px] font-semibold py-1.5 px-2 rounded-lg border border-slate-100">Çar 11:00</button>
+                                    <button onclick="bookSlot(this, 'Dr. Aslı Demir', 'Cuma 16:00')" class="slot-btn bg-indigo-50 text-indigo-700 text-[11px] font-semibold py-1.5 px-2 rounded-lg border border-indigo-100">Cum 16:00</button>
+                                </div>
+                                <div class="flex items-center gap-2 text-[10px] text-slate-400">
+                                    <span class="w-3 h-3 bg-indigo-50 border border-indigo-100 rounded inline-block"></span>Müsait
+                                    <span class="w-3 h-3 bg-slate-100 rounded inline-block ml-2"></span>Dolu
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- MENTOR 2: Doç. Dr. Murat Aksoy -->
+                        <div class="mentor-card bg-white rounded-2xl p-5 shadow-sm space-y-4">
+                            <div class="flex gap-4 items-start">
+                                <div class="relative flex-shrink-0">
+                                    <img class="w-16 h-16 rounded-2xl object-cover ring-2 ring-sky-200" src="https://images.unsplash.com/photo-1560250097-0b93528c311a?auto=format&fit=crop&q=80&w=150" alt="Doç. Dr. Murat Aksoy">
+                                    <span class="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full border-2 border-white"></span>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-start justify-between gap-2 flex-wrap">
+                                        <div>
+                                            <h4 class="font-bold text-base text-slate-900">Doç. Dr. Murat Aksoy</h4>
+                                            <p class="text-xs text-slate-500">Nano Malzemeler Lab. Direktörü · İTÜ</p>
+                                        </div>
+                                        <span class="badge-available text-[10px] font-bold px-2.5 py-1 rounded-full whitespace-nowrap">✦ Müsait</span>
+                                    </div>
+                                    <div class="flex flex-wrap gap-1.5 mt-2">
+                                        <span class="bg-sky-50 text-sky-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">#Nanobilim</span>
+                                        <span class="bg-sky-50 text-sky-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">#MalzemeMühendisliği</span>
+                                        <span class="bg-sky-50 text-sky-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">#TÜBİTAK</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-xs text-slate-600 leading-relaxed bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                "Nanobilim için hangi liselerin hangi dersleri iyi görmesi gerekir? Türkiye'de hangi üniversiteler gerçekten iyi laboratuvar imkanı sunuyor? Bu soruların yanıtını 30 dakikada verebilirim."
+                            </p>
+                            <div class="border-t border-slate-100 pt-3">
+                                <p class="text-[11px] font-bold text-slate-500 mb-2 flex items-center gap-1.5"><i class="fa-regular fa-calendar text-indigo-400"></i> Bu Haftaki Müsait Slotlar</p>
+                                <div class="grid grid-cols-3 sm:grid-cols-4 gap-2 mb-3">
+                                    <button disabled class="slot-btn text-[11px] font-semibold py-1.5 px-2 rounded-lg border border-slate-100">Sal 09:00</button>
+                                    <button onclick="bookSlot(this, 'Doç. Dr. Murat Aksoy', 'Perşembe 13:00')" class="slot-btn bg-indigo-50 text-indigo-700 text-[11px] font-semibold py-1.5 px-2 rounded-lg border border-indigo-100">Per 13:00</button>
+                                    <button onclick="bookSlot(this, 'Doç. Dr. Murat Aksoy', 'Perşembe 15:00')" class="slot-btn bg-indigo-50 text-indigo-700 text-[11px] font-semibold py-1.5 px-2 rounded-lg border border-indigo-100">Per 15:00</button>
+                                    <button disabled class="slot-btn text-[11px] font-semibold py-1.5 px-2 rounded-lg border border-slate-100">Cum 10:00</button>
+                                </div>
+                                <div class="flex items-center gap-2 text-[10px] text-slate-400">
+                                    <span class="w-3 h-3 bg-indigo-50 border border-indigo-100 rounded inline-block"></span>Müsait
+                                    <span class="w-3 h-3 bg-slate-100 rounded inline-block ml-2"></span>Dolu
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- MENTOR 3: Selin Aktaş -->
+                        <div class="mentor-card bg-white rounded-2xl p-5 shadow-sm space-y-4">
+                            <div class="flex gap-4 items-start">
+                                <div class="relative flex-shrink-0">
+                                    <img class="w-16 h-16 rounded-2xl object-cover ring-2 ring-violet-200" src="https://images.unsplash.com/photo-1580489944761-15a19d654956?auto=format&fit=crop&q=80&w=150" alt="Selin Aktaş">
+                                    <span class="absolute -bottom-1 -right-1 w-4 h-4 bg-amber-400 rounded-full border-2 border-white"></span>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-start justify-between gap-2 flex-wrap">
+                                        <div>
+                                            <h4 class="font-bold text-base text-slate-900">Selin Aktaş</h4>
+                                            <p class="text-xs text-slate-500">Senior Full-Stack Developer · Berlin</p>
+                                        </div>
+                                        <span class="bg-amber-50 text-amber-700 text-[10px] font-bold px-2.5 py-1 rounded-full whitespace-nowrap">2 slot kaldı</span>
+                                    </div>
+                                    <div class="flex flex-wrap gap-1.5 mt-2">
+                                        <span class="bg-violet-50 text-violet-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">#YazılımMühendisliği</span>
+                                        <span class="bg-violet-50 text-violet-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">#RemoteÇalışma</span>
+                                        <span class="bg-violet-50 text-violet-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">#YurtdışıKariyer</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-xs text-slate-600 leading-relaxed bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                "Yazılımın gerçekten ne olduğunu okul hiç öğretmedi. Ben sana lise yıllarında neler yapabilirsin, hangi projelere başlamalısın ve Avrupa'da remote çalışmak nasıl bir şey — bunu anlatırım."
+                            </p>
+                            <div class="border-t border-slate-100 pt-3">
+                                <p class="text-[11px] font-bold text-slate-500 mb-2 flex items-center gap-1.5"><i class="fa-regular fa-calendar text-indigo-400"></i> Bu Haftaki Müsait Slotlar</p>
+                                <div class="grid grid-cols-3 sm:grid-cols-4 gap-2 mb-3">
+                                    <button disabled class="slot-btn text-[11px] font-semibold py-1.5 px-2 rounded-lg border border-slate-100">Pzt 17:00</button>
+                                    <button disabled class="slot-btn text-[11px] font-semibold py-1.5 px-2 rounded-lg border border-slate-100">Sal 17:00</button>
+                                    <button onclick="bookSlot(this, 'Selin Aktaş', 'Çarşamba 19:00')" class="slot-btn bg-indigo-50 text-indigo-700 text-[11px] font-semibold py-1.5 px-2 rounded-lg border border-indigo-100">Çar 19:00</button>
+                                    <button onclick="bookSlot(this, 'Selin Aktaş', 'Cuma 20:00')" class="slot-btn bg-indigo-50 text-indigo-700 text-[11px] font-semibold py-1.5 px-2 rounded-lg border border-indigo-100">Cum 20:00</button>
+                                </div>
+                                <div class="flex items-center gap-2 text-[10px] text-slate-400">
+                                    <span class="w-3 h-3 bg-indigo-50 border border-indigo-100 rounded inline-block"></span>Müsait
+                                    <span class="w-3 h-3 bg-slate-100 rounded inline-block ml-2"></span>Dolu
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- MENTOR 4: Dr. Esra Yücel -->
+                        <div class="mentor-card bg-white rounded-2xl p-5 shadow-sm space-y-4">
+                            <div class="flex gap-4 items-start">
+                                <div class="relative flex-shrink-0">
+                                    <img class="w-16 h-16 rounded-2xl object-cover ring-2 ring-rose-200" src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?auto=format&fit=crop&q=80&w=150" alt="Dr. Esra Yücel">
+                                    <span class="absolute -bottom-1 -right-1 w-4 h-4 bg-emerald-500 rounded-full border-2 border-white"></span>
+                                </div>
+                                <div class="flex-1 min-w-0">
+                                    <div class="flex items-start justify-between gap-2 flex-wrap">
+                                        <div>
+                                            <h4 class="font-bold text-base text-slate-900">Dr. Esra Yücel</h4>
+                                            <p class="text-xs text-slate-500">Beyin Cerrahı · Hacettepe Üniversitesi</p>
+                                        </div>
+                                        <span class="badge-available text-[10px] font-bold px-2.5 py-1 rounded-full whitespace-nowrap">✦ Müsait</span>
+                                    </div>
+                                    <div class="flex flex-wrap gap-1.5 mt-2">
+                                        <span class="bg-rose-50 text-rose-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">#Tıp</span>
+                                        <span class="bg-rose-50 text-rose-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">#Nöroloji</span>
+                                        <span class="bg-rose-50 text-rose-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">#TUS</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <p class="text-xs text-slate-600 leading-relaxed bg-slate-50 p-3 rounded-xl border border-slate-100">
+                                "Tıp okumanın gerçek bedeli nedir, nöbetlerde nasıl hissediyorsun, TUS'a nasıl hazırlanılır — kimsenin sana söylemediği şeyleri 30 dakikada konuşabiliriz."
+                            </p>
+                            <div class="border-t border-slate-100 pt-3">
+                                <p class="text-[11px] font-bold text-slate-500 mb-2 flex items-center gap-1.5"><i class="fa-regular fa-calendar text-indigo-400"></i> Bu Haftaki Müsait Slotlar</p>
+                                <div class="grid grid-cols-3 sm:grid-cols-4 gap-2 mb-3">
+                                    <button onclick="bookSlot(this, 'Dr. Esra Yücel', 'Pazartesi 18:00')" class="slot-btn bg-indigo-50 text-indigo-700 text-[11px] font-semibold py-1.5 px-2 rounded-lg border border-indigo-100">Pzt 18:00</button>
+                                    <button disabled class="slot-btn text-[11px] font-semibold py-1.5 px-2 rounded-lg border border-slate-100">Sal 18:00</button>
+                                    <button onclick="bookSlot(this, 'Dr. Esra Yücel', 'Çarşamba 18:00')" class="slot-btn bg-indigo-50 text-indigo-700 text-[11px] font-semibold py-1.5 px-2 rounded-lg border border-indigo-100">Çar 18:00</button>
+                                    <button onclick="bookSlot(this, 'Dr. Esra Yücel', 'Cuma 18:00')" class="slot-btn bg-indigo-50 text-indigo-700 text-[11px] font-semibold py-1.5 px-2 rounded-lg border border-indigo-100">Cum 18:00</button>
+                                </div>
+                                <div class="flex items-center gap-2 text-[10px] text-slate-400">
+                                    <span class="w-3 h-3 bg-indigo-50 border border-indigo-100 rounded inline-block"></span>Müsait
+                                    <span class="w-3 h-3 bg-slate-100 rounded inline-block ml-2"></span>Dolu
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+                <!-- ===== 5. HOBİLER & KARİYER ===== -->
+                <div id="page-hobbies" class="page space-y-6">
+                    <div class="bg-gradient-to-r from-fuchsia-600 to-pink-600 rounded-2xl p-6 text-white shadow-md">
+                        <h3 class="font-bold text-xl mb-1">Hobilerden Profesyonelliğe 🎨🎻</h3>
+                        <p class="text-xs text-fuchsia-100">Severek yaptığın sanatsal veya teknik hobilerin, gelecekte hangi sürpriz meslek alanlarının kapısını açabileceğini keşfet. Hobini seç, kariyer yollarını gör.</p>
+                    </div>
+
+                    <!-- HOBİ FİLTRE SEKMELERİ -->
+                    <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
+                        <p class="text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-3">Kategoriye Göre Filtrele</p>
+                        <div class="flex flex-wrap gap-2 text-xs font-semibold">
+                            <button onclick="filterHobbies('all')" id="hf-all" class="hobby-filter-btn bg-fuchsia-600 text-white px-3 py-1.5 rounded-xl">Tümü</button>
+                            <button onclick="filterHobbies('sanat')" id="hf-sanat" class="hobby-filter-btn bg-slate-100 text-slate-600 px-3 py-1.5 rounded-xl">🎨 Sanat</button>
+                            <button onclick="filterHobbies('teknoloji')" id="hf-teknoloji" class="hobby-filter-btn bg-slate-100 text-slate-600 px-3 py-1.5 rounded-xl">💻 Teknoloji</button>
+                            <button onclick="filterHobbies('bilim')" id="hf-bilim" class="hobby-filter-btn bg-slate-100 text-slate-600 px-3 py-1.5 rounded-xl">🔬 Bilim</button>
+                            <button onclick="filterHobbies('spor')" id="hf-spor" class="hobby-filter-btn bg-slate-100 text-slate-600 px-3 py-1.5 rounded-xl">⚽ Spor</button>
+                            <button onclick="filterHobbies('dil')" id="hf-dil" class="hobby-filter-btn bg-slate-100 text-slate-600 px-3 py-1.5 rounded-xl">🌍 Dil & Yazı</button>
+                            <button onclick="filterHobbies('doga')" id="hf-doga" class="hobby-filter-btn bg-slate-100 text-slate-600 px-3 py-1.5 rounded-xl">🌿 Doğa</button>
+                        </div>
+                    </div>
+
+                    <!-- HOBİ KARTLARI IZGARASI -->
+                    <div class="grid grid-cols-1 gap-4" id="hobby-cards-grid">
+
+                        <!-- KART 1: Görsel Sanatlar & Çizim -->
+                        <div class="hobby-card bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-3 transition-all hover:shadow-md" data-cat="sanat">
+                            <div class="flex items-center justify-between flex-wrap gap-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-2xl">🎨</span>
+                                    <span class="bg-fuchsia-50 text-fuchsia-700 text-xs font-bold px-2.5 py-1 rounded-lg">Görsel Sanatlar & Çizim</span>
+                                </div>
+                                <span class="text-[10px] bg-fuchsia-600 text-white font-bold px-2 py-0.5 rounded-full">SANAT</span>
+                            </div>
+                            <p class="text-sm text-slate-700 leading-relaxed">Geleneksel karakalem veya dijital tablet çizim hobisi; Oyun Tasarımı (Concept Art), Kullanıcı Deneyimi Tasarımı (UX/UI), Mimari Görselleştirme ve Medikal İllüstratörlük gibi çok kazandıran alanlara evrilebilir.</p>
+                            <div class="pt-2 border-t border-slate-100">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-2">Açılan Kariyer Kapıları</p>
+                                <div class="flex flex-wrap gap-1.5">
+                                    <span class="bg-fuchsia-50 text-fuchsia-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🎮 Oyun Concept Art</span>
+                                    <span class="bg-fuchsia-50 text-fuchsia-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">📱 UX/UI Tasarımı</span>
+                                    <span class="bg-fuchsia-50 text-fuchsia-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🏛️ Mimari Görselleştirme</span>
+                                    <span class="bg-fuchsia-50 text-fuchsia-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🫀 Medikal İllüstrasyon</span>
+                                </div>
+                            </div>
+                            <div class="bg-fuchsia-50 rounded-xl p-3 text-xs text-fuchsia-800 border border-fuchsia-100 flex items-start gap-2">
+                                <i class="fa-solid fa-lightbulb text-fuchsia-500 mt-0.5"></i>
+                                <span>Başlangıç için: Procreate (iPad) veya GIMP (ücretsiz) ile dijital çizim pratiği yap. DeviantArt'ta portfolyo oluştur.</span>
+                            </div>
+                        </div>
+
+                        <!-- KART 2: Enstrüman & Müzik -->
+                        <div class="hobby-card bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-3 transition-all hover:shadow-md" data-cat="sanat">
+                            <div class="flex items-center justify-between flex-wrap gap-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-2xl">🎸</span>
+                                    <span class="bg-purple-50 text-purple-700 text-xs font-bold px-2.5 py-1 rounded-lg">Enstrüman Çalmak & Müzik</span>
+                                </div>
+                                <span class="text-[10px] bg-purple-600 text-white font-bold px-2 py-0.5 rounded-full">SANAT</span>
+                            </div>
+                            <p class="text-sm text-slate-700 leading-relaxed">Müzik kulak algısı ve melodi üretimi; Akustik Mimarlık (Konser salonu yalıtımları), Yapay Zeka Ses Mühendisliği ve oyun stüdyolarının foley (efekt sesleri) departmanlarında doğrudan karşılık buluyor.</p>
+                            <div class="pt-2 border-t border-slate-100">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-2">Açılan Kariyer Kapıları</p>
+                                <div class="flex flex-wrap gap-1.5">
+                                    <span class="bg-purple-50 text-purple-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🏟️ Akustik Mimarlık</span>
+                                    <span class="bg-purple-50 text-purple-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🤖 YZ Ses Mühendisliği</span>
+                                    <span class="bg-purple-50 text-purple-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🎬 Film Skoru Besteciliği</span>
+                                    <span class="bg-purple-50 text-purple-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🎙️ Podcast Prodüksiyonu</span>
+                                </div>
+                            </div>
+                            <div class="bg-purple-50 rounded-xl p-3 text-xs text-purple-800 border border-purple-100 flex items-start gap-2">
+                                <i class="fa-solid fa-lightbulb text-purple-500 mt-0.5"></i>
+                                <span>Başlangıç için: GarageBand (Mac/iOS) veya LMMS (ücretsiz) ile kendi müziğini üretmeye başla. SoundCloud'da paylaş.</span>
+                            </div>
+                        </div>
+
+                        <!-- KART 3: Kodlama & Yazılım -->
+                        <div class="hobby-card bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-3 transition-all hover:shadow-md" data-cat="teknoloji">
+                            <div class="flex items-center justify-between flex-wrap gap-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-2xl">💻</span>
+                                    <span class="bg-violet-50 text-violet-700 text-xs font-bold px-2.5 py-1 rounded-lg">Kodlama & Yazılım</span>
+                                </div>
+                                <span class="text-[10px] bg-violet-600 text-white font-bold px-2 py-0.5 rounded-full">TEKNOLOJİ</span>
+                            </div>
+                            <p class="text-sm text-slate-700 leading-relaxed">Boş zamanlarında küçük oyunlar veya uygulamalar yazmak; Siber Güvenlik, Yapay Zeka Araştırmaları, Fintech ve bağımsız (indie) oyun geliştirme gibi 21. yüzyılın en çok aranan mesleklerine doğrudan zemin hazırlıyor.</p>
+                            <div class="pt-2 border-t border-slate-100">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-2">Açılan Kariyer Kapıları</p>
+                                <div class="flex flex-wrap gap-1.5">
+                                    <span class="bg-violet-50 text-violet-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🔐 Siber Güvenlik</span>
+                                    <span class="bg-violet-50 text-violet-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🤖 YZ Mühendisliği</span>
+                                    <span class="bg-violet-50 text-violet-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">💰 Fintech Geliştirme</span>
+                                    <span class="bg-violet-50 text-violet-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🎮 Indie Oyun Stüdyosu</span>
+                                </div>
+                            </div>
+                            <div class="bg-violet-50 rounded-xl p-3 text-xs text-violet-800 border border-violet-100 flex items-start gap-2">
+                                <i class="fa-solid fa-lightbulb text-violet-500 mt-0.5"></i>
+                                <span>Başlangıç için: CS50 (Harvard'ın ücretsiz kursu), Scratch ile görsel programlama, ya da Python ile basit projeler.</span>
+                            </div>
+                        </div>
+
+                        <!-- KART 4: Fotoğrafçılık & Video -->
+                        <div class="hobby-card bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-3 transition-all hover:shadow-md" data-cat="sanat">
+                            <div class="flex items-center justify-between flex-wrap gap-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-2xl">📷</span>
+                                    <span class="bg-amber-50 text-amber-700 text-xs font-bold px-2.5 py-1 rounded-lg">Fotoğrafçılık & Video</span>
+                                </div>
+                                <span class="text-[10px] bg-amber-500 text-white font-bold px-2 py-0.5 rounded-full">SANAT</span>
+                            </div>
+                            <p class="text-sm text-slate-700 leading-relaxed">Akıllı telefonunla hikaye anlatmayı seviyorsan; belgesel yönetmenliği, haber fotoğrafçılığı, sosyal medya içerik üretimi (brand content) ve moda/reklam fotoğrafçılığı gibi geniş bir yelpazede iş bulabilirsin.</p>
+                            <div class="pt-2 border-t border-slate-100">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-2">Açılan Kariyer Kapıları</p>
+                                <div class="flex flex-wrap gap-1.5">
+                                    <span class="bg-amber-50 text-amber-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🎥 Belgesel Yönetmenliği</span>
+                                    <span class="bg-amber-50 text-amber-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">📰 Haber Fotoğrafçılığı</span>
+                                    <span class="bg-amber-50 text-amber-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">📣 Marka İçerik Üretimi</span>
+                                    <span class="bg-amber-50 text-amber-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">👗 Moda Fotoğrafçılığı</span>
+                                </div>
+                            </div>
+                            <div class="bg-amber-50 rounded-xl p-3 text-xs text-amber-800 border border-amber-100 flex items-start gap-2">
+                                <i class="fa-solid fa-lightbulb text-amber-500 mt-0.5"></i>
+                                <span>Başlangıç için: CapCut veya DaVinci Resolve (ücretsiz) ile video düzenlemeyi öğren. Instagram'da bir tematik fotoğraf hesabı aç.</span>
+                            </div>
+                        </div>
+
+                        <!-- KART 5: Satranç & Strateji Oyunları -->
+                        <div class="hobby-card bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-3 transition-all hover:shadow-md" data-cat="bilim">
+                            <div class="flex items-center justify-between flex-wrap gap-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-2xl">♟️</span>
+                                    <span class="bg-slate-100 text-slate-700 text-xs font-bold px-2.5 py-1 rounded-lg">Satranç & Strateji Oyunları</span>
+                                </div>
+                                <span class="text-[10px] bg-slate-700 text-white font-bold px-2 py-0.5 rounded-full">BİLİM</span>
+                            </div>
+                            <p class="text-sm text-slate-700 leading-relaxed">Satranç, Go veya strateji oyunlarındaki derin analiz ve öngörü yeteneği; Operasyon Araştırması, Oyun Teorisi, Kuantum Hesaplama ve Finans Riski Yönetimi gibi alanlarda doğrudan avantaj sağlıyor.</p>
+                            <div class="pt-2 border-t border-slate-100">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-2">Açılan Kariyer Kapıları</p>
+                                <div class="flex flex-wrap gap-1.5">
+                                    <span class="bg-slate-100 text-slate-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">📊 Oyun Teorisi Analisti</span>
+                                    <span class="bg-slate-100 text-slate-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">⚛️ Kuantum Hesaplama</span>
+                                    <span class="bg-slate-100 text-slate-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">💹 Finans Risk Yönetimi</span>
+                                    <span class="bg-slate-100 text-slate-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🧩 Algoritma Tasarımı</span>
+                                </div>
+                            </div>
+                            <div class="bg-slate-50 rounded-xl p-3 text-xs text-slate-700 border border-slate-200 flex items-start gap-2">
+                                <i class="fa-solid fa-lightbulb text-slate-500 mt-0.5"></i>
+                                <span>Başlangıç için: Chess.com veya Lichess'te günlük problem çöz. Matematik olimpiyat sorularıyla analitik düşünce kasını güçlendir.</span>
+                            </div>
+                        </div>
+
+                        <!-- KART 6: Doğa & Botanik Gözlemi -->
+                        <div class="hobby-card bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-3 transition-all hover:shadow-md" data-cat="doga">
+                            <div class="flex items-center justify-between flex-wrap gap-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-2xl">🌿</span>
+                                    <span class="bg-emerald-50 text-emerald-700 text-xs font-bold px-2.5 py-1 rounded-lg">Doğa & Botanik Gözlemi</span>
+                                </div>
+                                <span class="text-[10px] bg-emerald-600 text-white font-bold px-2 py-0.5 rounded-full">DOĞA</span>
+                            </div>
+                            <p class="text-sm text-slate-700 leading-relaxed">Bitkileri, böcekleri veya kuşları gözlemlemek; Ekoloji, Çevre Mühendisliği, Biyoçeşitlilik Koruma ve iklim kriziyle mücadelede kritik rol oynayan Karbon Yakalama Teknolojileri gibi alanlarda kariyer imkânı açıyor.</p>
+                            <div class="pt-2 border-t border-slate-100">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-2">Açılan Kariyer Kapıları</p>
+                                <div class="flex flex-wrap gap-1.5">
+                                    <span class="bg-emerald-50 text-emerald-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🌱 Ekoloji Araştırmacısı</span>
+                                    <span class="bg-emerald-50 text-emerald-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">♻️ Çevre Mühendisliği</span>
+                                    <span class="bg-emerald-50 text-emerald-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🦋 Biyoçeşitlilik Uzmanı</span>
+                                    <span class="bg-emerald-50 text-emerald-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🌍 İklim Politikası</span>
+                                </div>
+                            </div>
+                            <div class="bg-emerald-50 rounded-xl p-3 text-xs text-emerald-800 border border-emerald-100 flex items-start gap-2">
+                                <i class="fa-solid fa-lightbulb text-emerald-500 mt-0.5"></i>
+                                <span>Başlangıç için: iNaturalist uygulamasıyla çevrendeki bitki ve hayvanları tanımla ve bilim insanlarına veri sağla.</span>
+                            </div>
+                        </div>
+
+                        <!-- KART 7: Yabancı Dil & Hikaye Yazımı -->
+                        <div class="hobby-card bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-3 transition-all hover:shadow-md" data-cat="dil">
+                            <div class="flex items-center justify-between flex-wrap gap-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-2xl">✍️</span>
+                                    <span class="bg-sky-50 text-sky-700 text-xs font-bold px-2.5 py-1 rounded-lg">Yabancı Dil & Hikaye Yazımı</span>
+                                </div>
+                                <span class="text-[10px] bg-sky-600 text-white font-bold px-2 py-0.5 rounded-full">DİL</span>
+                            </div>
+                            <p class="text-sm text-slate-700 leading-relaxed">Yazmak veya yabancı dil öğrenmek; Uluslararası Hukuk, Diplomatik İlişkiler, Yapay Zeka için Dil Modeli Eğitimi (NLP) ve büyük şirketlerin küresel pazarlama departmanlarına kapı açıyor.</p>
+                            <div class="pt-2 border-t border-slate-100">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-2">Açılan Kariyer Kapıları</p>
+                                <div class="flex flex-wrap gap-1.5">
+                                    <span class="bg-sky-50 text-sky-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🌐 Uluslararası Hukuk</span>
+                                    <span class="bg-sky-50 text-sky-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🗣️ Diplomasi & Tercümanlık</span>
+                                    <span class="bg-sky-50 text-sky-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🧠 NLP Mühendisliği</span>
+                                    <span class="bg-sky-50 text-sky-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">📝 Küresel İçerik Stratejisi</span>
+                                </div>
+                            </div>
+                            <div class="bg-sky-50 rounded-xl p-3 text-xs text-sky-800 border border-sky-100 flex items-start gap-2">
+                                <i class="fa-solid fa-lightbulb text-sky-500 mt-0.5"></i>
+                                <span>Başlangıç için: Duolingo veya Anki ile kelime ezber, Medium'da kısa hikayeler yaz ve yorum al.</span>
+                            </div>
+                        </div>
+
+                        <!-- KART 8: Spor & Hareket -->
+                        <div class="hobby-card bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-3 transition-all hover:shadow-md" data-cat="spor">
+                            <div class="flex items-center justify-between flex-wrap gap-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-2xl">⚽</span>
+                                    <span class="bg-orange-50 text-orange-700 text-xs font-bold px-2.5 py-1 rounded-lg">Spor & Fiziksel Aktivite</span>
+                                </div>
+                                <span class="text-[10px] bg-orange-600 text-white font-bold px-2 py-0.5 rounded-full">SPOR</span>
+                            </div>
+                            <p class="text-sm text-slate-700 leading-relaxed">Spor yapmak salt sağlıktan öte; Spor Analisti (veri odaklı takım taktikleri), Fizyoterapi, Spor Psikolojisi, Spor Hukuku ve giderek büyüyen E-Spor Koçluğu gibi alanlarda uzman olma fırsatı sunuyor.</p>
+                            <div class="pt-2 border-t border-slate-100">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-2">Açılan Kariyer Kapıları</p>
+                                <div class="flex flex-wrap gap-1.5">
+                                    <span class="bg-orange-50 text-orange-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">📊 Spor Analitiği</span>
+                                    <span class="bg-orange-50 text-orange-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🦴 Fizyoterapi</span>
+                                    <span class="bg-orange-50 text-orange-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🧠 Spor Psikolojisi</span>
+                                    <span class="bg-orange-50 text-orange-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🎮 E-Spor Koçluğu</span>
+                                </div>
+                            </div>
+                            <div class="bg-orange-50 rounded-xl p-3 text-xs text-orange-800 border border-orange-100 flex items-start gap-2">
+                                <i class="fa-solid fa-lightbulb text-orange-500 mt-0.5"></i>
+                                <span>Başlangıç için: Oynadığın sporun istatistiklerini takip etmeye başla. Wyscout veya Sofascore gibi platformlarda veri analizi pratiği yap.</span>
+                            </div>
+                        </div>
+
+                        <!-- KART 9: Yemek & Gastronomi -->
+                        <div class="hobby-card bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-3 transition-all hover:shadow-md" data-cat="doga">
+                            <div class="flex items-center justify-between flex-wrap gap-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-2xl">🍳</span>
+                                    <span class="bg-rose-50 text-rose-700 text-xs font-bold px-2.5 py-1 rounded-lg">Yemek Pişirme & Gastronomi</span>
+                                </div>
+                                <span class="text-[10px] bg-rose-600 text-white font-bold px-2 py-0.5 rounded-full">DOĞA</span>
+                            </div>
+                            <p class="text-sm text-slate-700 leading-relaxed">Mutfakta deney yapmayı sevenler için; Gıda Bilimi, Beslenme Danışmanlığı, Restorasyon Yönetimi ve büyük gıda şirketlerinde yeni ürün geliştirme (Ar-Ge mutfağı) kariyerleri kapıda bekliyor.</p>
+                            <div class="pt-2 border-t border-slate-100">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-2">Açılan Kariyer Kapıları</p>
+                                <div class="flex flex-wrap gap-1.5">
+                                    <span class="bg-rose-50 text-rose-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🧪 Gıda Bilimi Ar-Ge</span>
+                                    <span class="bg-rose-50 text-rose-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🥗 Beslenme Danışmanlığı</span>
+                                    <span class="bg-rose-50 text-rose-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🏨 Otel & Restoran Yönetimi</span>
+                                    <span class="bg-rose-50 text-rose-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">📱 Gastronomi İçerik Üretimi</span>
+                                </div>
+                            </div>
+                            <div class="bg-rose-50 rounded-xl p-3 text-xs text-rose-800 border border-rose-100 flex items-start gap-2">
+                                <i class="fa-solid fa-lightbulb text-rose-500 mt-0.5"></i>
+                                <span>Başlangıç için: Yaptığın tarifleri kaydet ve fotoğrafla. Gıda kimyası (neden hamur kabarır?) sorularını araştır.</span>
+                            </div>
+                        </div>
+
+                        <!-- KART 10: Robot & Elektronik -->
+                        <div class="hobby-card bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-3 transition-all hover:shadow-md" data-cat="teknoloji">
+                            <div class="flex items-center justify-between flex-wrap gap-2">
+                                <div class="flex items-center gap-2">
+                                    <span class="text-2xl">🤖</span>
+                                    <span class="bg-cyan-50 text-cyan-700 text-xs font-bold px-2.5 py-1 rounded-lg">Robot & Elektronik Hobisi</span>
+                                </div>
+                                <span class="text-[10px] bg-cyan-600 text-white font-bold px-2 py-0.5 rounded-full">TEKNOLOJİ</span>
+                            </div>
+                            <p class="text-sm text-slate-700 leading-relaxed">Arduino veya Raspberry Pi ile küçük projeler yapmak; Otomasyon Mühendisliği, Gömülü Sistemler, Medikal Cihaz Tasarımı ve Uzay Teknolojileri gibi alanlarda çok değerli bir ön deneyim sağlıyor.</p>
+                            <div class="pt-2 border-t border-slate-100">
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wide mb-2">Açılan Kariyer Kapıları</p>
+                                <div class="flex flex-wrap gap-1.5">
+                                    <span class="bg-cyan-50 text-cyan-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">⚙️ Otomasyon Mühendisliği</span>
+                                    <span class="bg-cyan-50 text-cyan-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">💊 Medikal Cihaz Tasarımı</span>
+                                    <span class="bg-cyan-50 text-cyan-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🚀 Uzay Teknolojileri</span>
+                                    <span class="bg-cyan-50 text-cyan-700 text-[10px] font-semibold px-2 py-0.5 rounded-full">🏭 Endüstri 4.0</span>
+                                </div>
+                            </div>
+                            <div class="bg-cyan-50 rounded-xl p-3 text-xs text-cyan-800 border border-cyan-100 flex items-start gap-2">
+                                <i class="fa-solid fa-lightbulb text-cyan-500 mt-0.5"></i>
+                                <span>Başlangıç için: Arduino Starter Kit (uygun fiyatlı) al, YouTube'da "Arduino başlangıç" videolarını izle ve küçük bir LED projesiyle başla.</span>
+                            </div>
+                        </div>
+
+                    </div>
+
+                    <!-- HOBİ QUIZ -->
+                    <div class="bg-gradient-to-br from-indigo-50 to-fuchsia-50 rounded-2xl border border-indigo-100 p-5 shadow-sm space-y-4">
+                        <div class="flex items-center gap-2">
+                            <span class="text-2xl">🧭</span>
+                            <div>
+                                <h4 class="font-bold text-sm text-slate-900">Hobin Hangisi? Hızlı Kariyer Pusula Testi</h4>
+                                <p class="text-xs text-slate-500">3 soruyu yanıtla, sana en uygun kariyer yolunu gösterelim.</p>
+                            </div>
+                        </div>
+                        <div id="quiz-container">
+                            <div id="quiz-q1">
+                                <p class="text-xs font-bold text-slate-700 mb-2">1. Boş zaman buldunsa ne yaparsın?</p>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <button onclick="quizAnswer(1,'sanat')" class="quiz-btn bg-white border border-slate-200 rounded-xl p-3 text-xs text-left hover:border-fuchsia-400 hover:bg-fuchsia-50 transition-all">🎨 Bir şeyler çizerim veya müzik çalarım</button>
+                                    <button onclick="quizAnswer(1,'teknoloji')" class="quiz-btn bg-white border border-slate-200 rounded-xl p-3 text-xs text-left hover:border-violet-400 hover:bg-violet-50 transition-all">💻 Oyun oynarım veya kod yazarım</button>
+                                    <button onclick="quizAnswer(1,'bilim')" class="quiz-btn bg-white border border-slate-200 rounded-xl p-3 text-xs text-left hover:border-sky-400 hover:bg-sky-50 transition-all">🔬 Nasıl çalışır diye araştırırım</button>
+                                    <button onclick="quizAnswer(1,'doga')" class="quiz-btn bg-white border border-slate-200 rounded-xl p-3 text-xs text-left hover:border-emerald-400 hover:bg-emerald-50 transition-all">🌿 Dışarıya çıkar, doğada gezerim</button>
+                                </div>
+                            </div>
+                            <div id="quiz-q2" class="hidden">
+                                <p class="text-xs font-bold text-slate-700 mb-2">2. Hangi ders seni en az sıkar?</p>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <button onclick="quizAnswer(2,'sanat')" class="quiz-btn bg-white border border-slate-200 rounded-xl p-3 text-xs text-left hover:border-fuchsia-400 hover:bg-fuchsia-50 transition-all">📖 Edebiyat veya Tarih</button>
+                                    <button onclick="quizAnswer(2,'teknoloji')" class="quiz-btn bg-white border border-slate-200 rounded-xl p-3 text-xs text-left hover:border-violet-400 hover:bg-violet-50 transition-all">📐 Matematik veya Bilgisayar</button>
+                                    <button onclick="quizAnswer(2,'bilim')" class="quiz-btn bg-white border border-slate-200 rounded-xl p-3 text-xs text-left hover:border-sky-400 hover:bg-sky-50 transition-all">🧪 Kimya veya Fizik</button>
+                                    <button onclick="quizAnswer(2,'doga')" class="quiz-btn bg-white border border-slate-200 rounded-xl p-3 text-xs text-left hover:border-emerald-400 hover:bg-emerald-50 transition-all">🌱 Biyoloji veya Coğrafya</button>
+                                </div>
+                            </div>
+                            <div id="quiz-q3" class="hidden">
+                                <p class="text-xs font-bold text-slate-700 mb-2">3. Hayalindeki iş ortamı?</p>
+                                <div class="grid grid-cols-2 gap-2">
+                                    <button onclick="quizAnswer(3,'sanat')" class="quiz-btn bg-white border border-slate-200 rounded-xl p-3 text-xs text-left hover:border-fuchsia-400 hover:bg-fuchsia-50 transition-all">🎭 Stüdyo veya sahne</button>
+                                    <button onclick="quizAnswer(3,'teknoloji')" class="quiz-btn bg-white border border-slate-200 rounded-xl p-3 text-xs text-left hover:border-violet-400 hover:bg-violet-50 transition-all">🖥️ Bilgisayar başı, her yerden</button>
+                                    <button onclick="quizAnswer(3,'bilim')" class="quiz-btn bg-white border border-slate-200 rounded-xl p-3 text-xs text-left hover:border-sky-400 hover:bg-sky-50 transition-all">🔬 Laboratuvar veya araştırma merkezi</button>
+                                    <button onclick="quizAnswer(3,'doga')" class="quiz-btn bg-white border border-slate-200 rounded-xl p-3 text-xs text-left hover:border-emerald-400 hover:bg-emerald-50 transition-all">🏕️ Açık hava veya saha</button>
+                                </div>
+                            </div>
+                            <div id="quiz-result" class="hidden bg-white rounded-xl border p-4 text-sm text-center space-y-2">
+                                <div id="quiz-result-emoji" class="text-4xl"></div>
+                                <h4 id="quiz-result-title" class="font-bold text-slate-900"></h4>
+                                <p id="quiz-result-desc" class="text-xs text-slate-600 leading-relaxed"></p>
+                                <button onclick="resetQuiz()" class="text-xs text-indigo-600 font-semibold underline mt-2">Testi Tekrar Yap</button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- ===== 6. KULÜPLER ===== -->
+                <div id="page-clubs" class="page space-y-6">
+                    <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+                        <h3 class="font-bold text-lg text-slate-900 mb-1">Kulüp Odalarında Canlı Fikir Alışverişi</h3>
+                        <p class="text-xs text-slate-500">Aşağıdan bir kulüp seçerek ortak ilgi alanına sahip akranlarınla anlık sohbet et.</p>
+                        <div class="flex gap-2 mt-4 overflow-x-auto pb-2 text-xs font-bold">
+                            <button onclick="selectClub('art')" id="club-tab-art" class="club-tab-btn bg-indigo-600 text-white px-4 py-2 rounded-xl whitespace-nowrap">🎨 Sanat & Tasarım</button>
+                            <button onclick="selectClub('music')" id="club-tab-music" class="club-tab-btn bg-slate-100 text-slate-600 px-4 py-2 rounded-xl whitespace-nowrap">🎵 Müzik & Teknoloji</button>
+                            <button onclick="selectClub('science')" id="club-tab-science" class="club-tab-btn bg-slate-100 text-slate-600 px-4 py-2 rounded-xl whitespace-nowrap">🔬 Temel Bilimler</button>
+                        </div>
+                    </div>
+                    <div class="bg-white rounded-2xl border border-slate-200 shadow-sm overflow-hidden flex flex-col h-[350px]">
+                        <div class="bg-slate-900 text-white p-3 flex items-center justify-between text-xs font-bold">
+                            <span id="active-club-title">🎨 Sanat & Tasarım Odası</span>
+                            <span class="text-emerald-400"><i class="fa-solid fa-circle text-[8px] mr-1"></i> 42 Akran Aktif</span>
+                        </div>
+                        <div id="club-chat-messages" class="p-4 flex-grow overflow-y-auto space-y-3 text-xs bg-slate-50">
+                            <div class="bg-white p-2.5 rounded-xl border max-w-[85%]">
+                                <span class="font-bold text-indigo-600 block text-[10px]">Melis Aydın:</span>
+                                Blender mı yoksa Maya mı öğrenmek oyun tasarımı için daha avantajlı arkadaşlar? Çizim hobimi 3D tarafına taşımak istiyorum.
+                            </div>
+                            <div class="bg-white p-2.5 rounded-xl border max-w-[85%]">
+                                <span class="font-bold text-teal-600 block text-[10px]">Canan Kaya:</span>
+                                Melis kesinlikle Blender ile başla. Hem açık kaynak kodlu hem de komünitesi çok büyük, tonlarca ücretsiz döküman var!
+                            </div>
+                        </div>
+                        <div class="p-3 bg-white border-t flex gap-2">
+                            <input type="text" id="club-chat-input" placeholder="Kulübe bir mesaj yaz..." class="w-full bg-slate-50 px-4 py-2 text-xs rounded-xl focus:outline-none border border-slate-200">
+                            <button onclick="sendClubMessage()" class="bg-indigo-600 hover:bg-indigo-700 text-white px-4 rounded-xl text-xs font-semibold">Gönder</button>
+                        </div>
+                    </div>
+                </div>
+
+            </section>
+
+            <!-- SAĞ PANEL -->
+            <aside class="lg:col-span-3 space-y-6">
+                <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
+                    <h3 class="font-bold text-xs text-slate-900 mb-3 uppercase tracking-wider">Branş Toplulukları</h3>
+                    <div class="space-y-2 text-xs">
+                        <div class="flex justify-between items-center py-1 border-b border-slate-100">
+                            <span>🧬 Genetik Araştırmaları</span>
+                            <button onclick="this.innerText='Üye Olundu'" class="text-indigo-600 font-bold hover:text-indigo-800">Katıl</button>
+                        </div>
+                        <div class="flex justify-between items-center py-1 border-b border-slate-100">
+                            <span>💻 Kod Geliştiriciler</span>
+                            <button onclick="this.innerText='Üye Olundu'" class="text-indigo-600 font-bold hover:text-indigo-800">Katıl</button>
+                        </div>
+                        <div class="flex justify-between items-center py-1 border-b border-slate-100">
+                            <span>🩺 Tıp ve Sağlık Kulübü</span>
+                            <button onclick="this.innerText='Üye Olundu'" class="text-indigo-600 font-bold hover:text-indigo-800">Katıl</button>
+                        </div>
+                        <div class="flex justify-between items-center py-1">
+                            <span>☕ Mentor Takipçileri</span>
+                            <button onclick="this.innerText='Üye Olundu'" class="text-indigo-600 font-bold hover:text-indigo-800">Katıl</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Mentor istatistik paneli -->
+                <div class="bg-white rounded-2xl border border-slate-200 p-4 shadow-sm">
+                    <h3 class="font-bold text-xs text-slate-900 mb-3 uppercase tracking-wider flex items-center gap-1.5"><i class="fa-solid fa-chart-simple text-indigo-400"></i> Mentor Arşivi</h3>
+                    <div class="space-y-3">
+                        <div>
+                            <div class="flex justify-between text-xs mb-1"><span class="text-slate-500">Biyoteknoloji</span><span class="font-bold text-slate-700">48 buluşma</span></div>
+                            <div class="h-1.5 bg-slate-100 rounded-full"><div class="h-1.5 bg-emerald-500 rounded-full" style="width:80%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs mb-1"><span class="text-slate-500">Yazılım</span><span class="font-bold text-slate-700">61 buluşma</span></div>
+                            <div class="h-1.5 bg-slate-100 rounded-full"><div class="h-1.5 bg-violet-500 rounded-full" style="width:100%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs mb-1"><span class="text-slate-500">Tıp</span><span class="font-bold text-slate-700">54 buluşma</span></div>
+                            <div class="h-1.5 bg-slate-100 rounded-full"><div class="h-1.5 bg-rose-500 rounded-full" style="width:88%"></div></div>
+                        </div>
+                        <div>
+                            <div class="flex justify-between text-xs mb-1"><span class="text-slate-500">Nanobilim</span><span class="font-bold text-slate-700">29 buluşma</span></div>
+                            <div class="h-1.5 bg-slate-100 rounded-full"><div class="h-1.5 bg-sky-500 rounded-full" style="width:47%"></div></div>
+                        </div>
+                    </div>
+                </div>
+            </aside>
+
+        </div>
+    </main>
+
+    <!-- ====================== VİDEO MODALİ ====================== -->
+    <div id="video-modal" class="modal-overlay" onclick="closeVideoModal(event)">
+        <div class="bg-white rounded-2xl w-full max-w-lg mx-4 overflow-hidden shadow-2xl" onclick="event.stopPropagation()">
+            <div class="bg-gradient-to-r from-indigo-600 to-violet-600 px-5 py-4 flex items-center justify-between">
+                <div>
+                    <p class="text-indigo-200 text-[10px] font-semibold uppercase tracking-wider">Seminer Kaydı</p>
+                    <h4 class="font-bold text-white text-sm" id="modal-video-title">—</h4>
+                </div>
+                <button onclick="closeVideoModal()" class="text-white/70 hover:text-white transition-colors">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+            <!-- Mock Video Player -->
+            <div class="video-player-mock m-4">
+                <div class="relative z-10 text-center">
+                    <button onclick="togglePlay(this)" class="w-16 h-16 bg-white/20 hover:bg-white/30 backdrop-blur rounded-full flex items-center justify-center mx-auto mb-3 transition-all hover:scale-110" id="play-btn">
+                        <i class="fa-solid fa-play text-white text-2xl ml-1"></i>
+                    </button>
+                    <p class="text-white/80 text-xs" id="modal-video-speaker">—</p>
+                    <p class="text-white/50 text-[10px]" id="modal-video-duration">—</p>
+                </div>
+                <!-- Simulated progress bar -->
+                <div class="absolute bottom-0 left-0 right-0 p-3">
+                    <div class="h-1 bg-white/20 rounded-full">
+                        <div id="video-progress" class="h-1 bg-indigo-400 rounded-full transition-all duration-300" style="width:0%"></div>
+                    </div>
+                    <div class="flex justify-between text-white/40 text-[9px] mt-1">
+                        <span id="video-current-time">0:00</span>
+                        <span id="video-total-time">—</span>
+                    </div>
+                </div>
+            </div>
+            <div class="px-4 pb-4">
+                <p class="text-xs text-slate-500 leading-relaxed bg-slate-50 rounded-xl p-3 border border-slate-100">
+                    Bu seminer kaydında mesleki gerçekler avantajlar ve dezavantajlarıyla aktarılmaktadır. İzledikten sonra mentoruyla 30 dakikalık kahve buluşması ayarlayabilirsin.
+                </p>
+                <button onclick="switchPage('mentors'); closeVideoModal();" class="w-full mt-3 bg-gradient-to-r from-teal-600 to-emerald-600 text-white font-semibold text-xs py-2.5 rounded-xl hover:opacity-90 transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-mug-hot"></i> Bu Mentorla Buluşma Ayarla
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====================== REZERVASYON MODALİ ====================== -->
+    <div id="booking-modal" class="modal-overlay" onclick="closeBookingModal(event)">
+        <div class="bg-white rounded-2xl w-full max-w-sm mx-4 overflow-hidden shadow-2xl" onclick="event.stopPropagation()">
+            <div class="bg-gradient-to-r from-teal-600 to-emerald-600 px-5 py-4">
+                <p class="text-teal-200 text-[10px] font-semibold uppercase tracking-wider">Kahve Buluşması</p>
+                <h4 class="font-bold text-white text-base">Rezervasyon Onayı</h4>
+            </div>
+            <div class="p-5 space-y-4">
+                <div class="bg-slate-50 rounded-xl p-4 border border-slate-100 space-y-2 text-sm">
+                    <div class="flex justify-between"><span class="text-slate-500">Mentor</span><span class="font-bold text-slate-800" id="booking-mentor-name">—</span></div>
+                    <div class="flex justify-between"><span class="text-slate-500">Saat</span><span class="font-bold text-indigo-600" id="booking-slot-time">—</span></div>
+                    <div class="flex justify-between"><span class="text-slate-500">Süre</span><span class="font-bold text-slate-800">30 Dakika</span></div>
+                    <div class="flex justify-between"><span class="text-slate-500">Format</span><span class="font-bold text-slate-800">Video Görüşme ☕</span></div>
+                </div>
+                <textarea id="booking-note" rows="3" placeholder="Mentora iletmek istediğin ön not (isteğe bağlı): Hangi konuyu konuşmak istiyorsun?" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none resize-none"></textarea>
+                <button onclick="confirmBooking()" class="w-full bg-gradient-to-r from-indigo-600 to-teal-600 text-white font-bold text-sm py-3 rounded-xl hover:opacity-90 transition-all flex items-center justify-center gap-2">
+                    <i class="fa-solid fa-calendar-check"></i> Buluşmayı Onayla
+                </button>
+                <button onclick="closeBookingModal()" class="w-full text-slate-400 text-xs font-semibold py-1">İptal</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ====================== DESTEK CHAT ====================== -->
+    <div class="fixed bottom-20 lg:bottom-6 right-6 z-50 flex flex-col items-end">
+        <div id="support-chat" class="hidden w-80 bg-white rounded-2xl border border-slate-200 shadow-2xl overflow-hidden mb-3">
+            <div class="bg-indigo-600 p-4 text-white flex items-center justify-between">
+                <h4 class="font-bold text-xs"><i class="fa-solid fa-compass mr-1"></i> PUSULA Destek</h4>
+                <button onclick="toggleSupportChat()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <div id="chat-messages" class="p-4 h-40 overflow-y-auto space-y-3 text-xs bg-slate-50">
+                <div class="bg-indigo-50 text-slate-700 p-2 rounded-xl rounded-tl-none">
+                    Selam! Seminer videoları, mentor buluşmaları veya platform kullanımı hakkında sormak istediğin bir şey var mı? 🧭✨
+                </div>
+            </div>
+            <div class="p-2 bg-white border-t flex gap-2">
+                <input type="text" id="chat-input" placeholder="Mesajınızı yazın..." class="w-full bg-slate-50 px-3 py-1.5 text-xs rounded-xl focus:outline-none">
+                <button onclick="sendSupportMessage()" class="bg-indigo-600 text-white px-3 rounded-xl"><i class="fa-solid fa-paper-plane text-xs"></i></button>
+            </div>
+        </div>
+        <button onclick="toggleSupportChat()" class="w-12 h-12 bg-indigo-600 hover:bg-indigo-700 text-white rounded-full flex items-center justify-center shadow-lg">
+            <i class="fa-solid fa-compass text-xl"></i>
+        </button>
+    </div>
+
+    <!-- ====================== SCRIPT ====================== -->
+    <script>
+        let currentClub = "art";
+        let videoInterval = null;
+        let videoSeconds = 0;
+        let isPlaying = false;
+        let currentBookingMentor = '';
+        let currentBookingSlot = '';
+        let currentBookingBtn = null;
+
+        /* --- SAYFA GEÇİŞİ --- */
+        function switchPage(pageId) {
+            document.querySelectorAll('.page').forEach(page => page.classList.remove('active'));
+            document.getElementById('page-' + pageId).classList.add('active');
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('bg-indigo-50', 'text-indigo-600');
+                btn.classList.add('text-slate-600');
+            });
+            const activeBtn = document.getElementById('nav-' + pageId);
+            if(activeBtn) activeBtn.classList.add('bg-indigo-50', 'text-indigo-600');
+        }
+
+        /* --- ANA SAYFA: GÖNDERI OLUŞTUR --- */
+        function createPost() {
+            const input = document.getElementById('post-input');
+            if(input.value.trim() === "") return;
+            const container = document.getElementById('feed-container');
+            const post = document.createElement('div');
+            post.className = "feed-item bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4";
+            post.innerHTML = `
+                <div class="flex gap-3">
+                    <img class="w-10 h-10 rounded-xl object-cover" src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&q=80&w=100">
+                    <div>
+                        <h4 class="font-bold text-sm text-slate-900">Zeynep Aslan <span class="text-[10px] text-indigo-600 bg-indigo-50 font-bold px-1.5 rounded ml-1">Sen</span></h4>
+                        <p class="text-[11px] text-slate-400">10. Sınıf • Az önce</p>
+                    </div>
+                </div>
+                <p class="text-sm text-slate-700">${input.value}</p>
+                <div class="pt-2 border-t text-xs text-slate-400 font-semibold">Fikir Verici (0)</div>
+            `;
+            container.insertBefore(post, container.firstChild);
+            input.value = "";
+        }
+
+        /* --- SEMİNER SEKSİYONU --- */
+        function sendQuestionToSeminar() {
+            const sem = document.getElementById('seminar-select').value;
+            const type = document.getElementById('seminar-type').value;
+            const text = document.getElementById('seminar-text').value;
+            if(text.trim() === "") return;
+            document.getElementById('live-chat-box').classList.remove('hidden');
+            const container = document.getElementById('seminar-my-questions');
+            const item = document.createElement('div');
+            item.className = "bg-slate-50 border p-2 rounded-xl mt-2";
+            item.innerHTML = `<span class="font-bold text-[10px] text-indigo-600 block">[${sem} - ${type}]</span><p class="text-slate-700">${text}</p><span class="text-[10px] text-amber-500"><i class="fa-solid fa-check-circle"></i> Sonraki seminer için kuyruğa alındı</span>`;
+            container.insertBefore(item, container.firstChild);
+            document.getElementById('seminar-text').value = "";
+        }
+
+        /* --- VİDEO MODALİ --- */
+        function openVideoModal(title, speaker, duration) {
+            document.getElementById('modal-video-title').innerText = title;
+            document.getElementById('modal-video-speaker').innerText = speaker;
+            document.getElementById('modal-video-duration').innerText = duration;
+            document.getElementById('video-total-time').innerText = duration;
+            document.getElementById('video-modal').classList.add('open');
+            videoSeconds = 0;
+            isPlaying = false;
+            document.getElementById('video-progress').style.width = '0%';
+            document.getElementById('video-current-time').innerText = '0:00';
+            document.getElementById('play-btn').innerHTML = '<i class="fa-solid fa-play text-white text-2xl ml-1"></i>';
+        }
+
+        function closeVideoModal(event) {
+            if(event && event.target !== document.getElementById('video-modal')) return;
+            document.getElementById('video-modal').classList.remove('open');
+            clearInterval(videoInterval);
+            isPlaying = false;
+        }
+
+        function togglePlay(btn) {
+            isPlaying = !isPlaying;
+            if(isPlaying) {
+                btn.innerHTML = '<i class="fa-solid fa-pause text-white text-2xl"></i>';
+                const durationText = document.getElementById('modal-video-duration').innerText;
+                const match = durationText.match(/(\d+)/);
+                const totalSecs = match ? parseInt(match[1]) * 60 : 2520;
+                videoInterval = setInterval(() => {
+                    videoSeconds++;
+                    const pct = Math.min((videoSeconds / totalSecs) * 100, 100);
+                    document.getElementById('video-progress').style.width = pct + '%';
+                    const m = Math.floor(videoSeconds / 60);
+                    const s = videoSeconds % 60;
+                    document.getElementById('video-current-time').innerText = `${m}:${s.toString().padStart(2,'0')}`;
+                    if(videoSeconds >= totalSecs) { clearInterval(videoInterval); isPlaying = false; btn.innerHTML = '<i class="fa-solid fa-play text-white text-2xl ml-1"></i>'; }
+                }, 1000);
+            } else {
+                clearInterval(videoInterval);
+                btn.innerHTML = '<i class="fa-solid fa-play text-white text-2xl ml-1"></i>';
+            }
+        }
+
+        /* --- MENTOR REZERVASYON --- */
+        function bookSlot(btn, mentorName, slotTime) {
+            currentBookingMentor = mentorName;
+            currentBookingSlot = slotTime;
+            currentBookingBtn = btn;
+            document.getElementById('booking-mentor-name').innerText = mentorName;
+            document.getElementById('booking-slot-time').innerText = slotTime;
+            document.getElementById('booking-note').value = '';
+            document.getElementById('booking-modal').classList.add('open');
+        }
+
+        function closeBookingModal(event) {
+            if(event && event.target !== document.getElementById('booking-modal')) return;
+            document.getElementById('booking-modal').classList.remove('open');
+        }
+
+        function confirmBooking() {
+            document.getElementById('booking-modal').classList.remove('open');
+            if(currentBookingBtn) {
+                currentBookingBtn.disabled = true;
+                currentBookingBtn.className = "slot-btn text-[11px] font-semibold py-1.5 px-2 rounded-lg border border-teal-200 bg-teal-50 text-teal-700";
+                currentBookingBtn.innerHTML = '✓ Ayarlandı';
+            }
+            // Sol paneldeki yaklaşan buluşmayı güncelle
+            setTimeout(() => {
+                showToast(`☕ ${currentBookingMentor} ile ${currentBookingSlot} buluşması takvime eklendi!`);
+            }, 300);
+        }
+
+        function showToast(message) {
+            const existing = document.getElementById('toast-notif');
+            if(existing) existing.remove();
+            const toast = document.createElement('div');
+            toast.id = 'toast-notif';
+            toast.className = 'fixed top-20 left-1/2 -translate-x-1/2 z-[9999] bg-slate-900 text-white text-xs font-semibold px-5 py-3 rounded-2xl shadow-2xl';
+            toast.style.animation = 'fadeSlideIn 0.3s ease forwards';
+            toast.innerText = message;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 4000);
+        }
+
+        /* --- AKRAN ARAMA --- */
+        function filterNetwork() {
+            const val = document.getElementById('search-input').value.toLowerCase();
+            document.querySelectorAll('.student-card').forEach(card => {
+                card.style.display = card.getAttribute('data-tags').includes(val) ? 'flex' : 'none';
+            });
+        }
+
+        function connectStudent(btn) {
+            btn.className = "w-full mt-4 bg-emerald-500 text-white font-semibold text-xs py-2 rounded-xl";
+            btn.innerHTML = `<i class="fa-solid fa-check"></i> İstek Gönderildi`;
+        }
+
+        /* --- KULÜP SOHBET --- */
+        function selectClub(clubId) {
+            currentClub = clubId;
+            document.querySelectorAll('.club-tab-btn').forEach(btn => {
+                btn.classList.remove('bg-indigo-600', 'text-white');
+                btn.classList.add('bg-slate-100', 'text-slate-600');
+            });
+            const titles = { 'art': '🎨 Sanat & Tasarım Odası', 'music': '🎵 Müzik & Teknoloji Odası', 'science': '🔬 Temel Bilimler Odası' };
+            document.getElementById('club-tab-' + clubId).classList.remove('bg-slate-100', 'text-slate-600');
+            document.getElementById('club-tab-' + clubId).classList.add('bg-indigo-600', 'text-white');
+            document.getElementById('active-club-title').innerText = titles[clubId];
+            const chatBox = document.getElementById('club-chat-messages');
+            if(clubId === 'art') {
+                chatBox.innerHTML = `
+                    <div class="bg-white p-2.5 rounded-xl border max-w-[85%]"><span class="font-bold text-indigo-600 block text-[10px]">Melis Aydın:</span>Blender mı yoksa Maya mı öğrenmek oyun tasarımı için daha avantajlı arkadaşlar?</div>
+                    <div class="bg-white p-2.5 rounded-xl border max-w-[85%]"><span class="font-bold text-teal-600 block text-[10px]">Canan Kaya:</span>Blender kesinlikle! Topluluğu çok büyük ve ücretsiz.</div>
+                `;
+            } else if(clubId === 'music') {
+                chatBox.innerHTML = `
+                    <div class="bg-white p-2.5 rounded-xl border max-w-[85%]"><span class="font-bold text-purple-600 block text-[10px]">Kaan Öztürk:</span>FL Studio ile Logic Pro arasında kalan var mı?</div>
+                    <div class="bg-white p-2.5 rounded-xl border max-w-[85%]"><span class="font-bold text-violet-600 block text-[10px]">Mert Savaş:</span>Logic sadece Mac'te var. Windows'taysan Ableton harika bir alternatif!</div>
+                `;
+            } else if(clubId === 'science') {
+                chatBox.innerHTML = `
+                    <div class="bg-white p-2.5 rounded-xl border max-w-[85%]"><span class="font-bold text-amber-600 block text-[10px]">Ece Tan:</span>Astrofizik verilerini işlemek için Python kütüphanelerini öğrenmeye başladım!</div>
+                    <div class="bg-white p-2.5 rounded-xl border max-w-[85%]"><span class="font-bold text-sky-600 block text-[10px]">Arda Yılmaz:</span>NumPy ve Pandas çok işine yarayacak.</div>
+                `;
+            }
+        }
+
+        function sendClubMessage() {
+            const input = document.getElementById('club-chat-input');
+            if(input.value.trim() === "") return;
+            const chatBox = document.getElementById('club-chat-messages');
+            const msg = document.createElement('div');
+            msg.className = "bg-indigo-600 text-white p-2.5 rounded-xl ml-auto max-w-[85%] text-right";
+            msg.innerHTML = `<span class="font-bold block text-[10px] text-indigo-200">Zeynep Aslan (Sen):</span>${input.value}`;
+            chatBox.appendChild(msg);
+            input.value = "";
+            chatBox.scrollTop = chatBox.scrollHeight;
+        }
+
+        /* --- DİĞER --- */
+        function toggleSupportChat() { document.getElementById('support-chat').classList.toggle('hidden'); }
+        function toggleNotifications() { showToast("Şu an yeni bir bildirim bulunmuyor."); }
+        function toggleLike(btn, count) { btn.innerHTML = `<i class="fa-solid fa-thumbs-up"></i> Fikir Verici (${count + 1})`; }
+
+        function sendSupportMessage() {
+            const inp = document.getElementById('chat-input');
+            if(inp.value.trim() === "") return;
+            const box = document.getElementById('chat-messages');
+            const div = document.createElement('div');
+            div.className = "bg-indigo-600 text-white p-2 rounded-xl ml-auto max-w-[85%] text-right text-xs";
+            div.innerText = inp.value;
+            box.appendChild(div);
+            inp.value = "";
+            box.scrollTop = box.scrollHeight;
+        }
+
+        /* --- KAPAT METODLARINı GLOBAL ATAYIN --- */
+        window.closeVideoModal = function(event) {
+            if(event && event.target !== document.getElementById('video-modal')) return;
+            document.getElementById('video-modal').classList.remove('open');
+            clearInterval(videoInterval);
+            isPlaying = false;
+        };
+        window.closeBookingModal = function(event) {
+            if(event && event.target !== document.getElementById('booking-modal')) return;
+            document.getElementById('booking-modal').classList.remove('open');
+        };
+    </script>
+
+</body>
+</html>
