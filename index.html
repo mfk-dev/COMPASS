@@ -485,6 +485,9 @@
                     <button onclick="switchPage('clubs')" id="nav-clubs" class="nav-btn px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all">
                         <i class="fa-solid fa-users mr-1"></i>Kulüpler
                     </button>
+                    <button onclick="switchPage('profile')" id="nav-profile" class="nav-btn px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 hover:bg-slate-50 hover:text-slate-900 transition-all">
+                        <i class="fa-solid fa-user-pen mr-1"></i>Profilim
+                    </button>
                 </div>
 
                 <div class="flex items-center gap-4">
@@ -502,6 +505,10 @@
                                 <p class="font-bold text-slate-800" id="menu-display-name">Zeynep Aslan</p>
                                 <p class="text-slate-400 text-[11px]" id="menu-display-email">zeynep@pusula.app</p>
                             </div>
+                            <button onclick="switchPage('profile-edit'); toggleUserMenu();" class="w-full text-left px-3 py-2.5 text-slate-700 hover:bg-slate-50 transition-all flex items-center gap-2">
+                                <i class="fa-solid fa-user-pen"></i> Profili Düzenle
+                            </button>
+                                <div class="border-t border-slate-100 my-1"></div>  
                             <button onclick="handleLogout()" class="w-full text-left px-3 py-2.5 text-rose-600 hover:bg-rose-50 transition-all flex items-center gap-2">
                                 <i class="fa-solid fa-right-from-bracket"></i> Çıkış Yap
                             </button>
@@ -520,6 +527,7 @@
         <button onclick="switchPage('mentors')" class="flex flex-col items-center text-slate-500 gap-0.5"><i class="fa-solid fa-mug-hot text-base"></i>Mentor</button>
         <button onclick="switchPage('hobbies')" class="flex flex-col items-center text-slate-500 gap-0.5"><i class="fa-solid fa-palette text-base"></i>Hobi</button>
         <button onclick="switchPage('clubs')" class="flex flex-col items-center text-slate-500 gap-0.5"><i class="fa-solid fa-users text-base"></i>Kulüp</button>
+        <button onclick="switchPage('profile')" class="flex flex-col items-center text-slate-500 gap-0.5"><i class="fa-solid fa-user-pen text-base"></i>Profil</button>
     </div>
 
     <!-- ====================== ANA İÇERİK ====================== -->
@@ -1212,6 +1220,154 @@
                     </div>
                 </div>
 
+<!-- ===== 7. PROFİL GÖRÜNTÜLEME ===== -->
+<div id="page-profile" class="page space-y-6">
+    <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+        <div class="h-28 bg-gradient-to-r from-indigo-500 via-teal-500 to-amber-400"></div>
+        <div class="px-6 pb-6 -mt-14">
+            <div class="flex items-end justify-between flex-wrap gap-3">
+                <img id="view-avatar" class="w-24 h-24 rounded-2xl object-cover ring-4 ring-white shadow-md" src="" alt="Avatar">
+                <button onclick="switchPage('profile-edit')" class="bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-semibold px-4 py-2 rounded-xl flex items-center gap-2 transition-all shadow-sm">
+                    <i class="fa-solid fa-user-pen"></i> Profili Düzenle
+                </button>
+            </div>
+            <h2 class="mt-3 font-bold text-2xl text-slate-900" id="view-name">—</h2>
+            <p class="text-sm text-slate-500 font-medium" id="view-grade-school">—</p>
+            <p class="mt-3 text-sm text-slate-600 leading-relaxed" id="view-bio"></p>
+        </div>
+    </div>
+
+    <!-- İstatistikler -->
+    <div class="grid grid-cols-3 gap-3">
+        <div class="bg-white rounded-2xl border border-slate-200 p-4 text-center shadow-sm">
+            <p class="font-bold text-2xl text-indigo-600">312</p>
+            <p class="text-[11px] text-slate-500 font-medium mt-1">Ağdaki Akran</p>
+        </div>
+        <div class="bg-white rounded-2xl border border-slate-200 p-4 text-center shadow-sm">
+            <p class="font-bold text-2xl text-teal-600">2</p>
+            <p class="text-[11px] text-slate-500 font-medium mt-1">Mentor Görüşmesi</p>
+        </div>
+        <div class="bg-white rounded-2xl border border-slate-200 p-4 text-center shadow-sm">
+            <p class="font-bold text-2xl text-amber-500">10</p>
+            <p class="text-[11px] text-slate-500 font-medium mt-1">Takip Edilen Sektör</p>
+        </div>
+    </div>
+
+    <!-- İlgi Alanları -->
+    <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+        <h4 class="font-bold text-sm text-slate-900 mb-3">İlgi Alanları & Sektörler</h4>
+        <div class="flex flex-wrap gap-2" id="view-interests"></div>
+        <p id="view-interests-empty" class="text-xs text-slate-400 hidden">Henüz ilgi alanı eklenmemiş.</p>
+    </div>
+
+    <!-- Sosyal Bağlantılar -->
+    <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm" id="view-social-section">
+        <h4 class="font-bold text-sm text-slate-900 mb-3">Sosyal & İletişim</h4>
+        <div class="space-y-2" id="view-social-links"></div>
+        <p id="view-social-empty" class="text-xs text-slate-400 hidden">Henüz sosyal bağlantı eklenmemiş.</p>
+    </div>
+</div>
+
+<!-- ===== 8. PROFİL DÜZENLEME ===== -->
+<div id="page-profile-edit" class="page space-y-6">
+
+    <div class="flex items-center gap-3">
+        <button onclick="switchPage('profile')" class="w-9 h-9 bg-white border border-slate-200 rounded-xl flex items-center justify-center text-slate-500 hover:text-indigo-600 hover:border-indigo-200 transition-all shadow-sm">
+            <i class="fa-solid fa-arrow-left text-sm"></i>
+        </button>
+        <div>
+            <h3 class="font-bold text-lg text-slate-900">Profili Düzenle</h3>
+            <p class="text-xs text-slate-400">Değişiklikler kaydedilince profilinde görünür</p>
+        </div>
+    </div>
+
+    <!-- Avatar -->
+    <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm">
+        <h4 class="font-bold text-sm text-slate-900 mb-4">Profil Fotoğrafı</h4>
+        <div class="flex items-center gap-5">
+            <img id="profile-edit-avatar" class="w-20 h-20 rounded-2xl object-cover ring-4 ring-indigo-100" src="" alt="Avatar">
+            <div class="flex-1 space-y-2">
+                <p class="text-xs text-slate-500">Avatar rengi seç</p>
+                <div class="flex gap-2 flex-wrap" id="avatar-color-picker">
+                    <button onclick="selectAvatarColor('6366f1')" class="w-8 h-8 rounded-xl bg-indigo-500 transition-all" data-color="6366f1"></button>
+                    <button onclick="selectAvatarColor('0d9488')" class="w-8 h-8 rounded-xl bg-teal-600 transition-all" data-color="0d9488"></button>
+                    <button onclick="selectAvatarColor('f43f5e')" class="w-8 h-8 rounded-xl bg-rose-500 transition-all" data-color="f43f5e"></button>
+                    <button onclick="selectAvatarColor('f59e0b')" class="w-8 h-8 rounded-xl bg-amber-500 transition-all" data-color="f59e0b"></button>
+                    <button onclick="selectAvatarColor('8b5cf6')" class="w-8 h-8 rounded-xl bg-violet-500 transition-all" data-color="8b5cf6"></button>
+                    <button onclick="selectAvatarColor('10b981')" class="w-8 h-8 rounded-xl bg-emerald-500 transition-all" data-color="10b981"></button>
+                    <button onclick="selectAvatarColor('ef4444')" class="w-8 h-8 rounded-xl bg-red-500 transition-all" data-color="ef4444"></button>
+                    <button onclick="selectAvatarColor('3b82f6')" class="w-8 h-8 rounded-xl bg-blue-500 transition-all" data-color="3b82f6"></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Temel Bilgiler -->
+    <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
+        <h4 class="font-bold text-sm text-slate-900">Temel Bilgiler</h4>
+        <div class="grid grid-cols-2 gap-4">
+            <div>
+                <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Ad</label>
+                <input type="text" id="edit-firstname" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 transition-all">
+            </div>
+            <div>
+                <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Soyad</label>
+                <input type="text" id="edit-lastname" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 transition-all">
+            </div>
+        </div>
+        <div>
+            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Okul</label>
+            <input type="text" id="edit-school" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 transition-all">
+        </div>
+        <div>
+            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Sınıf</label>
+            <select id="edit-grade" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 transition-all">
+                <option value="9">9. Sınıf</option>
+                <option value="10">10. Sınıf</option>
+                <option value="11">11. Sınıf</option>
+                <option value="12">12. Sınıf</option>
+                <option value="mezun">Mezun</option>
+            </select>
+        </div>
+        <div>
+            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5">Kısa Bio</label>
+            <textarea id="edit-bio" rows="3" placeholder="Kendini kısaca tanıt, hedeflerini yaz..." class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 transition-all resize-none"></textarea>
+        </div>
+    </div>
+
+    <!-- İlgi Alanları -->
+    <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
+        <h4 class="font-bold text-sm text-slate-900">İlgi Alanları & Sektörler</h4>
+        <p class="text-xs text-slate-500">Tıklayarak ekle veya çıkar.</p>
+        <div class="flex flex-wrap gap-2" id="interest-tags-container"></div>
+        <div class="flex gap-2 pt-2 border-t border-slate-100">
+            <input type="text" id="custom-interest-input" placeholder="Yeni ilgi alanı ekle..." class="flex-1 bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-xs focus:outline-none focus:border-indigo-500 transition-all">
+            <button onclick="addCustomInterest()" class="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold text-xs px-4 rounded-xl transition-all">Ekle</button>
+        </div>
+    </div>
+
+    <!-- Sosyal -->
+    <div class="bg-white rounded-2xl border border-slate-200 p-5 shadow-sm space-y-4">
+        <h4 class="font-bold text-sm text-slate-900">Sosyal & İletişim</h4>
+        <div>
+            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5"><i class="fa-brands fa-linkedin mr-1"></i>LinkedIn</label>
+            <input type="text" id="edit-linkedin" placeholder="linkedin.com/in/kullanici-adi" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 transition-all">
+        </div>
+        <div>
+            <label class="block text-[10px] font-bold text-slate-400 uppercase mb-1.5"><i class="fa-brands fa-github mr-1"></i>GitHub</label>
+            <input type="text" id="edit-github" placeholder="github.com/kullanici-adi" class="w-full bg-slate-50 border border-slate-200 rounded-xl px-3 py-2 text-sm focus:outline-none focus:border-indigo-500 transition-all">
+        </div>
+    </div>
+
+    <button onclick="saveProfile()" class="w-full bg-gradient-to-r from-indigo-600 to-teal-600 text-white font-bold py-3.5 rounded-2xl shadow-md hover:opacity-90 transition-all flex items-center justify-center gap-2 text-sm">
+        <i class="fa-solid fa-floppy-disk"></i> Değişiklikleri Kaydet
+    </button>
+
+    <div id="profile-save-success" class="hidden bg-emerald-50 border border-emerald-200 rounded-2xl p-4 text-center text-sm font-semibold text-emerald-700">
+        <i class="fa-solid fa-check-circle mr-2"></i>Profil başarıyla güncellendi!
+    </div>
+</div>>
+
             </section>
 
             <!-- SAĞ PANEL -->
@@ -1752,7 +1908,255 @@
                     else handleRegister();
                 }
             }
+                });
+
+                // ========== PROFİL DÜZENLEME ==========
+        const ALL_INTERESTS = [
+            { label: '#Biyoteknoloji', color: 'emerald' },
+            { label: '#Nanobilim', color: 'sky' },
+            { label: '#Astrofizik', color: 'cyan' },
+            { label: '#Matematik', color: 'amber' },
+            { label: '#YazılımMühendisliği', color: 'violet' },
+            { label: '#TıpDünyası', color: 'rose' },
+            { label: '#GörselSanatlar', color: 'fuchsia' },
+            { label: '#MüzikProdüksiyonu', color: 'purple' },
+            { label: '#Gastronomi', color: 'orange' },
+            { label: '#YapayZeka', color: 'blue' },
+            { label: '#SiberGüvenlik', color: 'slate' },
+            { label: '#OyunTasarımı', color: 'pink' },
+        ];
+
+        const colorMap = {
+            emerald: 'bg-emerald-50 text-emerald-700 border-emerald-200',
+            sky: 'bg-sky-50 text-sky-700 border-sky-200',
+            cyan: 'bg-cyan-50 text-cyan-700 border-cyan-200',
+            amber: 'bg-amber-50 text-amber-700 border-amber-200',
+            violet: 'bg-violet-50 text-violet-700 border-violet-200',
+            rose: 'bg-rose-50 text-rose-700 border-rose-200',
+            fuchsia: 'bg-fuchsia-50 text-fuchsia-700 border-fuchsia-200',
+            purple: 'bg-purple-50 text-purple-700 border-purple-200',
+            orange: 'bg-orange-50 text-orange-700 border-orange-200',
+            blue: 'bg-blue-50 text-blue-700 border-blue-200',
+            slate: 'bg-slate-100 text-slate-700 border-slate-200',
+            pink: 'bg-pink-50 text-pink-700 border-pink-200',
+            indigo: 'bg-indigo-50 text-indigo-700 border-indigo-200',
+        };
+
+        let selectedInterests = new Set(['#Biyoteknoloji', '#Nanobilim', '#Astrofizik', '#Matematik', '#YazılımMühendisliği', '#TıpDünyası', '#GörselSanatlar', '#MüzikProdüksiyonu', '#Gastronomi']);
+        let currentAvatarColor = '6366f1';
+        let interestList = [...ALL_INTERESTS];
+
+        function loadProfilePage() {
+            if (!currentUser) return;
+
+            // Kayıtlı profil verisini yükle
+            const saved = JSON.parse(localStorage.getItem('pusula_profile_' + currentUser.email) || '{}');
+
+            const nameParts = currentUser.name.split(' ');
+            document.getElementById('edit-firstname').value = saved.firstname || nameParts[0] || '';
+            document.getElementById('edit-lastname').value = saved.lastname || nameParts.slice(1).join(' ') || '';
+            document.getElementById('edit-school').value = saved.school || currentUser.school || '';
+            document.getElementById('edit-grade').value = saved.grade || currentUser.grade || '10';
+            document.getElementById('edit-bio').value = saved.bio || '';
+            document.getElementById('edit-linkedin').value = saved.linkedin || '';
+            document.getElementById('edit-github').value = saved.github || '';
+
+            if (saved.interests) selectedInterests = new Set(saved.interests);
+            if (saved.avatarColor) {
+                currentAvatarColor = saved.avatarColor;
+            }
+            if (saved.customInterests) {
+                saved.customInterests.forEach(ci => {
+                    if (!interestList.find(i => i.label === ci)) {
+                        interestList.push({ label: ci, color: 'indigo' });
+                    }
+                });
+            }
+
+            updateAvatarPreview();
+            renderInterestTags();
+            highlightAvatarColor(currentAvatarColor);
+            document.getElementById('profile-save-success').classList.add('hidden');
+        }
+
+        function updateAvatarPreview() {
+            const firstname = document.getElementById('edit-firstname').value || (currentUser ? currentUser.name.split(' ')[0] : 'U');
+            const lastname = document.getElementById('edit-lastname').value || '';
+            const initials = (firstname[0] || '') + (lastname[0] || '');
+            const url = `https://ui-avatars.com/api/?name=${encodeURIComponent(initials)}&background=${currentAvatarColor}&color=fff&size=200&bold=true`;
+            document.getElementById('profile-edit-avatar').src = url;
+        }
+
+        function selectAvatarColor(color) {
+            currentAvatarColor = color;
+            highlightAvatarColor(color);
+            updateAvatarPreview();
+        }
+
+        function highlightAvatarColor(color) {
+            document.querySelectorAll('#avatar-color-picker button').forEach(btn => {
+                btn.classList.remove('ring-2', 'ring-offset-1', 'scale-110');
+                if (btn.getAttribute('data-color') === color) {
+                    btn.classList.add('ring-2', 'ring-offset-1', 'scale-110');
+                    btn.style.ringColor = '#' + color;
+                }
+            });
+        }
+
+        function renderInterestTags() {
+            const container = document.getElementById('interest-tags-container');
+            container.innerHTML = '';
+            interestList.forEach(interest => {
+                const isSelected = selectedInterests.has(interest.label);
+                const cls = colorMap[interest.color] || colorMap.indigo;
+                const btn = document.createElement('button');
+                btn.className = `text-xs font-semibold px-3 py-1.5 rounded-full border transition-all ${isSelected ? cls + ' opacity-100' : 'bg-slate-50 text-slate-400 border-slate-200 opacity-60'}`;
+                btn.innerHTML = `${isSelected ? '✓ ' : '+ '}${interest.label}`;
+                btn.onclick = () => {
+                    if (selectedInterests.has(interest.label)) selectedInterests.delete(interest.label);
+                    else selectedInterests.add(interest.label);
+                    renderInterestTags();
+                };
+                container.appendChild(btn);
+            });
+        }
+
+        function addCustomInterest() {
+            const input = document.getElementById('custom-interest-input');
+            let val = input.value.trim();
+            if (!val) return;
+            if (!val.startsWith('#')) val = '#' + val;
+            if (!interestList.find(i => i.label === val)) {
+                interestList.push({ label: val, color: 'indigo' });
+            }
+            selectedInterests.add(val);
+            input.value = '';
+            renderInterestTags();
+        }
+
+        function saveProfile() {
+            if (!currentUser) return;
+
+            const firstname = document.getElementById('edit-firstname').value.trim();
+            const lastname = document.getElementById('edit-lastname').value.trim();
+            const school = document.getElementById('edit-school').value.trim();
+            const grade = document.getElementById('edit-grade').value;
+            const bio = document.getElementById('edit-bio').value.trim();
+            const linkedin = document.getElementById('edit-linkedin').value.trim();
+            const github = document.getElementById('edit-github').value.trim();
+            const customInterests = interestList.filter(i => !ALL_INTERESTS.find(a => a.label === i.label)).map(i => i.label);
+
+            const newName = `${firstname} ${lastname}`.trim();
+            const newAvatar = `https://ui-avatars.com/api/?name=${encodeURIComponent(firstname + '+' + lastname)}&background=${currentAvatarColor}&color=fff&size=200&bold=true`;
+
+            // localStorage'a kaydet
+            const profileData = {
+                firstname, lastname, school, grade, bio, linkedin, github,
+                avatarColor: currentAvatarColor,
+                interests: [...selectedInterests],
+                customInterests
+            };
+            localStorage.setItem('pusula_profile_' + currentUser.email, JSON.stringify(profileData));
+
+            // currentUser'ı güncelle
+            currentUser.name = newName;
+            currentUser.grade = grade;
+            currentUser.school = school;
+            currentUser.avatar = newAvatar;
+
+            // userDB'yi güncelle
+            if (userDB[currentUser.email]) {
+                userDB[currentUser.email].name = newName;
+                userDB[currentUser.email].grade = grade;
+                userDB[currentUser.email].school = school;
+                userDB[currentUser.email].avatar = newAvatar;
+                saveUserDB();
+            }
+
+            // Tüm UI'ı güncelle
+            updateProfileUI();
+
+            // Sidebar bio güncelle
+            const gradeLabels = { '9': '9. Sınıf', '10': '10. Sınıf', '11': '11. Sınıf', '12': '12. Sınıf', 'mezun': 'Mezun' };
+            document.getElementById('sidebar-grade').textContent = (gradeLabels[grade] || grade) + ' Öğrencisi';
+
+            // Başarı mesajı
+            const successEl = document.getElementById('profile-save-success');
+            successEl.classList.remove('hidden');
+            setTimeout(() => successEl.classList.add('hidden'), 3000);
+
+            showToast('✅ Profil güncellendi!');
+            setTimeout(() => switchPage('profile'), 1500);
+        }
+
+        // switchPage'i override ederek profil sayfasına gelinince loadProfilePage çağır
+            const _origSwitchPage = switchPage;
+            window.switchPage = function(pageId) {
+                _origSwitchPage(pageId);
+                if (pageId === 'profile') loadProfileViewPage();
+                if (pageId === 'profile-edit') loadProfilePage();
+            };
+
+        // Avatar önizlemesi için input dinleyicileri
+        document.addEventListener('DOMContentLoaded', () => {
+            ['edit-firstname', 'edit-lastname'].forEach(id => {
+                const el = document.getElementById(id);
+                if (el) el.addEventListener('input', updateAvatarPreview);
+            });
         });
+
+        function loadProfileViewPage() {
+    if (!currentUser) return;
+    const saved = JSON.parse(localStorage.getItem('pusula_profile_' + currentUser.email) || '{}');
+
+    document.getElementById('view-avatar').src = currentUser.avatar;
+    document.getElementById('view-name').textContent = currentUser.name;
+
+    const gradeLabels = { '9': '9. Sınıf', '10': '10. Sınıf', '11': '11. Sınıf', '12': '12. Sınıf', 'mezun': 'Mezun' };
+    const gradeText = gradeLabels[currentUser.grade] || currentUser.grade;
+    document.getElementById('view-grade-school').textContent = `${gradeText} • ${currentUser.school || ''}`;
+
+    const bioEl = document.getElementById('view-bio');
+    bioEl.textContent = saved.bio || '';
+    bioEl.classList.toggle('hidden', !saved.bio);
+
+    // İlgi alanları
+    const interestsEl = document.getElementById('view-interests');
+    const emptyEl = document.getElementById('view-interests-empty');
+    const interests = saved.interests || [...selectedInterests];
+    interestsEl.innerHTML = '';
+    if (interests.length === 0) {
+        emptyEl.classList.remove('hidden');
+    } else {
+        emptyEl.classList.add('hidden');
+        interests.forEach(tag => {
+            const span = document.createElement('span');
+            span.className = 'text-xs font-semibold px-3 py-1.5 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-100';
+            span.textContent = tag;
+            interestsEl.appendChild(span);
+        });
+    }
+
+    // Sosyal bağlantılar
+    const socialEl = document.getElementById('view-social-links');
+    const socialEmptyEl = document.getElementById('view-social-empty');
+    socialEl.innerHTML = '';
+    const links = [];
+    if (saved.linkedin) links.push({ icon: 'fa-brands fa-linkedin', label: 'LinkedIn', val: saved.linkedin, color: 'text-blue-600' });
+    if (saved.github) links.push({ icon: 'fa-brands fa-github', label: 'GitHub', val: saved.github, color: 'text-slate-800' });
+
+    if (links.length === 0) {
+        socialEmptyEl.classList.remove('hidden');
+    } else {
+        socialEmptyEl.classList.add('hidden');
+        links.forEach(link => {
+            const div = document.createElement('div');
+            div.className = 'flex items-center gap-3 text-sm py-1';
+            div.innerHTML = `<i class="${link.icon} ${link.color} text-base w-5 text-center"></i><span class="text-slate-600">${link.val}</span>`;
+            socialEl.appendChild(div);
+        });
+    }
+}
     </script>
 
 </body>
